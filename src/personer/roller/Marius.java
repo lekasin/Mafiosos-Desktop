@@ -18,8 +18,10 @@ public class Marius extends Rolle {
 	@Override
 	public String oppgave() {
 		// TODO Auto-generated method stub
-		ut = "\nIngen flyers idag\n";
-		if(!lever && gjest == null) 
+		ut = "";
+		if(gjest == null) 
+			ut = "\nIngen flyers idag\n";
+		if(!lever && gjest != null || !funker && gjest == null)
 			leggVed(ut);
 		gjest = null;
 		return super.oppgave();
@@ -29,11 +31,11 @@ public class Marius extends Rolle {
 	public boolean evne(Spiller spiller) {
 		forby(spiller);
 		
-		if(spiller != offer) {
+		if(spiller != offer)
 			gjest = spiller;
+		if(gjest != null)
 			ut = "";
-		}
-
+		
 		if(this.spiller.lever() && spiller.lever() && !blokkert)
 			ut = "\nFlyerne påstår at " + spiller + " er mafia!\n";
 					

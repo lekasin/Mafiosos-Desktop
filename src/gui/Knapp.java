@@ -14,9 +14,9 @@ import personer.roller.Zombie;
 public class Knapp extends JButton{
 
 	private static final long serialVersionUID = 1L;
-	public static final Dimension KVART = new Dimension(128, 50);
-	public static final Dimension HALV = new Dimension(160, 50);
-	public static final Dimension HEL = new Dimension(243, 50);
+	public static final Dimension KVART = new Dimension(124, 45);
+	public static final Dimension HALV = new Dimension(160, 45);
+	public static final Dimension HEL = new Dimension(243, 45);
 	public static final Dimension SUPER = new Dimension(300, 300);
 
 	Spiller spiller;
@@ -29,7 +29,7 @@ public class Knapp extends JButton{
 		this.spiller = spiller;
 		setPreferredSize(dim);
 		addActionListener(al);
-		if(!spiller.lever()) setEnabled(false);
+		if(!spiller.lever() || spiller.fange()) setEnabled(false);
 		if(spiller.rolle() != null && spiller.id(Rolle.ZOMBIE))
 			if(((Zombie)spiller.rolle()).sulten()) 
 				setEnabled(true);
@@ -84,6 +84,10 @@ public class Knapp extends JButton{
 		return t;
 	}
 	
+	public boolean talt(){
+		return talt;
+	}
+	
 	public void ny() {
 		talt = false;
 		setForeground(Color.BLACK);
@@ -100,4 +104,5 @@ public class Knapp extends JButton{
 	public Rolle rolle(){
 		return rolle;
 	}
+
 }

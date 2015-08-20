@@ -17,7 +17,7 @@ public class Morder extends Rolle {
 		if(blokkert)
 			return false;
 		
-		if(finnRolle(MAFIA).offer() == spiller && !snill)
+		if(finnRolle(MAFIA).offer() == spiller && !finnRolle(MAFIA).blokkert() && !snill)
 			this.spiller().drep(this);
 		else if(snill)
 			spiller.snipe(this);

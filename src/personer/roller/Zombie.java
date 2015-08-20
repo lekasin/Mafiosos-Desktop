@@ -29,7 +29,9 @@ public class Zombie extends Rolle{
 	
 	@Override
 	public void drep() {
-		if(aktiv) {
+		if(spiller.klonet())
+			super.drep();
+		else if(aktiv) {
 			super.drep();
 			funk(false);
 			sulten = false;

@@ -12,12 +12,18 @@ public class Specialguy extends Rolle {
 		oppgave = "Hvem vil Special Guy drepe?";
 		side = BORGER;
 		prioritet = SPECIAL;
+		skjerm = true;
 	}
 
 	@Override
 	public String oppgave() {
+		if(spiller.klonet())
+			return super.oppgave();
 		// TODO Auto-generated method stub
-		tv.special(lever);
+		if(brukt)
+			tv.vis("Special Guy har brukt opp kraften sin.");
+		else
+			tv.special(lever);
 		if(informert) tv.leggtil(info);
 		tv.toFront();
 		return oppgave;
@@ -25,10 +31,7 @@ public class Specialguy extends Rolle {
 	
 	@Override
 	public boolean evne(Spiller spiller) {
-		if(blokkert)
-			return false;
-
-		if(!lever && !brukt){
+		if(!lever() && !brukt){
 			this.spiller.vekk();
 			if(snill)
 				spiller.snipe(this);

@@ -14,12 +14,6 @@ public class Trompet extends Rolle {
 	}
 	
 	@Override
-	public String oppgave() {
-		// TODO Auto-generated method stub
-		return tv.vis(oppgave);		
-	}
-	
-	@Override
 	public boolean evne(Spiller spiller) {
 		spiller.drep(this);
 		return true;

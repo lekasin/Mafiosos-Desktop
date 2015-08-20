@@ -5,6 +5,7 @@ import personer.Spiller;
 
 public class Rex extends Rolle {
 
+	String ut = "";
 	public Rex(){
 		super("Rex");
 		oppgave = "Hvem vil Rex snuse på?";
@@ -14,15 +15,26 @@ public class Rex extends Rolle {
 	}
 	
 	@Override
+	public void sov() {
+		if(forsinkelse == null) ut = "";
+		super.sov();
+	}
+	
+	@Override
 	public boolean evne(Spiller spiller) {
 		tv.toFront();
-		if(blokkert || spiller.skjult()){
+		
+		ut += spiller + " har hatt besøk av disse";
+		if(forsinkelse != null) 
+			ut += " forrige natt";
+		ut += ":\n" + tv.rex(spiller) + "\n" ;
+		
+		if(blokkert){
+			if(blokk != forsinkelse) ut = "Rex ble blokkert forrige natt!\n\n";
 			tv.vis("Rex er blokkert!");
 			return false;
 		}
-		
-		tv.vis(spiller + " har hatt besøk av disse:\n");
-		tv.rex(spiller);
+		tv.vis(ut);
 		return true;
 	}
 }

@@ -36,6 +36,7 @@ public class Belieber extends Rolle {
 	@Override
 	public boolean evne(Spiller spiller) {
 		justin = spiller;
+		justin.rolle().informer(this, "\n\n" + spiller +", " + this.spiller.navn() + " er nå din belieber!");
 		tv.vis("Belieberen er nå en " + spiller.rolle() + "liber!");
 		tv.toFront();
 		aktiver(false);

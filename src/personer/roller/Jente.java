@@ -7,6 +7,7 @@ public class Jente extends Rolle {
 
 	public Jente(){
 		super("Liten Jente");
+		oppgave = "Liten jente våkner";
 		side = BORGER;
 		prioritet = JENTE;
 		aktiver(false);

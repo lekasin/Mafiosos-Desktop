@@ -23,6 +23,11 @@ public class Politi extends Rolle {
 		levende++;
 	}
 	
+	public void fjern(){
+		antall--;
+		levende--;
+	}
+	
 	public boolean flere(){
 		return levende > 1;
 	}
@@ -32,6 +37,18 @@ public class Politi extends Rolle {
 		if(!flere())
 			lever = false;
 		levende--;
+	}
+	
+	@Override
+	public boolean pek(Spiller spiller) {
+		for(Spiller s: tv.spillere().spillere())
+			if(s.id(POLITI) && s.lever()){
+				s.setOffer(spiller);
+				if(!this.spiller.lever())
+					setSpiller(s);
+			}
+		
+		return super.pek(spiller);
 	}
 
 	@Override

@@ -5,7 +5,8 @@ import personer.Spiller;
 
 public class Cupid extends Rolle {
 
-	Spiller mann = null;
+	Spiller mann = null, kvinne = null;
+	Spiller utMann = null, utKvinne = null;
 
 	public Cupid(){
 		super("Cupid");
@@ -20,6 +21,19 @@ public class Cupid extends Rolle {
 		fortsett = false;
 		return super.oppgave();
 	}
+	
+	public Spiller getMann() {
+		return utMann;
+	}
+	
+	public Spiller getKvinne() {
+		return utKvinne;
+	}
+	
+	public void nullstill() {
+		utMann = null;
+		utKvinne = null;
+	}
 
 	@Override
 	public boolean evne(Spiller spiller) {
@@ -30,33 +44,24 @@ public class Cupid extends Rolle {
 
 		if(mann == null) {
 			mann = spiller;
+			forbud2 = forbud;
+			forby(mann);
+			if(mann != kvinne) 
+				forbud2 = null;
 			return true;
 		} else {
 			fortsett = true;
-
+			kvinne = spiller;
+			
 			if(blokkert){
 				mann = null;
 				return false;
 			}
 			
-			if(spiller.rolle().blokkert()); //HMMMMMMM
-			if(!spiller.lever()) 	mann.drep(spiller.drapsmann());
-			if(spiller.beskyttet())	mann.beskytt(spiller.beskytter()); 
-			if(spiller.forsvart()) 	mann.forsvar(spiller.forsvarer());
-			if(spiller.reddet()) 	mann.redd(spiller.redning());
-			if(spiller.løgn()) 		mann.lyv(spiller.løgner());
-			if(spiller.skjult()) 	mann.skjul(spiller.skjuler());
-			if(spiller.kløna()) 	mann.kløn(spiller.kløne());
+			utMann = mann;
+			utKvinne = spiller;
 			
-			if(mann.rolle().blokkert());//HMMMMMMM
-			if(!mann.lever()) 	 	spiller.drep(spiller.drapsmann());
-			if(mann.beskyttet())	spiller.beskytt(spiller.beskytter()); 
-			if(mann.forsvart()) 	spiller.forsvar(spiller.forsvarer());
-			if(mann.reddet()) 		spiller.redd(spiller.redning());
-			if(mann.løgn()) 		spiller.lyv(spiller.løgner());
-			if(mann.skjult()) 		spiller.skjul(spiller.skjuler());
-			if(mann.kløna()) 		spiller.kløn(spiller.kløne());
-			
+			forbud2 = null;
 			mann = null;
 		}
 		return true;

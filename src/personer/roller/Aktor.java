@@ -14,8 +14,10 @@ public class Aktor extends Rolle {
 
 	@Override
 	public boolean evne(Spiller spiller) {
-		if(blokkert)
+		if(blokkert) {
+			offer = null;
 			return false;			
+		}
 		
 		if(spiller != null) {
 			spiller.beskytt(this);

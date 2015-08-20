@@ -10,13 +10,20 @@ public class Bedrager extends Rolle {
 		oppgave = "Bedrageren gjør seg kjent med mafiaen";
 		side = BORGER;
 		prioritet = BEDRAGER;
+		skjerm = true;
 	}
 
 	@Override
 	public String oppgave() {
+		if(klonet)
+			super.oppgave();
 		aktiver(false);
-		tv.bedrag();
 		tv.toFront();
+		if(spiller.klonet())
+			informer(spiller.smith(), "\n\n" + spiller + " er nå en Smith!");
+		
+		tv.bedrag();
+		if(informert) tv.leggtil(info);
 		return oppgave;
 	}
 

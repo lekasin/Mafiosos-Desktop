@@ -18,11 +18,15 @@ public class UlfOmar extends Rolle {
 	@Override
 	public boolean evne(Spiller spiller) {
 		if(blokkert){
-//			tv.vis("Hammer ble blokkert");
 			return false;
 		}
 		
-		if((spiller.rolle().pri() > TJUKKAS && spiller.rolle().pri() < SPECIAL) || spiller.rolle().pri() == SNÅSA)
+		Rolle rolle = spiller.rolle();
+
+		if(rolle.pri() > UNDERCOVER && rolle.pri() < ULF && !spiller.id(COPYCAT) && !spiller.id(BERIT)) {
+			Spiller forb = rolle.forbud();
+			rolle.forby(null);
+		
 			if(spiller.rolle().blokkert()) {
 				Rolle r = spiller.rolle().hvemBlokk();
 				spiller.rolle().rens(r);
@@ -31,6 +35,9 @@ public class UlfOmar extends Rolle {
 			}
 			else
 				spiller.rolle().evne(this.spiller);
+		
+			rolle.forby(forb);
+		}
 
 		return true;
 	}

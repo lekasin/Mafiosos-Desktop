@@ -10,11 +10,15 @@ public class Jorgen extends Rolle {
 		oppgave = "Jørgen ser på de døde";
 		side = BORGER;
 		prioritet = JØRGEN;
+		skjerm = true;
 	}
 	
 	@Override
 	public String oppgave() {
 		// TODO Auto-generated method stub
+		if(spiller.klonet())
+			return super.oppgave();
+
 		if(blokkert)
 			tv.vis("Noen blokkerte Jørgen fra å gjøre jobben sin");
 		else

@@ -24,7 +24,7 @@ public class Hammer extends Rolle {
 	@Override
 	public boolean evne(Spiller spiller) {
 		tv.toFront();
-		if(blokkert || spiller.skjult()){
+		if(blokkert){
 			tv.vis("Hammer ble blokkert");
 			return false;
 		}

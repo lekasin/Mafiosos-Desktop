@@ -40,7 +40,7 @@ public class Jesus extends Rolle {
 			
 		if(oppstanden()) 
 			tv.leggVed("\nJESUS (aka " + spiller + ") ER OPPSTANDEN!!!");
-		return oppgave;
+		return super.oppgave();
 	}
 
 	@Override

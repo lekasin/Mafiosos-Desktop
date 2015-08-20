@@ -16,7 +16,9 @@ public class Klona extends Rolle {
 	public boolean evne(Spiller spiller) {
 		if(blokkert)
 			return false;
-		spiller.kløn(this);
+		
+		if(this.spiller.lever())
+			spiller.kløn(this);
 		return true;
 	}
 }

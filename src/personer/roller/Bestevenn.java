@@ -23,6 +23,11 @@ public class Bestevenn extends Rolle {
 		levende++;
 	}
 	
+	public void fjern(){
+		antall--;
+		levende--;
+	}
+	
 	public boolean flere(){
 		return levende > 1;
 	}
@@ -44,6 +49,6 @@ public class Bestevenn extends Rolle {
 	public String oppgave() {
 		// TODO Auto-generated method stub
 		aktiver(false);
-		return tv.vis(oppgave);
+		return super.oppgave();
 	}
 }

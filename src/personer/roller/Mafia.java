@@ -6,9 +6,12 @@ import personer.Spiller;
 
 public class Mafia extends Rolle {
 
-	int antall = 1 , levende = 1;
-	boolean sniper = false, sabotage = false;
+	public static int SNIPER = 1, SABOTØR = 2, FLUKT = 3, FORFALSKER = 4;
 	
+	int antall = 1 , levende = 1;
+			
+	boolean snipe, saboter, flukt, forfalsk;
+
 	public Mafia(){
 		super("Mafia");
 		oppgave = "Hvem vil Mafiaen drepe?";
@@ -25,6 +28,11 @@ public class Mafia extends Rolle {
 		levende++;
 	}
 	
+	public void fjern(){
+		antall--;
+		levende--;
+	}
+	
 	public boolean flere(){
 		return levende > 1;
 	}
@@ -37,21 +45,19 @@ public class Mafia extends Rolle {
 	}
 	
 	public void snipe(){
-		sniper = true;
+		snipe = true;
 	}
 	
 	public void sabotage(){
-		sabotage = true;
+		saboter = true;
 	}
-	
+
 	public void saboter(Spiller spiller){
-		sabotage = false;
+		saboter = false;
 		fortsett(false);
 		spiller.blokker(this);
 		oppgave();
 	}
-	
-	
 	
 	@Override
 	public void jul() {
@@ -65,10 +71,17 @@ public class Mafia extends Rolle {
 		if(spiller == null) return false;
 		
 		offer = spiller;
-		if(sabotage) saboter(spiller);
-		else if(sniper){
+		for(Spiller s: tv.spillere().spillere())
+			if(s.id(MAFIA) && s.lever()){
+				s.setOffer(spiller);
+				if(!this.spiller.lever())
+					setSpiller(s);
+			}
+		
+		if(saboter) saboter(spiller);
+		else if(snipe){
 			spiller.snipe(this);
-			sniper = false;
+			snipe = false;
 		}
 		else if(snill) spiller.snipe(this);
 		else evne(spiller);

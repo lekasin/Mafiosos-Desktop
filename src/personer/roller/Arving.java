@@ -6,7 +6,8 @@ import personer.Spiller;
 public class Arving extends Rolle {
 
 	Spiller riking;
-
+	boolean arvet = false;
+	
 	public Arving(){
 		super("Arving");
 		oppgave = "Hvem skal arvingen adopteres bort til?";
@@ -21,7 +22,8 @@ public class Arving extends Rolle {
 				spiller.rolle().setSpiller(spiller);
 				return true;
 		}
-		return false;
+		else
+			return false;
 	}
 	
 
@@ -31,25 +33,26 @@ public class Arving extends Rolle {
 
 	@Override
 	public String oppgave() {
-		// TODO Auto-generated method stub
 		if(riking == null) {
-			tv.vis(oppgave);
-			if(informert) tv.leggtil(info);
-			return oppgave;
+			aktiver(false);
+			return super.oppgave();
 		} else {
 			aktiver(false);
+			if(spiller.klonet())
+				return super.oppgave();
+
 			tv.vis("Arvingen har nå arvet rollen " + riking.rolle() + "!");
-			if(informert) tv.leggtil(info);
+			if(informert) 
+				tv.leggtil(info);
 			tv.toFront();
-//			riking.rolle().aktiver(true);
+			arvet = true;
 			return "Arvingen våkner";
 		}
 	}
 
 	@Override
 	public boolean aktiv() {
-		// TODO Auto-generated method stub
-		if(arv() && lever())
+		if(arv() && lever() && arvet == false)
 			aktiver(true);
 		return super.aktiv();
 	}
@@ -57,7 +60,9 @@ public class Arving extends Rolle {
 	@Override
 	public boolean evne(Spiller spiller) {
 		riking = spiller;
+		skjerm = true;
 		aktiver(false);
+		oppgave = "Arvingen våkner";
 		return true;
 	}
 }

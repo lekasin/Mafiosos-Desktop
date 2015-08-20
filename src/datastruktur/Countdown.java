@@ -14,6 +14,7 @@ public class Countdown {
 	Spill spill;
 	Start start, pause;
 	String tekst;
+	boolean aktiv;
 	int tid;
 
 	public Countdown(JLabel l, Spill s) {
@@ -25,11 +26,18 @@ public class Countdown {
 		start = new Start();
 	}
 	
+	public boolean getAktiv(){
+		return aktiv;
+	}
 	public int getTid() {
 		return tid;
 	}
 	
 	public void setTid(int t) {
+		tid = t;
+	}
+	
+	public void setKortTid(int t) {
 		tid = t;
 	}
 	
@@ -40,6 +48,14 @@ public class Countdown {
 	public void stop() {
 		pause();
 		klokke.setVisible(false);
+		aktiv = false;
+	}
+	
+	public void playPause(){
+		if(sjekk())
+			fortsett();
+		else
+			pause();
 	}
 	
 	public boolean sjekk() {
@@ -57,11 +73,19 @@ public class Countdown {
 		timer.schedule(start, 0, 1000);
 	}
 	
-	public void nyStart(int t) {
+	public void nyStartSek(int t) {
+		startNyTimer(t);
+	}
+	
+	public void nyStartMin(int t) {
+		startNyTimer(t*60);
+	}
+	
+	public void startNyTimer(int t) {
+		aktiv = true;
 		spill.informer(format(tid) + "\n" + tekst);
-		spill.vindu.pause();
 		pause();
-		tid = t*60;
+		tid = t;
 		fortsett();
 		klokke.setVisible(true);
 	}
@@ -81,11 +105,7 @@ public class Countdown {
 				klokke.setText(format(tid));
 				spill.informer(format(tid--) + "\n" + tekst);
 			} else {
-				if(!spill.taler()) {
-					spill.henrett(null);
-					spill.godkjenn();
-				}
-				else spill.talt();
+				spill.kveld();
 				this.cancel();
 			}
 		}

@@ -5,7 +5,7 @@ import personer.Spiller;
 
 public class Kirsten extends Rolle {
 
-	Spiller mann = null;
+	Spiller mann = null, kvinne = null;
 
 	public Kirsten(){
 		super("Kirsten Giftekniv");
@@ -29,11 +29,16 @@ public class Kirsten extends Rolle {
 		
 		if(mann == null) {
 			mann = spiller;
+			forbud2 = forbud;
+			forby(mann);
+			if(mann != kvinne) 
+				forbud2 = null;
 			return true;
 		} else {
 			offer = spiller;
 			fortsett = true;
-
+			kvinne = spiller;
+			
 			if(blokkert){
 				mann = null;
 				return false;
@@ -61,6 +66,8 @@ public class Kirsten extends Rolle {
 					mann.beskytt(this);
 				}
 		}
+		
+		forbud2 = null;
 		return true;
 	}
 	
@@ -69,7 +76,8 @@ public class Kirsten extends Rolle {
 		String ut = tittel + "(" + spiller.navn() + ")";
 		if(offer != null) 
 			ut += " har valgt " + offer + "(" + offer.rolle() + ")";
-
+		else
+			ut += " valgte ingen.";
 		if(mann != offer) {
 			if(mann.side() == offer.side())
 				ut += ", og de er en match!";

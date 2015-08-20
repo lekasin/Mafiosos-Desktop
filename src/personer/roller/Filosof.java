@@ -6,6 +6,7 @@ import personer.Spiller;
 public class Filosof extends Rolle {
 	
 	Spiller valgt;
+	String ut = "";
 	
 	public Filosof(){
 		super("Filosofen");
@@ -18,21 +19,35 @@ public class Filosof extends Rolle {
 	public Spiller getValgt(){
 		return valgt;
 	}
+	
+	
+	@Override
+	public String oppgave() {
+		// TODO Auto-generated method stub
+		System.out.println("Aktiv oppgave: " + aktiv);
 
+		return super.oppgave();
+	}
 	@Override
 	public boolean evne(Spiller spiller) {
 		tv.toFront();
-		if(blokkert || spiller.skjult()) {
-			tv.vis("Noen forhindrer Filosofen i å gjøre jobben sin"); 
+		
+		if(this.spiller.skjult())
+			ut += spiller + " har rollen " + tv.spillere().randomSpiller(this.spiller, spiller).rolle();
+		else
+			ut += spiller + " har rollen " + spiller.rolle();
+
+		ut += (forsinkelse != null) ? ".\n\n" : ".";
+		
+		if(blokkert) {
+			if(blokk != forsinkelse) ut = "Filosofen ble blokkert forrige natt!\n\n";
+			tv.vis("Filosofen er blokkert"); 
 			return false;
 		}
 
 		valgt = spiller;
 		aktiver(false);
-		if(this.spiller.skjult())
-			tv.vis(spiller + " har rollen " + tv.spillere().randomSpiller(this.spiller, spiller).rolle());
-		else
-			tv.vis(spiller + " har rollen " + spiller.rolle());
+		tv.vis(ut);
 		return true;
 	}
 	
@@ -42,14 +57,13 @@ public class Filosof extends Rolle {
 		aktiver(true);
 		super.jul();
 	}
-		
+
 	public void sov(){
-		offer = null;
-		blokk = null;
-		blokkert = false;
-		snill = false;
-		if(lever()) funker = true;
-		if(valgt == null || !valgt.lever()) 
+		if(forsinkelse == null) ut = "";
+		if((valgt == null || !valgt.lever() ) && !spiller.rolle().id(SMITH)) 
 			aktiver(true);
+		super.sov();
+
 	}
+	
 }
