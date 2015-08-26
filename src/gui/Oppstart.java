@@ -90,7 +90,6 @@ public class Oppstart implements ActionListener {
                 "Når nok roller er valgt, blir du automatisk tatt videre til neste steg.");
 
         innhold = vindu.innhold();
-        innhold.setPreferredSize(new Dimension(650, 620));
         vindu.overskrift.setText("Hvilke roller skal være med?");
         vindu.kontroll(new Lytter(), VELGROLLER);
 
@@ -190,7 +189,6 @@ public class Oppstart implements ActionListener {
     public void velgGjenstander() {
         gjenstander = new ArrayList<>();
         innhold = vindu.innhold();
-        innhold.setPreferredSize(new Dimension(680, 800));
         vindu.overskrift.setText("Hvilke gjenstander skal være med?");
 
         innhold.add(new Knapp("Pistol", Knapp.KVART, this));
@@ -446,6 +444,43 @@ public class Oppstart implements ActionListener {
 				spillere.leggTil(new Spiller("Jboy"));
 				spillere.leggTil(new Spiller("DJ Sindre"));
 				*/
+
+
+                spillere.leggTil(new Spiller("Sinte Simen"));
+                spillere.leggTil(new Spiller("Ida Nigga Reite"));
+                spillere.leggTil(new Spiller("Swigurd"));
+                spillere.leggTil(new Spiller("Morten"));
+                spillere.leggTil(new Spiller("Shiv"));
+                spillere.leggTil(new Spiller("Stian"));
+                spillere.leggTil(new Spiller("Jboy"));
+                spillere.leggTil(new Spiller("DJ Sindre"));
+
+                spillere.leggTil(new Spiller("Sinte Ssefimen"));
+                spillere.leggTil(new Spiller("Ida Nesigga Reite"));
+                spillere.leggTil(new Spiller("Swseseigursefd"));
+                spillere.leggTil(new Spiller("Mosefrten"));
+                spillere.leggTil(new Spiller("Shsdiv"));
+                spillere.leggTil(new Spiller("Stian"));
+                spillere.leggTil(new Spiller("Jbseoy"));
+                spillere.leggTil(new Spiller("DJsef Sindre"));
+
+                spillere.leggTil(new Spiller("Sinsefsete Simen"));
+                spillere.leggTil(new Spiller("Idasef Nigga Reite"));
+                spillere.leggTil(new Spiller("Swigurd"));
+                spillere.leggTil(new Spiller("Morsdfseten"));
+                spillere.leggTil(new Spiller("Shisv"));
+                spillere.leggTil(new Spiller("Stsvian"));
+                spillere.leggTil(new Spiller("Jbosdy"));
+                spillere.leggTil(new Spiller("DJsdv Sindre"));
+
+                spillere.leggTil(new Spiller("Sinte sdSimen"));
+                spillere.leggTil(new Spiller("Ida Nsigga Reite"));
+                spillere.leggTil(new Spiller("Swigsefurd"));
+                spillere.leggTil(new Spiller("Morseten"));
+                spillere.leggTil(new Spiller("Shiefv"));
+                spillere.leggTil(new Spiller("Stiefan"));
+                spillere.leggTil(new Spiller("Jboysef"));
+                spillere.leggTil(new Spiller("DJ sefSindre"));
 
                 informer(spillere.toString());
             }

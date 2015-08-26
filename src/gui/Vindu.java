@@ -1,5 +1,6 @@
 package gui;
 
+import com.oracle.tools.packager.Log;
 import datastruktur.ImgUtil;
 import datastruktur.Spillerliste;
 import personer.Rolle;
@@ -29,8 +30,8 @@ public class Vindu extends JFrame {
     Spill spill;
     Oppstart oppstart;
 
-    public static Dimension rammeSize = new Dimension(450, 1000), innholdSize = new Dimension(450, 450), kontrollSize = new Dimension(450, 60),
-            toppSize = new Dimension(1100, 100), totalSize = new Dimension(1180, 600);
+    public static Dimension rammeSize = new Dimension(460, 800), kontrollSize = new Dimension(460, 60),
+            toppSize = new Dimension(1100, 100), totalSize = new Dimension(1200, 600);
 
     public Vindu(String tittel, Spillerliste spillere) {
 
@@ -140,17 +141,16 @@ public class Vindu extends JFrame {
     }
 
     public JPanel innhold() {
-        innhold = new JPanel();
-        innhold.setPreferredSize(Vindu.innholdSize);
+        innhold = new JPanel(new WrapLayout());
+        innhold.revalidate();
         innhold.setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
         oppdaterRamme(innhold);
         return innhold;
     }
 
     public void oppdaterRamme(JPanel p) {
-        innholdScroll = new JScrollPane(p);
+        innholdScroll = new JScrollPane(p, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         innholdScroll.setBorder(BorderFactory.createEmptyBorder());
-        innholdScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         resize();
         rammen.removeAll();
         rammen.add(innholdScroll, BorderLayout.CENTER);
@@ -321,8 +321,12 @@ public class Vindu extends JFrame {
     }
 
     public void resize() {
+        System.out.println("Ramme: " + rammen.getHeight());
+        System.out.println("Innhold: " + innhold.getHeight());
+        System.out.println("innholdScroll: " + innholdScroll.getHeight());
+        System.out.println("Frame: " + getHeight());
         rammen.setPreferredSize(new Dimension(rammen.getWidth(), getHeight() - (int) header.getSize().getHeight()));
-        innholdScroll.setPreferredSize(new Dimension(rammen.getWidth(), getHeight()));
+//        innholdScroll.setPreferredSize(new Dimension(rammen.getWidth(), 800));
     }
 
     public void addListener() {

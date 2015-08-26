@@ -245,7 +245,7 @@ public class Spill implements ActionListener {
             vindu.overskrift.setForeground(Color.BLUE);
         if (!r.funker() && !r.spiller().klonet())
             vindu.overskrift.setForeground(Color.RED);
-
+        vindu.setVeiledning(r.getVeiledning());
         // tv.leggtil(spillere.valg(r));
     }
 
@@ -501,11 +501,18 @@ public class Spill implements ActionListener {
     public void setVeiledning(int fase) {
         switch (fase) {
             case DISKUSJONSFASE:
-                vindu.setVeiledning("Diskusjonsfasen:\n" +
+                if (taler < 3)
+                    vindu.setVeiledning("Diskusjonsfasen:\n" +
                         "Spillerne skal nå diskutere, og finne ut hvem som er mistenkt for å være mafia.\n" +
                         "For å mistenke en person, trykker du på personens navn. Personen blir da lagt til i mistenktlista og blir en del av den kommende avstemningen.\n" +
                         "For å fjerne en person fra mistenktlista, trykker du på personens navn igjen.\n" +
                         "Personer med navn i blått, er mistenkte, mens personer i rødt er både mistenkt, og vil dø om de får flest stemmer (som oftest fordi de har holdt forsvarstale).");
+                else
+                    vindu.setVeiledning("Diskusjonsfasen - Oppgjørets Time:\n" +
+                            "Spillerne har nå en siste sjanse til å diskutere, og finne ut hvem som er mafia.\n" +
+                            "En dag kan maks inneholde 3 forsvarstaler (Kan bli flere ved uavgjort siste avstemning)." +
+                            "I oppgjørets time er det derfor ikke mulig å mistenke andre enn de som har holdt forsvarstale," +
+                            "men alle disse kan nå stemmes på.\n");
                 break;
             case AVSTEMNINGSFASE:
                 vindu.setVeiledning("Avstemning:\n" +
@@ -796,7 +803,7 @@ public class Spill implements ActionListener {
         }
 
         if (sjekkOffer(Rolle.BOMBER) && !aktiv.id(Rolle.TROMPET)) {
-            ut = detonerBombe(bombet, s, ut);
+            ut = detonerBombe(bombet, s);
         }
 
         if (!(s.id(Rolle.BOMBER) && s.forsvart()))
@@ -832,8 +839,8 @@ public class Spill implements ActionListener {
         tv.toFront();
     }
 
-    public String detonerBombe(Spiller bombet, Spiller utstemt, String ut) {
-        bombet = finnOffer(Rolle.BOMBER);
+    public String detonerBombe(Spiller bombet, Spiller utstemt) {
+        String ut;
 
         // Utstemt
         if (utstemt.forsvart()) {
