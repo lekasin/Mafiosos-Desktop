@@ -458,10 +458,7 @@ public class Spill implements ActionListener {
         rapporter(s.navn() + " forsvarer seg!");
         timer.setText(s.navn() + " forsvarer seg!");
         timer.nyStartSek(10);
-        if (++taler == 3) {
-            oppgjøretsTime();
-            annonse += "\nIngen flere forsvarstaler!";
-        }
+        taler++;
     }
 
     public void avsluttForsvarsTaler() {
@@ -597,9 +594,11 @@ public class Spill implements ActionListener {
     }
 
     public void oppgjøretsTime() {
-        for (Component c : innhold.getComponents())
-            if (((Knapp) c).spiller().talt())
+        for (Component c : innhold.getComponents()) {
+            Spiller s = ((Knapp) c).spiller();
+            if (s != null && !s.talt())
                 c.setEnabled(false);
+        }
     }
 
     public void tieBreaker(ArrayList<Spiller> utstemte) {
@@ -686,6 +685,11 @@ public class Spill implements ActionListener {
         if (nyTid < 2) nyTid = 2;
         restartMedTimer("Hvem er de mistenkte?", nyTid);
         nyFase(DISKUSJONSFASE);
+        if (taler > 2) {
+            oppgjøretsTime();
+            annonse += "\nOppgjørets Time - Ingen flere forsvarstaler!\n";
+            timer.setText(annonse + hentMistenkte());
+        }
     }
 
     public void gjenoppliv() {
@@ -932,6 +936,10 @@ public class Spill implements ActionListener {
     }
 
     public void visMistenkte() {
+        timer.setText(annonse + hentMistenkte());
+    }
+
+    public String hentMistenkte(){
         String mistenkte = "\nMistenkte";
         if (spillere.nominerte().size() == 5)
             mistenkte += "(Max 5):";
@@ -940,8 +948,7 @@ public class Spill implements ActionListener {
 
         for (Spiller s : spillere.nominerte())
             mistenkte += "\n" + s;
-
-        timer.setText(annonse + mistenkte);
+        return mistenkte;
     }
     // ////////////////////////////////////////////////////////////////////////////////////////
 

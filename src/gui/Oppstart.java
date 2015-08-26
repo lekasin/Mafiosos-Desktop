@@ -394,7 +394,6 @@ public class Oppstart implements ActionListener {
             //////////////////////TILBAKE//////////////////////
             else if (e.getSource() == vindu.getTilbake()) {
                 if (fase == VELGROLLER) {
-                    System.out.println("HELLO");
                     if (antallspillere < (spillere.length() - 1)) {
                         nyfase(fase);
                     } else
