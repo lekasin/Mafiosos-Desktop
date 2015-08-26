@@ -2,10 +2,9 @@ package datastruktur;
 
 import gui.Spill;
 
+import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.swing.JLabel;
 
 public class Countdown {
 	static int interval;
@@ -105,7 +104,7 @@ public class Countdown {
 				klokke.setText(format(tid));
 				spill.informer(format(tid--) + "\n" + tekst);
 			} else {
-				spill.kveld();
+				spill.tidenErUte();
 				this.cancel();
 			}
 		}

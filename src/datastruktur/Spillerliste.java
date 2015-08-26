@@ -1,32 +1,21 @@
 package datastruktur;
 
-import gui.Spill;
+import personer.Rolle;
+import personer.Spiller;
+import personer.roller.*;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Random;
-
-import javafx.util.Pair;
-import personer.*;
-import personer.roller.BodyGuard;
-import personer.roller.Cupid;
-import personer.roller.Mafia;
-import personer.roller.Politi;
-import personer.roller.Bestevenn;
-import personer.roller.Princess;
-import personer.roller.Quisling;
+import java.util.*;
 
 public class Spillerliste {
 	ArrayList<Spiller> spillere;
 	ArrayList<Spiller> sl = new ArrayList<>();
-	ArrayList<Spiller> fanger = new ArrayList<>();
+    ArrayList<Spiller> nye = new ArrayList<>();
+    ArrayList<Spiller> fanger = new ArrayList<>();
 	ArrayList<Spiller> nominerte = new ArrayList<>();
 	HashMap<Spiller, Integer> stemmer = new HashMap<Spiller, Integer>();
 	ArrayList<HashMap<Integer, Spiller>> pekeHistorikk = new ArrayList<>();
-	
+	ArrayList<HashMap<Spiller, Spiller>> stemmeHistorikk = new ArrayList<>();
+
 	Spiller forsinkelse, forsinket;
 
 	public Spillerliste() {
@@ -68,30 +57,63 @@ public class Spillerliste {
 		}
 	}
 	
-	public void nyHistorikk(){
+	public void nyPekeHistorikk(){
 		pekeHistorikk.add(new HashMap<Integer,Spiller>());
 	}
 	
-	public HashMap<Integer, Spiller> gjeldendeHistorikk(){
+	public HashMap<Integer, Spiller> gjeldendePek(){
 		if(pekeHistorikk.isEmpty())
-			nyHistorikk();
+			nyPekeHistorikk();
 		return pekeHistorikk.get(pekeHistorikk.size()-1);
 	}
 	
 	public void lagrePek(Integer r, Spiller s){
-		gjeldendeHistorikk().put(r, s);
+		gjeldendePek().put(r, s);
 	}
 	
 	public Spiller angrePek(Integer r){
-		return gjeldendeHistorikk().remove(r);
+		return gjeldendePek().remove(r);
 	}
 	
 	public Spiller hentSistePek(Integer r){
-		return gjeldendeHistorikk().get(r);
+		return gjeldendePek().get(r);
 	}
 	
 	public Spiller hentPekFraNatt(Integer r, int natt){
-		return pekeHistorikk.get(natt+1).get(r);
+		return pekeHistorikk.get(natt + 1).get(r);
+	}
+
+	public void nyStemmeHistorikk(){
+		stemmeHistorikk.add(new HashMap<>());
+	}
+
+	public HashMap<Spiller, Spiller> gjeldendeStemmer(){
+		if(stemmeHistorikk.isEmpty())
+			nyStemmeHistorikk();
+		return stemmeHistorikk.get(stemmeHistorikk.size()-1);
+	}
+
+	public void lagreStemme(Spiller k, Spiller v){
+		gjeldendeStemmer().put(k, v);
+	}
+
+	public Spiller angreStemme(Spiller k){
+		return gjeldendeStemmer().remove(k);
+	}
+
+	public Spiller hentSisteStemme(Spiller k){
+		return gjeldendeStemmer().get(k);
+	}
+
+	public Spiller hentStemmeFraDag(Spiller k, int dag){
+		return stemmeHistorikk.get(dag + 1).get(k);
+	}
+
+	public ArrayList<Spiller> hentStemmerForSpiller(Spiller k){
+		ArrayList<Spiller> stemmer = new ArrayList<>();
+		for (HashMap<Spiller, Spiller> stemme : stemmeHistorikk)
+			stemmer.add(stemme.get(k));
+		return stemmer;
 	}
 
 	public void gjenoppliv(Spiller død) {
@@ -227,6 +249,10 @@ public class Spillerliste {
 		return levende;
 	}
 
+    public ArrayList<Spiller> nyligDøde(){
+        return nye;
+    }
+
 	public ArrayList<Spiller> lik(){
 		ArrayList<Spiller> lik = new ArrayList<>();
 		for(Spiller s:sl)
@@ -235,7 +261,7 @@ public class Spillerliste {
 	}
 
 	public ArrayList<Spiller> dødsannonse(){
-		ArrayList<Spiller> nye = new ArrayList<>();
+		nye = new ArrayList<>();
 
 		for(Spiller s: spillere){
 			if(!s.lever() && !sl.contains(s))
@@ -273,8 +299,18 @@ public class Spillerliste {
 		else
 			return new Spiller("");
 	}
-	
-	public void stem(Spiller spiller){
+
+    public void nominerTalere(){
+        for (Spiller spiller : levende()) {
+            if (spiller.talt())
+                nominer(spiller);
+        }
+
+        System.out.println(nominerte);
+    }
+
+	public void stem(Spiller stemmende, Spiller spiller){
+		lagreStemme(stemmende, spiller);
 		if(stemmer.containsKey(spiller))
 			stemmer.put(spiller, stemmer.get(spiller)+1);
 		else
@@ -288,42 +324,63 @@ public class Spillerliste {
 			return 0;
 	}
 	
-	public Spiller hentUtstemte(){
-		int flertall = 0;
-		Spiller utstemt = null;
-		
-		if(nominerte.size() == 1)
-			return nominerte.get(0);
+	public ArrayList<Spiller> hentUtstemte(){
+		ArrayList<Spiller> utstemte = new ArrayList<>();
+
+        if (stemmer.isEmpty())
+            return nominerte();
+
+        int max = Collections.max(stemmer.values());
 
 		for(Spiller s: nominerte){
-			if( stemmer.containsKey(s) && stemmer.get(s) > flertall){
-				utstemt = s;
-				flertall = stemmer.get(s);
+			if( stemmer.containsKey(s) && stemmer.get(s).equals(max)){
+				utstemte.add(s);
 			}
 		}
 		
-		return utstemt;
+		return utstemte;
 	}
+
+    public ArrayList<Spiller> hentTalere(ArrayList<Spiller> utstemte){
+        ArrayList<Spiller> talekø = new ArrayList<>();
+
+        for (Spiller s: utstemte)
+            if (!s.talt() && !s.kløna())
+                talekø.add(s);
+
+        return talekø;
+    }
+
+    public Spiller nesteTaler(Spiller s){
+        ArrayList<Spiller> talekø = hentTalere(hentUtstemte());
+
+        int index = talekø.indexOf(s) + 1;
+
+        if(s == null){
+            if(talekø.isEmpty())
+                return new Spiller("");
+            return talekø.get(0);
+        }
+        else if(index < talekø.size())
+            return talekø.get(index);
+        else
+            return new Spiller("");
+    }
 	
 	public Spiller fikkAktorDrept(){
 		int flertall = levende().size()/2;
-		System.out.println("Flertall: " + flertall);
-		
+
 		Spiller s = nominerte.get(0);
-		System.out.println("Stemmer: " + stemmer.get(s));
-		
-		if(stemmer.containsKey(s) && stemmer.get(s) > flertall){
-			System.out.println("Flertall: ");
+
+		if(stemmer.containsKey(s) && stemmer.get(s) > flertall)
 			return s;
-		}
-		else{ 
-			System.out.println("Ikke Flertall: ");
+		else
 			return null;
-		}
 	}
 	
 	public void nullstillAvstemming(){
-		nominerte.clear();
+        System.out.println("Clearing");
+        nominerte.clear();
 		stemmer.clear();
 	}
 	
