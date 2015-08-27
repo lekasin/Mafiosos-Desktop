@@ -10,6 +10,10 @@ public class Politi extends Rolle {
 	public Politi(){
 		super("Politi");
 		oppgave = "Hvem vil Politiet arrestere?";
+		veiledning = "Politi:\n" +
+				"Politiet velger hver natt en person å arrestere.\n" +
+				"Når politiet har valgt, trykker du på vedkommendes navn for å arrestere dem.\n" +
+                "Hvis den arrestert har en drapsrolle, får ikke vedkommende drept noen denne natten.";
 		side = BORGER;
 		prioritet = POLITI;
 	}

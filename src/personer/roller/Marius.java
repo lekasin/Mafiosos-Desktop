@@ -11,6 +11,11 @@ public class Marius extends Rolle {
 	public Marius(){
 		super("Marius");
 		oppgave = "Hvem vil Marius trykke opp?";
+		veiledning = "Marius:\n" +
+				"Marius velger hver natt en person å trykke opp flyers om.\n" +
+				"Når Marius har valgt, trykker du på vedkommendes navn for å trykke opp flyers.\n" +
+				"Personen som trykkes opp vil vises på flyers dagen etter, " +
+                "og er automatisk nominert med to stemmer.";
 		side = BORGER;
 		prioritet = MARIUS;
 	}

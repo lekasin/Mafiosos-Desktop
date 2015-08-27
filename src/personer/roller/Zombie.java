@@ -10,7 +10,11 @@ public class Zombie extends Rolle{
 	public Zombie(){
 		super("Zombie");
 		oppgave = "Hvem vil Zombien drepe?";
-		side = NØYTRAL;
+        veiledning = "Zombien:\n" +
+                "Når zombien er drept, holder han seg våken og velger hver natt en person å drepe.\n" +
+                "Når zombien har valgt, trykker du på vedkommendes navn for å drepe dem.\n" +
+                "Pass på å ikke avsløre at zombien er våken.\n";
+        side = NØYTRAL;
 		prioritet = ZOMBIE;
 		aktiver(false);
 	}

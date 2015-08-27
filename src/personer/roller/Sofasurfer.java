@@ -11,6 +11,10 @@ public class Sofasurfer extends Rolle {
 	public Sofasurfer(){
 		super("SofaSurfer");
 		oppgave = "Hvem vil SofaSurferen bo hos?";
+		veiledning = "SofaSurfer:\n" +
+				"SofaSurferen velger hver natt en person å snylte på.\n" +
+				"Når snylteren har valgt, trykker du på vedkommendes navn for å snylte på dem.\n" +
+				"Snylteren vil da bli påvirke av de samme effektene som den valgte.";
 		side = BORGER;
 		prioritet = SOFA;
 		fortsett = false;

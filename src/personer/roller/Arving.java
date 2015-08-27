@@ -11,6 +11,11 @@ public class Arving extends Rolle {
 	public Arving(){
 		super("Arving");
 		oppgave = "Hvem skal arvingen adopteres bort til?";
+		veiledning = "Arving:\n" +
+                "Arvingen velger første natt hvem han vil adopteres bort til. Du trykker da på den han har valgt.\n" +
+                "Arvingen vil nå ikke våkne før adoptivforelderen hans dør. " +
+                "Når dette skjer, får arvingen vite hvilken rolle han har arvet, og skal fra da av kun våkne som denne rollen.\n" +
+                "Du trykker da bare på fortsett for å gå til neste rollen.";
 		side = BORGER;
 		prioritet = ARVING;
 	}

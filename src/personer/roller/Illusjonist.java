@@ -8,6 +8,11 @@ public class Illusjonist extends Rolle {
 	public Illusjonist(){
 		super("Illusjonist");
 		oppgave = "Hvor vil Illusjonisten gjemme seg?";
+		veiledning = "Illusjonist:\n" +
+				"Illusjonisten velger hver natt en person å gjemme seg hos.\n" +
+				"For å gjemme illusjonisten, trykker du på navnet til den han velger.\n" +
+                "Illusjonisten dør da kun hvis personen han gjemmer seg hos blir drept. " +
+                "Ikke hvis mafiaen peker på illusjonisten selv.";
 		side = BORGER;
 		prioritet = ILLUSJONIST;
 	}

@@ -12,6 +12,12 @@ public class Hammer extends Rolle {
 	public Hammer() {
 		super("Hammer");
 		oppgave = "Hvem vil Hammer undersøke?";
+		veiledning = "Hammer:\n" +
+				"Hammer undersøker personer for å finne ut hvilken rolle de har, men han får ikke svar før etter to netter med undersøkelser.\n" +
+				"For å undersøke en person, trykker du på navnet til personen Hammer velger. Resultatet av undersøkelsen kommer da opp på skjermen.\n" +
+				"Første natt Hammer undersøker en person, kommer det opp at han ikke har gjort nok research. " +
+                "For å få et resultat, må hammer undersøke samme person to netter på rad. Da vises vedkommendes rolle på skjermen.\n" +
+				"Personen Hammer undersøker for øyeblikket vil ha navn i grønt, neste natt.";
 		side = BORGER;
 		prioritet = HAMMER;
 		fortsett = false;

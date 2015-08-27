@@ -11,6 +11,11 @@ public class Cupid extends Rolle {
 	public Cupid(){
 		super("Cupid");
 		oppgave = "Hvem vil Cupid spleise?";
+		veiledning = "Cupid:\n" +
+				"Cupid velger to personer hver natt. Disse blir koblet sammen, og blir påvirket av de samme effektene.\n" +
+				"Cupid peker altså først på en person, og du trykker på vedkommendes navn.\n" +
+				"Så velger han en til, og du trykker på denne personens navn, for å koble de to.\n"+
+				"Trykker du på fortsett, går du rett til neste rolle. Du trenger ikke gjøre det to ganger";
 		side = BORGER;
 		prioritet = CUPID;
 		fortsett = false;

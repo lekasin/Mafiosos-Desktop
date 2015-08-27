@@ -15,6 +15,9 @@ public class Mafia extends Rolle {
 	public Mafia(){
 		super("Mafia");
 		oppgave = "Hvem vil Mafiaen drepe?";
+		veiledning = "Mafia:\n" +
+				"Mafiaen velger hver natt en person å drepe.\n" +
+				"Når mafiaen har blitt enige og valgt, trykker du på vedkommendes navn for å drepe dem.";
 		side = MAFIOSO;
 		prioritet = MAFIA;
 	}

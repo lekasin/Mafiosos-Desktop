@@ -8,6 +8,10 @@ public class Morder extends Rolle {
 	public Morder(){
 		super("Morder");
 		oppgave = "Hvem vil Morderen myrde?";
+        veiledning = "Morder:\n" +
+                "Morderen velger hver natt en person å drepe.\n" +
+                "Når morderen har valgt, trykker du på vedkommendes navn for å drepe dem.\n" +
+                "Hvis morderen velger samme offer som mafiaen, blir det en shootout, og morderen dør selv";
 		side = NØYTRAL;
 		prioritet = MORDER;
 	}

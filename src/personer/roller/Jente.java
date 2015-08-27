@@ -12,7 +12,7 @@ public class Jente extends Rolle {
 		prioritet = JENTE;
 		aktiver(false);
 	}
-
+	
 	@Override
 	public boolean evne(Spiller spiller) {
 		// TODO Auto-generated method stub

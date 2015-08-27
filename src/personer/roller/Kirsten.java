@@ -10,6 +10,11 @@ public class Kirsten extends Rolle {
 	public Kirsten(){
 		super("Kirsten Giftekniv");
 		oppgave = "Hvem vil Kirsten spleise?";
+		veiledning = "Kirsten Giftekniv:\n" +
+				"Kirsten velger to personer hver natt. Disse to blir enten en match, eller en crash.\n" +
+				"Kirsten peker altså først på en person, og du trykker på vedkommendes navn.\n" +
+				"Så velger hun en til, og du trykker på denne personens navn, for å matche de to.\n"+
+				"Er de to på samme side, er de en match, og begge blir beskyttet. Er de en crash, dør borgeren.";
 		side = BORGER;
 		prioritet = KIRSTEN;
 		fortsett = false;

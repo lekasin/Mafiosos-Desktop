@@ -239,7 +239,7 @@ public class Oppstart implements ActionListener {
     public void mafiaRoller() {
         mafiaRoller = new JPanel();
         mafiaRoller.setBorder(new TitledBorder("Spesialister"));
-        mafiaRoller.setPreferredSize(new Dimension(500, 135));
+        mafiaRoller.setPreferredSize(new Dimension(600, 135));
         mafiaRoller.setVisible(true);
         sabotør = new Knapp("Sabotør", Knapp.HALV, this);
         sjåfør = new Knapp("Sjåfør", Knapp.HALV, this);
@@ -446,7 +446,7 @@ public class Oppstart implements ActionListener {
 				*/
 
 
-                spillere.leggTil(new Spiller("Sinte Simen"));
+                /*spillere.leggTil(new Spiller("Sinte Simen"));
                 spillere.leggTil(new Spiller("Ida Nigga Reite"));
                 spillere.leggTil(new Spiller("Swigurd"));
                 spillere.leggTil(new Spiller("Morten"));
@@ -480,7 +480,7 @@ public class Oppstart implements ActionListener {
                 spillere.leggTil(new Spiller("Shiefv"));
                 spillere.leggTil(new Spiller("Stiefan"));
                 spillere.leggTil(new Spiller("Jboysef"));
-                spillere.leggTil(new Spiller("DJ sefSindre"));
+                spillere.leggTil(new Spiller("DJ sefSindre"));*/
 
                 informer(spillere.toString());
             }

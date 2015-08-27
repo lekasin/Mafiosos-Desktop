@@ -8,6 +8,9 @@ public class Bedrager extends Rolle {
 	public Bedrager(){
 		super("Bedrageren");
 		oppgave = "Bedrageren gjør seg kjent med mafiaen";
+		veiledning = "Bedrageren:\n" +
+				"Bedrageren våkner bare første natt, og får da opp mafiaenes navn på skjermen.\n" +
+                "Han kan ikke velge noen, så for å gå videre trykker du på fortsett.";
 		side = BORGER;
 		prioritet = BEDRAGER;
 		skjerm = true;

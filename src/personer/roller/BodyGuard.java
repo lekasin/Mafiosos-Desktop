@@ -16,7 +16,12 @@ public class BodyGuard extends Rolle {
 	public BodyGuard(){
 		super("Bodyguard");
 		oppgave = "Hvem vil Bodyguarden beskytte?";
-		side = BORGER;
+		veiledning = "Bodyguard:\n" +
+				"Bodyguarden velger hver natt en person å beskytte eller drepe, men kan kun drepe etter å ha beskyttet noen først.\n" +
+				"For å la bodyguarden beskytte noen, trykker du på navnet til den bodyguarden velger.\n" +
+                "For å bytte mellom drap og beskyttelse, trykker du på Drep/Beskytt.\n" +
+                "Hvis bodyguarden vil drepe, peker han med pistolhånd, og du peker på den han velger.";
+        side = BORGER;
 		prioritet = BODYGUARD;
 	}
 	

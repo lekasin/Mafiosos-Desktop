@@ -9,6 +9,10 @@ public class Drommer extends Rolle {
 	public Drommer(){
 		super("Drømmer");
 		oppgave = "Drømmeren drømmer!";
+		veiledning = "Drømmer:\n" +
+				"Drømmeren våkner opp og får info på skjermen. Han skal bare se infoen, velge noen.\n" +
+				"Infoen består av tre navn, hvor to av dem er på borgernes side, og den siste er mafia.\n" +
+				"For å gå videre til neste rolle, trykker du fortsett.";
 		side = BORGER;
 		prioritet = DRØMMER;
 		skjerm = true;

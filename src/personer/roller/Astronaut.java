@@ -10,7 +10,11 @@ public class Astronaut extends Rolle {
 	public Astronaut(){
 		super("Astronaut");
 		oppgave = "Er Astronauten ferdig med raketten?";
-		side = BORGER;
+		veiledning = "Astronaut\n" +
+				"Astronaut kan bruke rollen sin én gang i spillet, og signaliserer derfor kun om raketten er ferdig eller ikke, på natten.\n" +
+                "Om raketten ikke er ferdig, trykker du på fortsett for å gå videre til neste rolle.\n" +
+                "Når raketten er ferdig, trykker du på astronautens eget navn (eneste mulige), for å starte en rakettoppskytning neste dag.";
+                side = BORGER;
 		prioritet = ASTRONAUT;
 	}
 		

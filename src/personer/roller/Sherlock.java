@@ -10,6 +10,11 @@ public class Sherlock extends Rolle {
 	public Sherlock(){
 		super("Sherlock");
 		oppgave = "Hvem vil Sherlock etterforske?";
+		veiledning = "Sherlock:\n" +
+				"Sherlock velger hver natt en person å etterforske.\n" +
+				"Når Sherlick har valgt, trykker du på vedkommendes navn for å etterforske dem.\n" +
+				"Hvem denne personen har valgt i natt, kommer så opp på skjermen.\n" +
+				"For å gå videre, trykker du på fortsett.";
 		side = BORGER;
 		prioritet = SHERLOCK;
 		fortsett = false;

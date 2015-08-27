@@ -10,6 +10,10 @@ public class Obduksjonist extends Rolle {
 	public Obduksjonist(){
 		super("Obduksjonist");
 		oppgave = "Hvem vil Obduksjonisten undersøke?\n";
+		veiledning = "Obduksjonist:\n" +
+				"Når minst 3 personer er døde, kan obduksjonisten velge en død person å undersøke.\n" +
+				"Når obduksjonisten har valgt, trykker du på vedkommendes navn for å undersøke dem.\n" +
+                "Neste dag, vises obduksjonsrapporten på skjermen, og alle får se hvilken rolle den døde hadde.";
 		side = BORGER;
 		prioritet = OBDUK;
 		aktiver(false);

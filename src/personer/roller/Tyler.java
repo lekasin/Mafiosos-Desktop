@@ -11,6 +11,11 @@ public class Tyler extends Rolle {
 	public Tyler(){
 		super("Tyler Durden");
 		oppgave = "Hvem vil Tyler besøke?";
+		veiledning = "Tyler Durden:\n" +
+				"Tyler Durden våkner hver natt, og får vite hvilken rolle han har den natten. " +
+                "Han velger så en person å bruke rollen på.\n" +
+				"Når Tyler har valgt, trykker du på vedkommendes navn for å velge dem.\n" +
+				"Tyler får en tilfeldig valgt rolle hver natt.";
 		side = BORGER;
 		prioritet = TYLER;
 		skjerm = true;

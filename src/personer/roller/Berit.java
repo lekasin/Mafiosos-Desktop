@@ -10,6 +10,10 @@ public class Berit extends Rolle {
 	public Berit(){
 		super("Gærne Berit");
 		oppgave = "Hvem vil Berit forsinke?";
+        veiledning = "Gærne Berit:\n" +
+                "Berit velger hver natt en person å forsinke.\n" +
+                "Når Berit har valgt, trykker du på vedkommendes navn for å forsinke dem.\n" +
+                "Vedkommende vil da få utsatt nattens aktivitet til neste natt.";
 		side = BORGER;
 		prioritet = BERIT;
 	}
@@ -64,7 +68,7 @@ public class Berit extends Rolle {
 	public boolean evne(Spiller spiller) {
 		forby(spiller);
 
-		if(blokkert || !spiller.rolle().aktiv())
+		if(blokkert || spiller.rolle().blokkert() || !spiller.rolle().aktiv())
 			return false;
 
 		if(spiller.id(COPYCAT) || spiller.id(CUPID) || spiller.id(KIRSTEN) || spiller.id(ILLUSJONIST) || spiller.id(SOFA))

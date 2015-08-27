@@ -7,7 +7,7 @@ import gui.TV;
 public abstract class Rolle {
 
 	protected boolean lever = true, blokkert = false, snill = false, informert = false, aktiv = true, funker = true, fortsett = true, skjerm = false, klonet = false;
-	protected String tittel;
+	protected String tittel, veiledning;
 	protected Spiller offer, spiller, forbud, forbud2;
 	protected Rolle blokk, informant, forsinkelse;
 	protected TV tv;
@@ -88,6 +88,9 @@ public abstract class Rolle {
 	{
 		this.tittel = tittel;
 		lever = true;
+        veiledning = tittel + ":\n" +
+                "Trykk på navnet til den som pekes på for å utføre rollens oppgave på vedkommende.\n" +
+                "For å gå videre uten å velge noen, trykker du på fortsett.";
 	}
 
 	//Endringer
@@ -239,6 +242,10 @@ public abstract class Rolle {
 	//Get-metoder
 	public String tittel(){
 		return tittel;
+	}
+
+	public String getVeiledning(){
+		return veiledning;
 	}
 
 	public boolean lever(){

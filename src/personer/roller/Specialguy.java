@@ -10,7 +10,13 @@ public class Specialguy extends Rolle {
 	public Specialguy(){
 		super("Special Guy");
 		oppgave = "Hvem vil Special Guy drepe?";
-		side = BORGER;
+		veiledning = "Special Guy:\n" +
+				"Special Guy våkner hver natt, og får vite om han er drept eller ikke.\n" +
+				"Hvis Special Guy ikke er drept, legger han seg til å sove igjen, og du trykker fortsett for å gå videre.\n" +
+                "Hvis han er drept, kan han velge en ny person som drepes i hans sted.\n" +
+                "Når Special Guy har valgt, trykker du på vedkommendes navn for å drepe dem.\n" +
+                "Når han har drept noen, våkner ikke Special Guy lenger på natten.";
+        side = BORGER;
 		prioritet = SPECIAL;
 		skjerm = true;
 	}

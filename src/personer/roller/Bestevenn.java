@@ -10,6 +10,9 @@ public class Bestevenn extends Rolle {
 	public Bestevenn(){
 		super("Bestevenn");
 		oppgave = "Bestevennene blir kjent!";
+		veiledning = "Bestevenner:\n" +
+				"Bestevennen våkner bare første natt, og får da se hvem de andre bestevennene er.\n" +
+				"De kan ikke velge noen, så for å gå videre trykker du på fortsett.";
 		side = BORGER;
 		prioritet = BESTEVENN;
 	}

@@ -8,6 +8,10 @@ public class Havfrue extends Rolle {
 	public Havfrue(){
 		super("Havfrue");
 		oppgave = "Hvem vil Havfruen forføre?";
+		veiledning = "Havfrue:\n" +
+				"Havfruen dreper personer når hun møter blikket deres.\n" +
+				"For å velge havfruens offer, trykker du på vedkommendes navn når hun har valgt.\n" +
+                "Hvis denne personen også peker på havfruen i løpet av natten, dør han.";
 		side = NØYTRAL;
 		prioritet = HAVFRUE;
 	}

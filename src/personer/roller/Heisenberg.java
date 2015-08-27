@@ -11,6 +11,11 @@ public class Heisenberg extends Rolle {
 	public Heisenberg(){
 		super("Heisenberg");
 		oppgave = "Hvem vil Heisenberg forgifte?";
+		veiledning = "Heisenberg:\n" +
+				"Heisenberg kan hver natt velge å drepe eller ikke drepe.\n" +
+				"Hvis han ikke ønsker å forgifte noen, trykker du på fortsett, for å gå videre.\n" +
+                "Hvis Heisenberg vil forgifte noen, trykker du på navnet til den han velger.\n" +
+                "Personen vil da dø av giften neste natt.";
 		side = BORGER;
 		prioritet = HEISENBERG;
 	}

@@ -8,6 +8,10 @@ public class Jorgen extends Rolle {
 	public Jorgen(){
 		super("Jørgen");
 		oppgave = "Jørgen ser på de døde";
+		veiledning = "Jørgen fra begravelsesbyrået:\n" +
+				"Jørgen våkner hver natt for å se undersøke de døde. Han velger inge på natten, men får info på skjermen.\n" +
+				"Når Jørgen våkner, får han opp alle de døde og hvilken rolle de hadde på skjermen.\n" +
+				"For å gå videre, trykker du på fortsett.";
 		side = BORGER;
 		prioritet = JØRGEN;
 		skjerm = true;

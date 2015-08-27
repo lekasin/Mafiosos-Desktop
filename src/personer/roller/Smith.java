@@ -11,6 +11,13 @@ public class Smith extends Rolle {
 	public Smith(){
 		super("Agent Smith");
 		oppgave = "Hvem vil Smith klone?";
+		veiledning = "Agent Smith:\n" +
+				"Smith velger hver natt en person å klone til en Smith.\n" +
+				"Når Smith har valgt, trykker du på vedkommendes navn for å klone dem.\n" +
+				"Neste gang vedkommende våkner, vises det på skjermen at de er klonet, " +
+                "og fra nå av er en Smith.\n" +
+				"Nye Smither skal fra da av våkne når Smith våkner. " +
+                "Så lenge én Smith lever, kan Smith fortsette å klone.";
 		side = NØYTRAL;
 		prioritet = SMITH;
 	}

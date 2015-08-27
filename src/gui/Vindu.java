@@ -1,6 +1,5 @@
 package gui;
 
-import com.oracle.tools.packager.Log;
 import datastruktur.ImgUtil;
 import datastruktur.Spillerliste;
 import personer.Rolle;
@@ -12,8 +11,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 public class Vindu extends JFrame {
 
@@ -53,7 +50,6 @@ public class Vindu extends JFrame {
         setMinimumSize(totalSize);
         setLocationRelativeTo(null);
         setResizable(true);
-        addListener();
     }
 
     public void setSpill(Spill s) {
@@ -151,7 +147,6 @@ public class Vindu extends JFrame {
     public void oppdaterRamme(JPanel p) {
         innholdScroll = new JScrollPane(p, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         innholdScroll.setBorder(BorderFactory.createEmptyBorder());
-        resize();
         rammen.removeAll();
         rammen.add(innholdScroll, BorderLayout.CENTER);
         if (kontroll.isVisible())
@@ -318,38 +313,5 @@ public class Vindu extends JFrame {
 
     public void informer(String informasjon) {
         info.setText(informasjon);
-    }
-
-    public void resize() {
-        System.out.println("Ramme: " + rammen.getHeight());
-        System.out.println("Innhold: " + innhold.getHeight());
-        System.out.println("innholdScroll: " + innholdScroll.getHeight());
-        System.out.println("Frame: " + getHeight());
-        rammen.setPreferredSize(new Dimension(rammen.getWidth(), getHeight() - (int) header.getSize().getHeight()));
-//        innholdScroll.setPreferredSize(new Dimension(rammen.getWidth(), 800));
-    }
-
-    public void addListener() {
-        addComponentListener(new ComponentListener() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                resize();
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent e) {
-
-            }
-
-            @Override
-            public void componentShown(ComponentEvent e) {
-
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent e) {
-
-            }
-        });
     }
 }

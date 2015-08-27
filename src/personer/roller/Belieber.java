@@ -10,6 +10,11 @@ public class Belieber extends Rolle {
 	public Belieber(){
 		super("Belieber");
 		oppgave = "Hvem er Belieberens nye Justin?";
+		veiledning = "Belieber:\n" +
+				"Belieberen våkner kun alene første natt, og velger seg ut en ny Justin.\n" +
+				"Du trykker på navnet til den belieberen velger for å koble dem.\n" +
+				"Belieberen får da rollen til vedkommende opp på skjermen (*rolle*lieber), og skal fra da av kun våkne når denne rollen våkner.\n" +
+				"Når den aktuelle rollen våkner, vil vedkommende få beskjed på skjermen om at de har fått en belieber på laget.";
 		side = BORGER;
 		prioritet = BELIEBER;
 		fortsett = false;
