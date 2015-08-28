@@ -27,7 +27,7 @@ public class Vindu extends JFrame {
     Spill spill;
     Oppstart oppstart;
 
-    public static Dimension rammeSize = new Dimension(460, 800), kontrollSize = new Dimension(460, 60),
+    public static Dimension rammeSize = new Dimension(600, 800), kontrollSize = new Dimension(600, 60),
             toppSize = new Dimension(1100, 100), totalSize = new Dimension(1200, 600);
 
     public Vindu(String tittel, Spillerliste spillere) {
@@ -156,11 +156,18 @@ public class Vindu extends JFrame {
     }
 
     public void kontroll(ActionListener al, int fase) {
+        kontroll(al, fase, null);
+    }
+
+    public void kontroll(ActionListener al, int fase, Knapp knapp) {
         //KONTROLL (Fortsett/Tilbake++-knapper)
         kontroll.removeAll();
 
         tilbake = new Knapp("Tilbake", Knapp.HEL, al);
         kontroll.add(tilbake);
+
+        if (knapp!=null)
+            kontroll.add(knapp);
 
         if (fase == Oppstart.VELGROLLER) {
             kontroll.add(new Knapp("Fjern", Knapp.HEL, e -> {

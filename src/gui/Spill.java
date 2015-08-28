@@ -1,5 +1,7 @@
 package gui;
 
+import com.oracle.tools.packager.Log;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import datastruktur.Countdown;
 import datastruktur.Spillerliste;
 import personer.Rolle;
@@ -52,8 +54,6 @@ public class Spill implements ActionListener {
             if (rolle != null) {
                 roller.add(rolle);
                 rolle.setTV(tv);
-                if (sjekkRolle(Rolle.BØDDEL))
-                    halshugg = new Knapp("Halshugg!", Knapp.HALV, new Special());
             }
         rapporter("Rapport:");
 
@@ -79,11 +79,7 @@ public class Spill implements ActionListener {
         spillere.sov();
         spillere.nullstillAvstemming();
         refresh();
-        vindu.kontroll(new Kontroll(), -1);
         i = roller.listIterator();
-
-        vindu.setVeiledning("Natt:\n" +
-                "Vekk rollene etter tur, og klikk på navnet til personen de peker på.");
 
         if (sjekkVinner()) {
             nesteRolle();
@@ -98,19 +94,19 @@ public class Spill implements ActionListener {
         nyFase(DISKUSJONSFASE);
         rapporter("\nNY DAG");
 
-        if (sjekkRolle(Rolle.YOUTUBER) && finnSpiller(Rolle.YOUTUBER).funker())
-            tv.leggVed(spillere.youtube(finnSpiller(Rolle.YOUTUBER).offer(),
+        if (sjekkOffer(Rolle.YOUTUBER) && finnSpiller(Rolle.YOUTUBER).funker())
+            tv.leggVed(spillere.youtube(finnOffer(Rolle.YOUTUBER),
                     finnSpiller(Rolle.YOUTUBER).skjult()));
-        if (sjekkRolle(Rolle.CUPID))
+        if (sjekkOffer(Rolle.CUPID))
             spillere.cupider((Cupid) finnRolle(Rolle.CUPID));
-        if (sjekkRolle(Rolle.SNYLTER))
+        if (sjekkOffer(Rolle.SNYLTER))
             spillere.snylt(finnSpiller(Rolle.SNYLTER));
-        if (sjekkRolle(Rolle.BODYGUARD))
+        if (sjekkOffer(Rolle.BODYGUARD))
             spillere.bodyguarded(finnSpiller(Rolle.BODYGUARD));
+        if (sjekkOffer(Rolle.MARIUS) && finnOffer(Rolle.MARIUS).lever())
+            spillere.nominer(finnRolle(Rolle.MARIUS).offer());
         if (sjekkRolle(Rolle.QUISLING))
             spillere.svik((Quisling) finnRolle(Rolle.QUISLING));
-        if (sjekkOffer(Rolle.MARIUS) && finnRolle(Rolle.MARIUS).offer().lever())
-            spillere.nominer(finnRolle(Rolle.MARIUS).offer());
 
         forsvarende = null;
         spillere.våknOpp();
@@ -153,8 +149,9 @@ public class Spill implements ActionListener {
                 }
             }
         }));
-        innhold.add(new Knapp("Godkjenn", Knapp.HEL, e ->
-                henrett(valgt)
+        innhold.add(new Knapp("Godkjenn", Knapp.HEL, e -> {
+            henrett(valgt);
+        }
         ));
     }
 
@@ -179,34 +176,6 @@ public class Spill implements ActionListener {
         innhold.repaint();
     }
 
-    public void refresh(Rolle r) {
-        timer.stop();
-        vindu.oppdaterKnapper(innhold, this, r);
-
-        if (r instanceof Mafia) {
-            JPanel p = new JPanel();
-            p.setPreferredSize(Vindu.kontrollSize);
-            Special mk = new Special();
-            if (spillere.mafiaRolleLever(Mafia.SNIPER) && sniper)
-                p.add(new Knapp("Snipe", Knapp.HALV, mk));
-            if (spillere.mafiaRolleLever(Mafia.FLUKT) && flukt)
-                p.add(new Knapp("Flykt", Knapp.HALV, mk));
-            if (spillere.mafiaRolleLever(Mafia.SABOTØR) && sabotage)
-                p.add(new Knapp("Saboter", Knapp.HALV, mk));
-            if (spillere.mafiaRolleLever(Mafia.FORFALSKER) && forfalskning)
-                p.add(new Knapp("Forfalsk", Knapp.HALV, mk));
-            innhold.add(p);
-            tittuler(r.oppgave());
-        } else if (r instanceof BodyGuard) {
-            JPanel p = new JPanel();
-            p.setPreferredSize(Vindu.kontrollSize);
-            Special mk = new Special();
-            p.add(new Knapp("Drep/Beskytt", Knapp.HALV, mk));
-            innhold.add(p);
-            tittuler(r.oppgave());
-        }
-    }
-
     public void refresh() {
         innhold = vindu.innhold();
         vindu.personknapper(innhold, this);
@@ -214,7 +183,38 @@ public class Spill implements ActionListener {
         vindu.oppdaterRamme(innhold);
 
         if (sjekkRolle(Rolle.BØDDEL) && dag && finnRolle(Rolle.BØDDEL).lever())
-            innhold.add(halshugg);
+            vindu.kontroll(new Kontroll(), fase, new Knapp("Halshugg!", Knapp.HALV, new Special()));
+    }
+
+    public void refresh(Rolle r) {
+        timer.stop();
+        vindu.oppdaterKnapper(innhold, this, r);
+        tittuler(r.oppgave());
+        vindu.kontroll(new Kontroll(), -1);
+
+        if (r instanceof Mafia) {
+            visMafiaKnapper();
+        } else if (r instanceof BodyGuard)
+            vindu.kontroll(new Kontroll(), fase, new Knapp("Drep/Beskytt", Knapp.HALV, new Special()));
+    }
+
+    public void visMafiaKnapper(){
+        JPanel p = new JPanel();
+        p.setPreferredSize(new Dimension(600, 60));
+
+        Special mk = new Special();
+
+        if (spillere.mafiaRolleLever(Mafia.SNIPER) && sniper)
+            p.add(new Knapp("Snipe", Knapp.HALV, mk));
+        if (spillere.mafiaRolleLever(Mafia.FLUKT) && flukt)
+            p.add(new Knapp("Flykt", Knapp.HALV, mk));
+        if (spillere.mafiaRolleLever(Mafia.SABOTØR) && sabotage)
+            p.add(new Knapp("Saboter", Knapp.HALV, mk));
+        if (spillere.mafiaRolleLever(Mafia.FORFALSKER) && forfalskning)
+            p.add(new Knapp("Forfalsk", Knapp.HALV, mk));
+
+        if (p.getComponents().length > 0)
+            innhold.add(p);
     }
 
     public void refreshAvstemning() {
@@ -239,13 +239,14 @@ public class Spill implements ActionListener {
 
     public void pek(Rolle r) {
         aktiv = r;
+        vindu.setVeiledning(aktiv.getVeiledning());
         refresh(r);
+
         tittuler(r.oppgave());
         if (r.skjerm() || r.informert())
             vindu.overskrift.setForeground(Color.BLUE);
         if (!r.funker() && !r.spiller().klonet())
             vindu.overskrift.setForeground(Color.RED);
-        vindu.setVeiledning(r.getVeiledning());
         // tv.leggtil(spillere.valg(r));
     }
 
@@ -319,10 +320,10 @@ public class Spill implements ActionListener {
     public void tilbakeKnapp() {
         switch (forrigefase()) {
             case DISKUSJONSFASE:
-                talt(tid-2);
+                talt(tid - 2);
                 break;
             case AVSTEMNINGSFASE:
-                talt(tid-2);
+                talt(tid - 2);
                 break;
             case TIEBREAKERFASE:
                 uavgjort(spillere.hentUtstemte());
@@ -503,10 +504,10 @@ public class Spill implements ActionListener {
             case DISKUSJONSFASE:
                 if (taler < 3)
                     vindu.setVeiledning("Diskusjonsfasen:\n" +
-                        "Spillerne skal nå diskutere, og finne ut hvem som er mistenkt for å være mafia.\n" +
-                        "For å mistenke en person, trykker du på personens navn. Personen blir da lagt til i mistenktlista og blir en del av den kommende avstemningen.\n" +
-                        "For å fjerne en person fra mistenktlista, trykker du på personens navn igjen.\n" +
-                        "Personer med navn i blått, er mistenkte, mens personer i rødt er både mistenkt, og vil dø om de får flest stemmer (som oftest fordi de har holdt forsvarstale).");
+                            "Spillerne skal nå diskutere, og finne ut hvem som er mistenkt for å være mafia.\n" +
+                            "For å mistenke en person, trykker du på personens navn. Personen blir da lagt til i mistenktlista og blir en del av den kommende avstemningen.\n" +
+                            "For å fjerne en person fra mistenktlista, trykker du på personens navn igjen.\n" +
+                            "Personer med navn i blått, er mistenkte, mens personer i rødt er både mistenkt, og vil dø om de får flest stemmer (som oftest fordi de har holdt forsvarstale).");
                 else
                     vindu.setVeiledning("Diskusjonsfasen - Oppgjørets Time:\n" +
                             "Spillerne har nå en siste sjanse til å diskutere, og finne ut hvem som er mafia.\n" +
@@ -755,6 +756,7 @@ public class Spill implements ActionListener {
         String ut;
         Spiller bombet = null;
 
+        //Henrett null
         if (s == null)
             if (sjekkOffer(Rolle.BOMBER)) {
                 s = finnOffer(Rolle.BOMBER);
@@ -764,79 +766,100 @@ public class Spill implements ActionListener {
                 return;
             }
 
+
         tittuler(s.navn() + " ble henrettet!");
         ut = s.toString();
         int side = s.side();
-        Spiller jesus = finnSpiller(Rolle.JESUS);
 
+        //Løgneren bytter side
         if (s.løgn())
             side = side - (2 * side);
 
+        //Lag henrettelsestekst
         if (s.forsvart() && !(aktiv.id(Rolle.TROMPET) && aktiv.snill())
                 && !(aktiv.id(Rolle.BØDDEL) && aktiv.snill())
                 && !s.id(Rolle.BOMBER)) {
             ut += " er beskyttet, og er derfor ikke død!";
         } else {
-            if ((aktiv.id(Rolle.TROMPET) || aktiv.id(Rolle.BØDDEL))
-                    && aktiv.snill())
-                s.snipe(null);
-
-            if (s.skjult() && spillere.antallMafia() > 1)
-                ut += " kan ha vært hva som helst.\nPapirene er rotet bort.";
-            else if (side > Rolle.MAFIOSO)
-                ut += " var IKKE mafia!";
-            else {
-                ut += " var mafia!";
-                if (sjekkRolle(Rolle.VARA)) {
-                    ut += "\n\nOg dermed trer VaraMafiaen inn i hans sted!";
-                    Spiller vara = finnSpiller(Rolle.VARA);
-                    if (vara.lever()) {
-                        vara.setRolle(s.rolle());
-                        ((Mafia) vara.rolle()).fler();
-                    }
-                }
-            }
-
-            if (sjekkRolle(Rolle.BELIEBER)
-                    && finnRolle(Rolle.BELIEBER).funker())
+            ut = rapporterSide(s, side, ut);
+            if (sjekkRolle(Rolle.BELIEBER) && finnRolle(Rolle.BELIEBER).funker())
                 ((Belieber) finnRolle(Rolle.BELIEBER)).beliebe();
         }
 
+        //Sjekk Bomberen
         if (sjekkOffer(Rolle.BOMBER) && !aktiv.id(Rolle.TROMPET)) {
             ut = detonerBombe(bombet, s);
         }
 
+        //Faktisk henrett spiller
         if (!(s.id(Rolle.BOMBER) && s.forsvart()))
             s.henrett();
 
+        //Bøddelen har drept. Er han frelst av Jesus?
+        if (aktiv.id(Rolle.BØDDEL))
+            ut = sjekkBøddelFrelse(ut);
+
+        //Oppdater listen over nylig døde
         spillere.dødsannonse();
 
-        if (jesus != null
-                && (((Jesus) jesus.rolle()).frelst() == s || (bombet != null
-                && s != finnSpiller(Rolle.BOMBER) && ((Jesus) jesus
-                .rolle()).frelst() == bombet)))
-            jesus.snipe(jesus.rolle());
+        //Sjekk om spiller er reddet av Jesus, og drep jesus istedenfor
+        if (finnSpiller(Rolle.JESUS) != null) {
+            Jesus jesus = (Jesus)finnRolle(Rolle.JESUS);
 
+            if (jesus.frelst() == s || (bombet != null && s != finnSpiller(Rolle.BOMBER) && jesus.frelst() == bombet))
+            jesus.spiller().snipe(jesus);
+        }
+
+        //Sjekk om den døde er illusjonistens gjemmested
         if (sjekkRolle(Rolle.ILLUSJONIST)
                 && finnRolle(Rolle.ILLUSJONIST).offer() == s)
             finnRolle(Rolle.ILLUSJONIST).spiller().snipe(
                     finnRolle(Rolle.ILLUSJONIST));
 
+        //Sjekk om princess er den døde, og befri i så fall fangene
         if (s.id(Rolle.PRINCESS) && spillere.harFanger()) {
             spillere.befriFanger();
             ut += "\n\nFangene er befridd!";
         }
 
+        //Rapporter hendelsen
         informer(ut);
         rapporter("Landsbyen har drept " + s + "(" + s.rolle() + ")");
         rapporter(ut);
 
+        //Gå til resultatskjermen. Evt trompetsprengning
         if (s.id(Rolle.TROMPET))
             sprengTrompet(s);
         else
             dagensResultat();
 
         tv.toFront();
+    }
+
+    public String rapporterSide(Spiller s, int side, String ut) {
+        if ((aktiv.id(Rolle.TROMPET) || aktiv.id(Rolle.BØDDEL)) && aktiv.snill())
+            s.snipe(null);
+
+        if (s.skjult() && spillere.antallMafia() > 1)
+            ut += " kan ha vært hva som helst.\nPapirene er rotet bort.";
+        else if (side > Rolle.MAFIOSO)
+            if (s.id(Rolle.TROMPET))
+                ut += " var IKKE mafia, men var TROMPET!!!\n" +
+                        "Hvem vil trompeten sprenge?";
+            else
+                ut += " var IKKE mafia!";
+        else {
+            ut += " var mafia!";
+            if (sjekkRolle(Rolle.VARA)) {
+                ut += "\n\nOg dermed trer VaraMafiaen inn i hans sted!";
+                Spiller vara = finnSpiller(Rolle.VARA);
+                if (vara.lever()) {
+                    vara.setRolle(s.rolle());
+                    ((Mafia) vara.rolle()).fler();
+                }
+            }
+        }
+        return ut;
     }
 
     public String detonerBombe(Spiller bombet, Spiller utstemt) {
@@ -887,6 +910,19 @@ public class Spill implements ActionListener {
                             : "var IKKE Mafia!");
                     spiller.henrett();
                 }
+        return ut;
+    }
+
+    public String sjekkBøddelFrelse(String ut) {
+        aktiv.spiller().henrett();
+        if (aktiv.spiller().forsvart()
+                && aktiv.spiller().forsvarer().id(Rolle.JESUS)) {
+            ut += "\n\nJesus har ofret seg for bøddelen, "
+                    + aktiv.spiller() + ", og "
+                    + finnSpiller(Rolle.JESUS)
+                    + " er derfor død i hans sted!";
+            aktiv.spiller().forsvarer().funk(false);
+        }
         return ut;
     }
 
@@ -946,7 +982,7 @@ public class Spill implements ActionListener {
         timer.setText(annonse + hentMistenkte());
     }
 
-    public String hentMistenkte(){
+    public String hentMistenkte() {
         String mistenkte = "\nMistenkte";
         if (spillere.nominerte().size() == 5)
             mistenkte += "(Max 5):";
@@ -1008,20 +1044,9 @@ public class Spill implements ActionListener {
             if (knapp(e, "Halshugg!")) {
                 timer.stop();
                 aktiv = finnRolle(Rolle.BØDDEL);
-                godkjenn(finnSpiller(Rolle.BØDDEL));
                 refresh();
                 proklamer("Hvem vil bøddelen halshugge?");
                 rapporter("Hvem vil bøddelen halshugge?");
-
-                if (aktiv.spiller().forsvart()
-                        && aktiv.spiller().forsvarer().id(Rolle.JESUS)) {
-                    tv.leggtil("\n\nJesus har ofret seg for bøddelen, "
-                            + aktiv.spiller() + ", og "
-                            + finnSpiller(Rolle.JESUS)
-                            + " er derfor død i hans sted!");
-                    aktiv.spiller().forsvarer().funk(false);
-                }
-
                 return;
             }
 
@@ -1084,9 +1109,10 @@ public class Spill implements ActionListener {
 
         // VELGER PÅ DAGEN
         if (dag) {
-            if (fase(DISKUSJONSFASE)) {
-                if (aktiv.id(Rolle.BØDDEL) || aktiv.id(Rolle.TROMPET)
-                        || sjekkOffer(Rolle.BOMBER))
+            if (aktiv.id(Rolle.BØDDEL) || aktiv.id(Rolle.TROMPET)) {
+                godkjenn(valgt);
+            } else if (fase(DISKUSJONSFASE)) {
+                if (sjekkOffer(Rolle.BOMBER))
                     godkjenn(valgt);
                 else {
                     if (knapp(e).getForeground().equals(Color.RED))
