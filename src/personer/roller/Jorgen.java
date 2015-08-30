@@ -20,7 +20,7 @@ public class Jorgen extends Rolle {
 	@Override
 	public String oppgave() {
 		// TODO Auto-generated method stub
-		if(spiller.klonet())
+		if(spiller.nyligKlonet())
 			return super.oppgave();
 
 		if(blokkert)

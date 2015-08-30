@@ -38,7 +38,7 @@ public class Quisling extends Rolle {
 			if(funker) funk(false);
 			tv.vis("Quisling har allerede konvertert.");
 		}
-		if(spiller.klonet())
+		if(spiller.nyligKlonet())
 			return super.oppgave();
 
 		if(informert) tv.leggtil(info);

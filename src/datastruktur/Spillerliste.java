@@ -44,7 +44,7 @@ public class Spillerliste {
 				s.stopp();
 			if(s.id(Rolle.BELIEBER)) s.rolle().lever();
 			if(s.id(Rolle.SOFA)) s.rolle().lever();
-			if(s.klonet())
+			if(s.skalKlones())
 				s.klon();
 		}
 	}
@@ -300,9 +300,9 @@ public class Spillerliste {
 			return new Spiller("");
 	}
 
-    public void nominerTalere(){
+    public void nominerTalereOgFlyers(){
         for (Spiller spiller : levende()) {
-            if (spiller.talt())
+            if (spiller.talt() || spiller.harFlyers())
                 nominer(spiller);
         }
 
@@ -345,7 +345,7 @@ public class Spillerliste {
         ArrayList<Spiller> talekø = new ArrayList<>();
 
         for (Spiller s: utstemte)
-            if (!s.talt() && !s.kløna())
+            if (!s.talt())
                 talekø.add(s);
 
         return talekø;
@@ -518,7 +518,7 @@ public class Spillerliste {
 		if(spiller.løgn()) 			snylter.lyv(spiller.løgner());
 		if(spiller.skjult()) 		snylter.skjul(spiller.skjuler());
 		if(spiller.kløna()) 		snylter.kløn(spiller.kløne());
-		if(spiller.klonet())		snylter.klonet(finnRolle(Rolle.SMITH));
+		if(spiller.skalKlones())	snylter.klon(finnRolle(Rolle.SMITH));
 		if(spiller.kidnappet()) 	snylter.kidnapp(finnRolle(Rolle.PRINCESS));
 
 	}
@@ -537,7 +537,7 @@ public class Spillerliste {
 		if(kvinne.løgn()) 		mann.lyv(kvinne.løgner());
 		if(kvinne.skjult()) 	mann.skjul(kvinne.skjuler());
 		if(kvinne.kløna()) 		mann.kløn(kvinne.kløne());
-		if(kvinne.klonet())		mann.klonet(finnRolle(Rolle.SMITH));
+		if(kvinne.skalKlones())	mann.klon(finnRolle(Rolle.SMITH));
 		if(kvinne.kidnappet()) 	mann.kidnapp(finnRolle(Rolle.PRINCESS));
 
 		
@@ -550,7 +550,7 @@ public class Spillerliste {
 		if(mann.løgn()) 		kvinne.lyv(kvinne.løgner());
 		if(mann.skjult()) 		kvinne.skjul(kvinne.skjuler());
 		if(mann.kløna()) 		kvinne.kløn(kvinne.kløne());
-		if(mann.klonet())		kvinne.klonet(finnRolle(Rolle.SMITH));
+		if(mann.skalKlones())	kvinne.klon(finnRolle(Rolle.SMITH));
 		if(mann.kidnappet()) 	kvinne.kidnapp(finnRolle(Rolle.PRINCESS));
 
 		

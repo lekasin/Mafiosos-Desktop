@@ -43,7 +43,7 @@ public class Arving extends Rolle {
 			return super.oppgave();
 		} else {
 			aktiver(false);
-			if(spiller.klonet())
+			if(spiller.nyligKlonet())
 				return super.oppgave();
 
 			tv.vis("Arvingen har nå arvet rollen " + riking.rolle() + "!");

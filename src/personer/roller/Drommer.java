@@ -26,7 +26,7 @@ public class Drommer extends Rolle {
 	
 	@Override
 	public String oppgave() {
-		if(spiller.klonet())
+		if(spiller.nyligKlonet())
 			return super.oppgave();
 		evne(spiller);
 		return oppgave; 

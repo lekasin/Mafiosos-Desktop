@@ -21,7 +21,7 @@ public class Obduksjonist extends Rolle {
 
 	@Override
 	public String oppgave() {
-		if(spiller.klonet())
+		if(spiller.nyligKlonet())
 			return super.oppgave();
 
 		tv.vis("Hvem vil Obduksjonisten undersøke?\n");

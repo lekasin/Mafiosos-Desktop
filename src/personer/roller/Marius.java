@@ -41,8 +41,10 @@ public class Marius extends Rolle {
 		if(gjest != null)
 			ut = "";
 		
-		if(this.spiller.lever() && spiller.lever() && !blokkert)
-			ut = "\nFlyerne påstår at " + spiller + " er mafia!\n";
+		if(this.spiller.lever() && spiller.lever() && !blokkert) {
+            ut = "\nFlyerne påstår at " + spiller + " er mafia!\n";
+            spiller.trykkOppFlyers();
+        }
 					
 		leggVed(ut);
 		return true;

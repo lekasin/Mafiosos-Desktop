@@ -12,8 +12,8 @@ public class Spiller {
 	Rolle beskytter, forsvarer, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse;
 	int mafiarolle = 0;
 	boolean lever = true, funker = true, død = false, beskyttet = false, forsvart = false, forsinket = false,
-			reddet = false, skjult = false, løgn = false, kløna = false, klonet = false, fange = false, kidnappet = false,
-			talt = false;
+			reddet = false, skjult = false, løgn = false, kløna = false, nyligKlonet = false, skalKlones = false, fange = false, kidnappet = false,
+			talt = false, spiser = false, flyers = false;
 
 	public Spiller(String navn) {
 		this.navn = navn;
@@ -96,6 +96,8 @@ public class Spiller {
 		forsinkelse = null;
 		kidnappet = false;
 		drapsmann = null;
+        spiser = false;
+        flyers = false;
 		rolle.sov();
 	}
 
@@ -157,7 +159,7 @@ public class Spiller {
 	public void stopp(){
 		lever = false;
 		funker = false;
-		klonet = false;
+		setNyligKlonet(false);
 		rolle.funk(false);
 	}
 
@@ -174,6 +176,14 @@ public class Spiller {
 		if(!lever && !død) 
 			vekk();
 	}
+
+    public void inviterPåSuppe(){
+        spiser = true;
+    }
+
+    public void trykkOppFlyers(){
+        flyers = true;
+    }
 
 	public void forsvar(Rolle r){
 		if(id(Rolle.BESTEMOR)) return;
@@ -212,20 +222,33 @@ public class Spiller {
 		rolle.forsinkelse = r;
 		forsinket = true;
 	}
-	
-	public void klonet(Rolle r) {
+
+    public void setNyligKlonet(boolean klonet){
+        nyligKlonet = klonet;
+    }
+
+    public void setSkalKlones(boolean klones){
+        skalKlones = klones;
+    }
+
+    public boolean skalKlones(){
+        return skalKlones;
+    }
+
+	public void klon(Rolle r) {
 		smith = r;
-		klonet = true;
+        setSkalKlones(true);
+        setNyligKlonet(true);
 	}
 
 	public void klon() {
-		if(id(Rolle.SMITH) || (beskyttet && !(id(Rolle.ILLUSJONIST) && rolle.offer.id(Rolle.SMITH)) || (this.rolle.id(Rolle.BESTEMOR) && ((Bestemor)this.rolle).flereBesøk())))
+        setSkalKlones(false);
+		if(id(Rolle.SMITH) || ((beskyttet && beskytter.pri() < Rolle.SMITH) && !(id(Rolle.ILLUSJONIST) && rolle.offer.id(Rolle.SMITH)) || (this.rolle.id(Rolle.BESTEMOR) && ((Bestemor)this.rolle).flereBesøk())))
 			return;
 		rolle.drep();
 		rolle.funk(false);
 		((Smith)finnRolle(Rolle.SMITH)).klon(this);
-		klonet = false;
-	}
+    }
 	
 	public void kidnapp(Rolle r) {
 		kidnappet = true;
@@ -292,7 +315,15 @@ public class Spiller {
 		return reddet;
 	}
 
-	public boolean død() {
+    public boolean spiser() {
+        return spiser;
+    }
+
+    public boolean harFlyers() {
+        return flyers;
+    }
+
+    public boolean død() {
 		return død;
 	}
 	
@@ -308,9 +339,13 @@ public class Spiller {
 		return kløna;
 	}
 
-	public boolean klonet() {
-		return klonet;
-	}
+    public boolean nyligKlonet(){
+        return nyligKlonet;
+    }
+
+    public boolean klonet(){
+        return rolle().rolleKlonet();
+    }
 
 	public boolean fange() {
 		return fange;

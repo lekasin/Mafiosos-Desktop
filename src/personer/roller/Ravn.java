@@ -40,9 +40,11 @@ public class Ravn extends Rolle {
 		if(gjest != null)
 			ut = "";
 		
-		if(this.spiller.lever() && spiller.lever() && !blokkert)
-			ut = "\n" + spiller + " spiser Friduns fiskesuppe på Den Blå Fisk\n";
-		
+		if(this.spiller.lever() && spiller.lever() && !blokkert) {
+            ut = "\n" + spiller + " spiser Friduns fiskesuppe på Den Blå Fisk\n";
+            spiller.inviterPåSuppe();
+        }
+
 		leggVed(ut);
 		return true;
 	}

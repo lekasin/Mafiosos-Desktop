@@ -18,13 +18,11 @@ public class Bedrager extends Rolle {
 
 	@Override
 	public String oppgave() {
-		if(klonet)
-			super.oppgave();
-		aktiver(false);
+        aktiver(false);
 		tv.toFront();
-		if(spiller.klonet())
-			informer(spiller.smith(), "\n\n" + spiller + " er nå en Smith!");
-		
+        if (klonet)
+            return super.oppgave();
+
 		tv.bedrag();
 		if(informert) tv.leggtil(info);
 		return oppgave;

@@ -35,7 +35,7 @@ public class Tyler extends Rolle {
 			informer(spiller.smith(), "\n\n" + spiller + " er nå en Smith!");
 			klonet = false;
 		}
-		if(spiller.klonet()) {
+		if(spiller.nyligKlonet()) {
 			informer(spiller.smith(), "\n\n" + spiller + " er i ferd med å bli en Smith!\n(Kan bruke rollen sin en siste gang)");
 			tv.toFront();
 		}

@@ -27,7 +27,7 @@ public class UlfOmar extends Rolle {
 		
 		Rolle rolle = spiller.rolle();
 
-		if(rolle.pri() > UNDERCOVER && rolle.pri() < ULF && !spiller.id(COPYCAT) && !spiller.id(BERIT)) {
+		if(rolle.pri() > UNDERCOVER && rolle.pri() < ULF && !spiller.id(COPYCAT) && !spiller.id(BERIT) || rolle.pri() == SMITH || rolle.pri() == KLØNA || rolle.pri() == MARIUS || rolle.pri() == RAVN) {
 			Spiller forb = rolle.forbud();
 			rolle.forby(null);
 		

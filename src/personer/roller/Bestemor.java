@@ -28,8 +28,6 @@ public class Bestemor extends Rolle {
 	
 	@Override
 	public boolean evne(Spiller spiller) {
-		System.out.println("Bestemor: " + klonet + "\nSpiller: " + spiller.klonet() );
-		
 		if(this.spiller.død() || this.spiller.rolle().id(SMITH))
 			return false;
 		

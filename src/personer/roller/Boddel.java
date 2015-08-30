@@ -15,9 +15,9 @@ public class Boddel extends Rolle {
 	
 	@Override
 	public String oppgave() {
-		// TODO Auto-generated method stub
-		if(spiller.klonet())
-			return super.oppgave();
+        // TODO Auto-generated method stub
+        if(spiller.nyligKlonet())
+            return super.oppgave();
 		return tv.vis(oppgave);
 	}
 	

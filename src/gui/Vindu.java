@@ -187,7 +187,7 @@ public class Vindu extends JFrame {
         innhold();
         for (Spiller s : spillere.spillere()) {
             Knapp k = new Knapp(s.navn(), s, Knapp.HALV, al);
-            if (s.equals(spillere.hentSistePek(Rolle.MARIUS))) k.setForeground(Color.BLUE);
+            if (s.harFlyers()) k.setForeground(Color.BLUE);
             if (s.talt()) k.setForeground(Color.RED);
             panel.add(k);
         }
@@ -197,9 +197,7 @@ public class Vindu extends JFrame {
         innhold();
         for (Spiller s : spillere.spillere()) {
             Knapp k = new Knapp(s.navn(), s, Knapp.HALV, al);
-            if (s.equals(spillere.hentSistePek(Rolle.MARIUS))) k.setForeground(Color.BLUE);
-            if (s.talt()) k.setForeground(Color.RED);
-            if (spill.sjekkOffer(Rolle.RAVN) && s.equals(spill.finnOffer(Rolle.RAVN))) k.setEnabled(false);
+            if (s.spiser()) k.setEnabled(false);
             panel.add(k);
         }
     }

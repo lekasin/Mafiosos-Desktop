@@ -14,17 +14,17 @@ public abstract class Rolle {
 	protected int prioritet = 0, side = 1;
 	protected String oppgave, info = "";
 	public static int FAKEBORGER = -2, MAFIOSO = -1, NØYTRAL = 0, BORGER = 1,  FAKEMAFIA = 2;
-	public static int 
+	public static int
 	ZOMBIE = 0,
 	BELIEBER = ZOMBIE+1,
-	ARVING = BELIEBER+1, 
+	ARVING = BELIEBER+1,
 	BEDRAGER = ARVING+1,
 	BESTEVENN = BEDRAGER+1,
 	JESUS = BESTEVENN+1,
 	INSIDER = JESUS+1,
 	UNDERCOVER = INSIDER+1,
 	ERIK = UNDERCOVER+1,
-	
+
 	MAFIA = ERIK+1,
 
 	DIDRIK = MAFIA+1,
@@ -42,8 +42,8 @@ public abstract class Rolle {
 	COPYCAT = HAVFRUE+1,
 	HEISENBERG = COPYCAT+1,
 	MORDER = HEISENBERG+1,
-	HMS = MORDER+1, 
-	SNÅSA = HMS+1,	
+	HMS = MORDER+1,
+	SNÅSA = HMS+1,
 	LØGNER = SNÅSA+1,
 	ULF = LØGNER+1,
 	TYLER = ULF+1,
@@ -52,7 +52,7 @@ public abstract class Rolle {
 	SNYLTER = KIRSTEN+1,
 	CUPID = SNYLTER+1,
 	SPECIAL = CUPID+1,
-			
+
 	KLØNA = SPECIAL+1,
 	RAVN = KLØNA+1,
 	MARIUS = RAVN+1,
@@ -66,7 +66,7 @@ public abstract class Rolle {
 	SHERLOCK = SMITH+1,
 	REX = SHERLOCK+1,
 	OBDUK = REX+1,
-	
+
 	BESTEMOR = OBDUK+1,
 	JØRGEN = BESTEMOR+1,
 	DRØMMER = JØRGEN+1,
@@ -76,7 +76,7 @@ public abstract class Rolle {
 	BØDDEL = JENTE+1,
 	TROMPET = BØDDEL+1,
 	ANARKIST = TROMPET+1;
-	
+
 	//Konstruktører
 	public Rolle()
 	{
@@ -130,13 +130,13 @@ public abstract class Rolle {
 	public void jul(){
 		snill = true;
 	}
-	
+
 	public void informer(Rolle r, String info){
 		setInfo(info);
 		informert = true;
 		informant = r;
 	}
-	
+
 	public void setInfo(String info){
 		this.info += info;
 	}
@@ -144,7 +144,7 @@ public abstract class Rolle {
 	public void fortsett(boolean f) {
 		fortsett = f;
 	}
-	
+
 	public void blokker(Rolle blokk){
 		if(!snill) {
 			if(forsinkelse != null)
@@ -153,7 +153,7 @@ public abstract class Rolle {
 			blokkert = true;
 		}
 		rens();
-	}	
+	}
 
 	public void rens(Rolle r){
 		if(blokk == r){
@@ -177,7 +177,7 @@ public abstract class Rolle {
 			offer.rens(this);
 		}
 	}
-	
+
 	public void klonRolle(){
 		klonet = true;
 	}
@@ -191,23 +191,23 @@ public abstract class Rolle {
 
 		switch (tittel){
 		case "Tjukkas" :
-		case "Belieber" : 
-		case "Bøddel" : 
-		case "Filosofen" : 
-		case "Informant" : 
+		case "Belieber" :
+		case "Bøddel" :
+		case "Filosofen" :
+		case "Informant" :
 		case "Julenissen" :
 		case "Snylter" :
 		case "CopyCat" :
-		case "Hammer" : 
-		case "Heisenberg" : 
-		case "Jesus" : 
-		case "Havfrue" : 
+		case "Hammer" :
+		case "Heisenberg" :
+		case "Jesus" :
+		case "Havfrue" :
 		case "Ulf Omar" :
 		case "Morder" :
 		case "Princess98" :
 		case "Agent Smith":
 		case "Gærne Berit":
-		case "Bodyguard":forbud2 = spiller; 
+		case "Bodyguard":forbud2 = spiller;
 						break;
 		default: break;
 		}
@@ -220,14 +220,14 @@ public abstract class Rolle {
 	public void forby(Spiller s){
 		forbud = s;
 	}
-	
+
 	public void byttSide() {
 		side = side-(side*2);
 	}
 
 	public boolean pek(Spiller spiller){
 		this.spiller.setOffer(spiller);
-		if(this.spiller.forsinket && blokk == this.spiller.forsinkelse) 
+		if(this.spiller.forsinket && blokk == this.spiller.forsinkelse)
 			((Berit)this.spiller.forsinkelse).setOffer(spiller);
 		if(spiller == null) return false;
 		if(spiller.id(Rolle.HAVFRUE) && spiller.offer() == this.spiller) {
@@ -263,15 +263,23 @@ public abstract class Rolle {
 	public boolean informert(){
 		return informert;
 	}
-	
+
 	public boolean skjerm(){
 		return skjerm;
 	}
-	
+
 	public boolean snill() {
 		return snill;
 	}
-	
+
+    public boolean nyligKlonet(){
+        return spiller != null && spiller.nyligKlonet;
+    }
+
+    public boolean rolleKlonet() {
+        return klonet;
+    }
+
 	public Spiller offer(){
 		return offer;
 	}
@@ -289,17 +297,17 @@ public abstract class Rolle {
 	}
 
 	public boolean aktiv(){
-		return aktiv || (klonet && spiller().rolle().id(SMITH));
+        return aktiv || nyligKlonet();
 	}
 
 	public boolean fortsetter() {
 		return fortsett;
 	}
-	
+
 	public boolean fanget() {
 		return tv.spillere().rolleFanget(prioritet);
 	}
-	
+
 	public Spiller spiller(){
 		return spiller;
 	}
@@ -311,32 +319,28 @@ public abstract class Rolle {
 	public Spiller forbud2(){
 		return forbud2;
 	}
-	
+
 	public Rolle finnRolle(int id) {
 		return tv.spillere().finnRolle(id);
 	}
-	
+
 	public void leggVed(String s) {
 		tv.leggVed(s);
 	}
-	
+
 	//toString-metoder
 	public String toString()
 	{
 		return tittel;
 	}
-	
+
 	public String oppgave() {
-		if(klonet) {
-			informer(spiller.smith, "\n\n" + spiller + " er nå en Smith!");
-			klonet = false;
-		}
-		if(spiller.klonet()) { //spiller.klonet || spiller.id(SMITH) && finnRolle(SMITH).spiller != spiller) {
-			informer(spiller.smith, "\n\n" + spiller + " er i ferd med å bli en Smith!\n(Kan bruke rollen sin en siste gang)");
-			tv.toFront();
-		}
+        if (klonet || nyligKlonet() && !id(SMITH))
+            kloneRapport();
+
 		tv.vis(oppgave);
-		if(informert) tv.leggtil(info);
+		if(informert)
+            tv.leggtil(info);
 		return oppgave;
 	}
 
@@ -352,7 +356,19 @@ public abstract class Rolle {
 			ut += " valgte ingen.";
 		return ut;
 	}
-	
+
+    public void kloneRapport(){
+        if(nyligKlonet()) {
+            informer(spiller.smith, pri() < Rolle.SMITH ? "\n\n" + spiller + " er nå en Smith!" :
+                    "\n\n" + spiller + " er i ferd med å bli en Smith! (Kan bruke rollen sin en siste gang)");
+        } else if (klonet){
+            info = "";
+            informer(spiller.smith, "\n\n" + spiller + " er nå en Smith!");
+        }
+        spiller.setNyligKlonet(false);
+        tv.toFront();
+    }
+
 	public boolean flere(){
 		return false;
 	}

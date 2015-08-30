@@ -23,7 +23,7 @@ public class Specialguy extends Rolle {
 
 	@Override
 	public String oppgave() {
-		if(spiller.klonet())
+		if(spiller.nyligKlonet())
 			return super.oppgave();
 		// TODO Auto-generated method stub
 		if(brukt)
