@@ -24,21 +24,15 @@ public class Tyler extends Rolle {
 	@Override
 	public String oppgave() {
 		rolle = this;
+        if (nyligKlonet())
+            return super.oppgave();
+
 		if(funker) {
 			rolle = tv.spillere().tylersRolle();
 			original = rolle.spiller();
 			rolle.setSpiller(this.spiller);
 		}
 		tv.vis("Tyler er nå " + rolle + "!\n");
-
-		if(klonet) {
-			informer(spiller.smith(), "\n\n" + spiller + " er nå en Smith!");
-			klonet = false;
-		}
-		if(spiller.nyligKlonet()) {
-			informer(spiller.smith(), "\n\n" + spiller + " er i ferd med å bli en Smith!\n(Kan bruke rollen sin en siste gang)");
-			tv.toFront();
-		}
 
 		tv.leggtil(oppgave);
 		tv.toFront();

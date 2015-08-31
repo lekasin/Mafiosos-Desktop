@@ -107,6 +107,7 @@ public class Spill implements ActionListener {
 
         forsvarende = null;
         spillere.våknOpp();
+        spillere.nominerTalereOgFlyers();
         refresh();
         tittuler("Hvem er de mistenkte?");
         dødsannonse();
@@ -114,7 +115,6 @@ public class Spill implements ActionListener {
         timer.nyStartMin(tid);
         dagsRoller();
         tv.toFront();
-        visMistenkte();
     }
 
     public void godkjenn(final Spiller valgt) {
@@ -178,6 +178,7 @@ public class Spill implements ActionListener {
         vindu.personknapper(innhold, this);
         vindu.kontroll(new Kontroll(), -1);
         vindu.oppdaterRamme(innhold);
+        setTittelFarge(null);
 
         if (sjekkRolle(Rolle.BØDDEL) && dag && finnRolle(Rolle.BØDDEL).lever())
             vindu.kontroll(new Kontroll(), fase, new Knapp("Halshugg!", Knapp.HALV, new Special()));
@@ -188,12 +189,33 @@ public class Spill implements ActionListener {
         if (r == null) return;
         timer.stop();
         vindu.kontroll(new Kontroll(), -1);
+        setTittelFarge(r);
         tittuler(r.oppgave());
 
         if (r instanceof Mafia) {
             visMafiaKnapper();
         } else if (r instanceof BodyGuard)
             vindu.kontroll(new Kontroll(), fase, new Knapp("Drep/Beskytt", Knapp.HALV, new Special()));
+    }
+
+    public void setTittelFarge(Rolle r){
+        if (r == null) {
+            vindu.overskrift.setForeground(Color.BLACK);
+            System.out.println("Farge null");
+            return;
+        }
+        if (!r.funker() && !r.nyligKlonet()) {
+            vindu.overskrift.setForeground(Color.RED);
+            System.out.println("Farge red");
+        }
+        else if (r.skjerm() || r.informert() || r.nyligKlonet()) {
+            vindu.overskrift.setForeground(Color.BLUE);
+            System.out.println("Farge blue");
+        }
+        else {
+            vindu.overskrift.setForeground(Color.BLACK);
+            System.out.println("Farge black");
+        }
     }
 
     public void visMafiaKnapper() {
@@ -240,10 +262,6 @@ public class Spill implements ActionListener {
         vindu.setVeiledning(aktiv.getVeiledning());
         refresh(r);
 
-        if (r.skjerm() || r.informert())
-            vindu.overskrift.setForeground(Color.BLUE);
-        if (!r.funker() && !r.nyligKlonet())
-            vindu.overskrift.setForeground(Color.RED);
         // tv.leggtil(spillere.valg(r));
     }
 
@@ -360,8 +378,8 @@ public class Spill implements ActionListener {
     }
 
     public void avstemming(Spiller s) {
-        tittuler("Hvem stemmer på " + s.navn());
-        timer.setText("Hvem stemmer på " + s.navn());
+        tittuler("Hvem stemmer på " + s.navn() + "?");
+        timer.setText("Hvem stemmer på " + s.navn() + "?");
         timer.nyStartSek(15);
         if (s.lever() && s.harFlyers()) {
             Spiller marius = new Spiller("Grafiske Marius");
@@ -454,7 +472,7 @@ public class Spill implements ActionListener {
         tittuler(s.navn() + " forsvarer seg!");
         rapporter(s.navn() + " forsvarer seg!");
         timer.setText(s.navn() + " forsvarer seg!");
-        timer.nyStartSek(10);
+        timer.nyStartMin(1);
         taler++;
     }
 
@@ -485,6 +503,7 @@ public class Spill implements ActionListener {
             spillere.nominer(finnOffer(Rolle.AKTOR));
             startForsvarstale(finnOffer(Rolle.AKTOR));
             informer(annonse);
+            finnRolle(Rolle.AKTOR).pek(null);
         }
 
         if (sjekkOffer(Rolle.ASTRONAUT))
@@ -598,8 +617,6 @@ public class Spill implements ActionListener {
         faseHistorikk.add(temp);
         fase = nyFase;
         System.out.println("Fra " + temp + " til " + nyFase);
-        if (fase(DISKUSJONSFASE))
-            visMistenkte();
         setVeiledning(fase);
         return temp;
     }
@@ -693,14 +710,15 @@ public class Spill implements ActionListener {
     }
 
     public void talt(int nyTid) {
-        if (nyTid < 2) nyTid = 2;
-        restartMedTimer("Hvem er de mistenkte?", nyTid);
         nyFase(DISKUSJONSFASE);
+
         if (taler > 2) {
             oppgjøretsTime();
             annonse += "\nOppgjørets Time - Ingen flere forsvarstaler!\n";
-            timer.setText(annonse + hentMistenkte());
         }
+
+        if (nyTid < 2) nyTid = 2;
+        restartMedTimer("Hvem er de mistenkte?", nyTid);
     }
 
     public void gjenoppliv() {
@@ -944,13 +962,11 @@ public class Spill implements ActionListener {
 
     public void proklamer(String tekst) {
         vindu.overskrift.setText(tekst);
-        vindu.overskrift.setForeground(Color.BLACK);
         tv.vis(tekst);
     }
 
     public void tittuler(String tekst) {
         vindu.overskrift.setText(tekst);
-        vindu.overskrift.setForeground(Color.BLACK);
     }
 
     public void rapporter(String tekst) {
@@ -978,7 +994,7 @@ public class Spill implements ActionListener {
         }
 
         rapporter(annonse);
-        timer.setText(annonse);
+        timer.setText(annonse + hentMistenkte());
     }
 
     public void visMistenkte() {
@@ -1091,14 +1107,15 @@ public class Spill implements ActionListener {
 
                     if (svar == JOptionPane.YES_OPTION) {
                         timer.stop();
+                        refresh();
                         spillere.restart();
                         vindu.restart();
                         vindu.startopp();
                     }
                 } else if (rakett) {
-                    restartMedTimer(null, tid - 2);
                     rakett = false;
                     nyFase(DISKUSJONSFASE);
+                    restartMedTimer(null, tid - 2);
                 } else
                     natt();
             }
@@ -1142,6 +1159,7 @@ public class Spill implements ActionListener {
                 tittuler("Hvem er de mistenkte?");
                 rapporter(valgt + " har rømt fra landsbyen");
                 refresh();
+                visMistenkte();
                 timer.fortsett();
             } else if (fase(TIEBREAKERFASE))
                 godkjenn(valgt);

@@ -42,6 +42,7 @@ public class Countdown {
 	
 	public void setText(String t) {
 		tekst = t;
+        spill.informer(format(tid) + "\n" + tekst);
 	}
 	
 	public void stop() {

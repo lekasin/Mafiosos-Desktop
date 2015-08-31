@@ -121,8 +121,10 @@ public class Spillerliste {
 	}
 
 	public void restart(){
-		for(Spiller s: spillere)
-			s.vekk();
+		for(Spiller s: spillere) {
+            s.sov();
+            s.vekk();
+        }
 		sl.clear();
 	}
 
@@ -586,13 +588,17 @@ public class Spillerliste {
 	}
 
 	public String jørgensListe(){
-		String ut = "Jørgens notater:\n";
+		String ut = "Jørgens notater:";
+
+		if (finnSpillerSomEr(Rolle.JØRGEN) == null)
+			return ut;
+
 		for(Spiller s: spillere)
 			if(!s.funker()) 
 				if(!finnSpillerSomEr(Rolle.JØRGEN).skjult())
-					ut += s + " var " + s.rolle() + "\n";
+					ut += "\n" + s + " var " + s.rolle();
 				else
-					ut += s + " var " + randomSpiller(finnSpillerSomEr(Rolle.JØRGEN)).rolle() + "\n";
+					ut += "\n" + s + " var " + randomSpiller(finnSpillerSomEr(Rolle.JØRGEN)).rolle();
 		return ut;
 	}
 
