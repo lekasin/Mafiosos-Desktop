@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 
 public class Innstillinger extends JFrame implements ActionListener {
@@ -60,6 +59,8 @@ public class Innstillinger extends JFrame implements ActionListener {
     public void knapper() {
         Knapp veiledning = new Knapp("Vis/skjul veiledning", Knapp.HEL, this);
         innhold.add(veiledning);
+        Knapp fullskjerm = new Knapp("Fullskjerm TV", Knapp.HEL, this);
+        innhold.add(fullskjerm);
         Knapp dagtid = new Knapp("Sett dagtid", Knapp.HEL, this);
         innhold.add(dagtid);
         Knapp font = new Knapp("Sett skriftstørrelse", Knapp.HEL, this);
@@ -85,33 +86,6 @@ public class Innstillinger extends JFrame implements ActionListener {
             }
         }
 
-    }
-
-    // Oppretter menyer
-    public void lagMeny() {
-        menuBar = new JMenuBar();
-
-        JMenu meny = new JMenu("TestMeny");
-        meny.setMnemonic(KeyEvent.VK_A);
-        meny.getAccessibleContext().setAccessibleDescription(
-                "Denne menyen utfører stuff");
-        menuBar.add(meny);
-
-        JMenuItem item = new JMenuItem("Trykk her");
-        meny.add(item);
-
-        JMenu undermeny = new JMenu("UnderMeny");
-        undermeny.setMnemonic(KeyEvent.VK_T);
-        undermeny.getAccessibleContext().setAccessibleDescription(
-                "Denne undermenyen utfører stuff");
-        meny.add(undermeny);
-
-        item = new JMenuItem("Trykk her også");
-        undermeny.add(item);
-        item = new JMenuItem("Og her!");
-        undermeny.add(item);
-
-        this.add(menuBar);
     }
 
     @Override
@@ -151,6 +125,10 @@ public class Innstillinger extends JFrame implements ActionListener {
             else
                 JOptionPane.showMessageDialog(this,
                         "Telefonnummer må inneholde 8 siffer!");
+        }
+
+        if (((Knapp) e.getSource()).getText() == "Fullskjerm TV") {
+            vindu.visSkjulTvRamme();
         }
 
         if (((Knapp) e.getSource()).getText() == "Legg til spiller") {

@@ -12,6 +12,12 @@ import java.net.URL;
 public class ImgUtil {
     public static final String IMG_PATH = "/img/";
 
+    public static Image getImage(String imgName) {
+        String imgPath = IMG_PATH + imgName;
+        URL url = Main.class.getResource(imgPath);
+        return Toolkit.getDefaultToolkit().createImage(url);
+    }
+
     public static ImageIcon getIcon(String imgName) {
         String imgPath = IMG_PATH + imgName;
         URL url = Main.class.getResource(imgPath);

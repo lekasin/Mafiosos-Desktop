@@ -350,7 +350,6 @@ public class Oppstart implements ActionListener {
 
     public void informer(String informasjon) {
         tv.vis(informasjon);
-        vindu.informer(informasjon);
     }
 
     private void visRoller(String rollerListe) {
@@ -381,7 +380,6 @@ public class Oppstart implements ActionListener {
             if (e.getSource() == fortsett) {
                 if (fase == STARTSPILL) {
                     Spill spill = new Spill(vindu, roller, tid);
-                    informer(spillere.hvemErHva());
                     spill.natt();
                 } else if (spillere.length() < 5)
                     informer("Ikke nok spillere!");
@@ -549,6 +547,7 @@ public class Oppstart implements ActionListener {
         } else if (fase == VELGGJENSTANDER) {
             gjenstander.add(k.getText());
             tv.leggtil("\n" + k.getText());
+
             vindu.informer(tv.tv.getText());
 
             if (gjenstander.size() == spillere.spillere().size()) {

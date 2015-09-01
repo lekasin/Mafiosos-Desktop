@@ -285,6 +285,13 @@ public class Vindu extends JFrame {
         veiledning.setVisible(!veiledning.isVisible());
     }
 
+    public void visSkjulTvRamme() {
+        tv.dispose();
+        tv.setUndecorated(!tv.isUndecorated());
+        tv.setExtendedState(MAXIMIZED_BOTH);
+        tv.setVisible(true);
+    }
+
     public void setVeiledning(String tekst) {
         veiledning.setText(tekst);
         if (tekst.isEmpty())

@@ -1,20 +1,13 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
-
+import datastruktur.Spillerliste;
 import personer.Rolle;
 import personer.Spiller;
-import personer.roller.Mafia;
 import personer.roller.Quisling;
-import datastruktur.Spillerliste;
+
+import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+import java.awt.*;
 
 public class TV extends JFrame {
 
@@ -27,11 +20,11 @@ public class TV extends JFrame {
 		super(tittel);
 		
 		setLayout(new BorderLayout());
-		
-		spillere = sl;
+
+        spillere = sl;
 		//TV (Tekstfelt på TV-en)
 		setVisible(true);
-		setMinimumSize(new Dimension(900,700));
+		setMinimumSize(new Dimension(900, 700));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		tv = new JTextArea();
@@ -39,15 +32,28 @@ public class TV extends JFrame {
 		tv.setLineWrap(true);
 		tv.setWrapStyleWord(true);
 		tv.setFont(new Font("Sans-Serif", Font.BOLD, 30));
-		tv.setAlignmentY(CENTER_ALIGNMENT);
-		add(tv);
-		
+		tv.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		tv.setBackground(new Color(50, 60, 63));
+        tv.setForeground(new Color(182, 78, 73));
+        ((DefaultCaret)tv.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
+        add(tv);
+
+//        JColorChooser jcc = new JColorChooser(tv.getBackground());
+//        jcc.getSelectionModel().addChangeListener(e -> {
+//            Color newColor = jcc.getColor();
+//            tv.setBackground(newColor);
+//        });
+//        add(jcc, BorderLayout.SOUTH);
+
 		rolleListe = new JTextArea();
 		rolleListe.setFont(new Font("Sans-Serif", Font.BOLD, 30));
 		rolleListe.setEditable(false);
 		rolleListe.setText(roller);
 		rolleListe.setPreferredSize(new Dimension(250, 400));
-		add(rolleListe, BorderLayout.EAST);
+        rolleListe.setBackground(new Color(54, 64, 67));
+        rolleListe.setForeground(new Color(230, 232, 222));
+        add(rolleListe, BorderLayout.EAST);
 	}
 	
 	public String vis(String t){

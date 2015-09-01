@@ -10,7 +10,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -52,7 +54,13 @@ public class Spill implements ActionListener {
                 roller.add(rolle);
                 rolle.setTV(tv);
             }
-        rapporter("Rapport:");
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 1);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd-hh:mm");
+
+        rapporter("LOGG (" + format.format(cal.getTime()) + ")\n");
+        rapporter(spillere.hvemErHva());
 
         if (spillere.mafiaRolleLever(Mafia.FLUKT))
             flukt = true;
@@ -130,7 +138,7 @@ public class Spill implements ActionListener {
             proklamer("Ingen henrettet!");
         else {
             proklamer(valgt + " henrettes" + (valgt.kløna() ? " av kløna!" : "!"));
-            rapporter(valgt + " henrettes!");
+            rapporter(valgt + "(" + valgt.rolle() + ")" + " henrettes" + (valgt.kløna() ? " av kløna!" : "!"));
         }
 
         innhold.add(new Knapp("Avbryt", Knapp.HEL, e -> {
@@ -160,13 +168,13 @@ public class Spill implements ActionListener {
             finnRolle(Rolle.OBDUK).aktiver(spillere.lik().size() > 2);
         if (sjekkRolle(Rolle.HMS))
             gjenoppliv();
+
         if (seier) {
-            innhold.add(new Knapp("Nytt Spill", Knapp.SUPER, new Mafiaknapper()));
-            tittuler("Vi har en vinner!");
+            innhold.add(new Knapp("Nytt Spill", Knapp.SUPER, e -> nyttSpill()));
         } else if (rakett) {
-            innhold.add(new Knapp("Fortsett", Knapp.SUPER, new Mafiaknapper()));
+            innhold.add(new Knapp("Fortsett", Knapp.SUPER, e -> avsluttRakett()));
         } else
-            innhold.add(new Knapp("Landsbyen sovner", Knapp.SUPER, e -> landsbyenSovner()));
+            innhold.add(new Knapp("Landsbyen sovner", Knapp.SUPER, e -> natt()));
 
         innhold.revalidate();
         innhold.repaint();
@@ -249,7 +257,8 @@ public class Spill implements ActionListener {
 
     public void pek(Rolle r) {
         aktiv = r;
-        vindu.setVeiledning(aktiv.getVeiledning());
+        if (aktiv != null)
+            vindu.setVeiledning(aktiv.getVeiledning());
         refresh(r);
 
         // tv.leggtil(spillere.valg(r));
@@ -470,6 +479,7 @@ public class Spill implements ActionListener {
         forsvarende = null;
         spillere.nullstillAvstemming();
         spillere.nominerTalereOgFlyers();
+        rapporter("");
         talt(2);
     }
 
@@ -703,7 +713,13 @@ public class Spill implements ActionListener {
         tittuler("Hvem skal sendes opp i raketten?");
     }
 
-    public void halshugging(){
+    public void avsluttRakett(){
+        rakett = false;
+        nyFase(DISKUSJONSFASE);
+        restartMedTimer(null, tid - 2);
+    }
+
+    public void halshugging() {
         timer.stop();
         aktiv = finnRolle(Rolle.BØDDEL);
         refresh();
@@ -851,7 +867,7 @@ public class Spill implements ActionListener {
             s.henrett();
 
         //Aktor har drept. Får han reset?
-        if (tiltale){
+        if (tiltale) {
             tiltale = false;
             finnRolle(Rolle.AKTOR).aktiver(s.side() < Rolle.NØYTRAL);
         }
@@ -885,7 +901,6 @@ public class Spill implements ActionListener {
 
         //Rapporter hendelsen
         informer(ut);
-        rapporter("Landsbyen har drept " + s + "(" + s.rolle() + ")");
         rapporter(ut);
 
         //Gå til resultatskjermen. Evt trompetsprengning
@@ -897,25 +912,20 @@ public class Spill implements ActionListener {
         tv.toFront();
     }
 
-    public void landsbyenSovner(){
-        if (seier) {
-            int svar = JOptionPane.showConfirmDialog(vindu,
-                    "Er du sikker på at du vil starte nytt spill?",
-                    "Sikker?", JOptionPane.YES_NO_OPTION);
+    public void nyttSpill() {
+        tittuler("Vi har en vinner!");
 
-            if (svar == JOptionPane.YES_OPTION) {
-                timer.stop();
-                refresh();
-                spillere.restart();
-                vindu.restart();
-                vindu.startopp();
-            }
-        } else if (rakett) {
-            rakett = false;
-            nyFase(DISKUSJONSFASE);
-            restartMedTimer(null, tid - 2);
-        } else
-            natt();
+        int svar = JOptionPane.showConfirmDialog(vindu,
+                "Er du sikker på at du vil starte nytt spill?",
+                "Sikker?", JOptionPane.YES_NO_OPTION);
+
+        if (svar == JOptionPane.YES_OPTION) {
+            timer.stop();
+            refresh();
+            spillere.restart();
+            vindu.restart();
+            vindu.startopp();
+        }
     }
 
     public String rapporterSide(Spiller s, int side, String ut) {
