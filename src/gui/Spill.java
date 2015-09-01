@@ -32,9 +32,8 @@ public class Spill implements ActionListener {
     Spiller sisteDød, forsvarende;
     Rolle aktiv;
     String annonse;
-    Knapp halshugg, snipe;
     int fase, døgn, antallDøde, tid, taler;
-    boolean dag, seier, rakett;
+    boolean dag, seier, rakett, tiltale, bombe;
     boolean sniper = false, flukt = false, sabotage = false,
             forfalskning = false;
 
@@ -78,6 +77,7 @@ public class Spill implements ActionListener {
         spillere.nullstillAvstemming();
         refresh();
         i = roller.listIterator();
+        bombe = tiltale = rakett = false;
 
         if (sjekkVinner()) {
             nesteRolle();
@@ -161,13 +161,12 @@ public class Spill implements ActionListener {
         if (sjekkRolle(Rolle.HMS))
             gjenoppliv();
         if (seier) {
-            innhold.add(new Knapp("Nytt Spill", Knapp.SUPER, new Special()));
+            innhold.add(new Knapp("Nytt Spill", Knapp.SUPER, new Mafiaknapper()));
             tittuler("Vi har en vinner!");
         } else if (rakett) {
-            innhold.add(new Knapp("Fortsett", Knapp.SUPER, new Special()));
+            innhold.add(new Knapp("Fortsett", Knapp.SUPER, new Mafiaknapper()));
         } else
-            innhold.add(new Knapp("Landsbyen sovner", Knapp.SUPER,
-                    new Special()));
+            innhold.add(new Knapp("Landsbyen sovner", Knapp.SUPER, e -> landsbyenSovner()));
 
         innhold.revalidate();
         innhold.repaint();
@@ -181,7 +180,7 @@ public class Spill implements ActionListener {
         setTittelFarge(null);
 
         if (sjekkRolle(Rolle.BØDDEL) && dag && finnRolle(Rolle.BØDDEL).lever())
-            vindu.kontroll(new Kontroll(), fase, new Knapp("Halshugg!", Knapp.HALV, new Special()));
+            vindu.kontroll(new Kontroll(), fase, new Knapp("Halshugg!", Knapp.HALV, e -> halshugging()));
     }
 
     public void refresh(Rolle r) {
@@ -195,7 +194,7 @@ public class Spill implements ActionListener {
         if (r instanceof Mafia) {
             visMafiaKnapper();
         } else if (r instanceof BodyGuard)
-            vindu.kontroll(new Kontroll(), fase, new Knapp("Drep/Beskytt", Knapp.HALV, new Special()));
+            vindu.kontroll(new Kontroll(), fase, new Knapp("Drep/Beskytt", Knapp.HALV, new Mafiaknapper()));
     }
 
     public void setTittelFarge(Rolle r) {
@@ -216,7 +215,7 @@ public class Spill implements ActionListener {
         JPanel p = new JPanel();
         p.setPreferredSize(new Dimension(600, 60));
 
-        Special mk = new Special();
+        Mafiaknapper mk = new Mafiaknapper();
 
         if (spillere.mafiaRolleLever(Mafia.SNIPER) && sniper)
             p.add(new Knapp("Snipe", Knapp.HALV, mk));
@@ -245,7 +244,7 @@ public class Spill implements ActionListener {
         vindu.oppdaterRamme(innhold);
 
         if (sjekkRolle(Rolle.BØDDEL) && dag && finnRolle(Rolle.BØDDEL).lever())
-            innhold.add(new Knapp("Halshugg!", Knapp.HALV, new Special()));
+            innhold.add(new Knapp("Halshugg!", Knapp.HALV, e -> halshugging()));
     }
 
     public void pek(Rolle r) {
@@ -393,7 +392,7 @@ public class Spill implements ActionListener {
                 uavgjort(utstemte);
             else {
                 Spiller utstemt = utstemte.get(0);
-                if (sjekkOffer(Rolle.AKTOR) && finnOffer(Rolle.AKTOR).equals(utstemt))
+                if (tiltale)
                     utstemt = spillere.fikkAktorDrept();
                 godkjenn(utstemt);
             }
@@ -499,6 +498,7 @@ public class Spill implements ActionListener {
 
     public void dagsRoller() {
         if (sjekkOffer(Rolle.AKTOR)) {
+            tiltale = true;
             spillere.nominer(finnOffer(Rolle.AKTOR));
             startForsvarstale(finnOffer(Rolle.AKTOR));
             informer(annonse);
@@ -509,6 +509,7 @@ public class Spill implements ActionListener {
             rakettoppskytning();
 
         if (sjekkOffer(Rolle.BOMBER)) {
+            bombe = true;
             timer.nyStartMin(2);
         }
     }
@@ -543,7 +544,7 @@ public class Spill implements ActionListener {
                             "Hver person vil være oppe til avstemning i 15 sekunder, og for å registrere stemmer, trykker du på navnet til de som rekker opp hånda.\n" +
                             "Hvert navn vises kun én gang, og hver person kan stemme én gang, men Astronauten har dobbeltstemme.\n" +
                             "Etter rakettoppskytningen fortsetter dagen som normalt, men med kortere tid.");
-                else if (sjekkOffer(Rolle.AKTOR))
+                else if (tiltale)
                     vindu.setVeiledning("Avstemning - Tiltale:\n" +
                             "Spillerne skal nå stemme for eller imot å drepe den tiltalte.\n" +
                             "For å registrere en stemme, trykker du på navnet til den som stemmer.\n" +
@@ -565,7 +566,7 @@ public class Spill implements ActionListener {
                         "Om noe er gått galt, og du vil avbryte henrettelsen, kan du trykke avbryt for å bli tatt tilbake til diskusjonsfasen.");
                 break;
             case TALEFASE:
-                if (sjekkOffer(Rolle.AKTOR))
+                if (tiltale)
                     vindu.setVeiledning("Forsvarstale - Tiltale:\n" +
                             "Aktor har kommet med en tilale og vi går derfor rett til den tiltaltes forsvarstale.\n" +
                             "Den tiltalte får ett minutt til å forsvare seg, hvor ingen andre spillere får si noe.\n" +
@@ -700,6 +701,16 @@ public class Spill implements ActionListener {
         informer(annonse + "\nDet er tid for rakettoppskytning!!!");
         rapporter("\nDet er tid for rakettoppskytning!!!");
         tittuler("Hvem skal sendes opp i raketten?");
+    }
+
+    public void halshugging(){
+        timer.stop();
+        aktiv = finnRolle(Rolle.BØDDEL);
+        refresh();
+        proklamer("Hvem vil bøddelen halshugge?");
+        rapporter("Hvem vil bøddelen halshugge?");
+        vindu.setVeiledning(aktiv.getVeiledning());
+        return;
     }
 
     // ////////////////////////////////// KVELDEN ///////////////////////////////////////
@@ -839,6 +850,12 @@ public class Spill implements ActionListener {
         if (!(s.id(Rolle.BOMBER) && s.forsvart()))
             s.henrett();
 
+        //Aktor har drept. Får han reset?
+        if (tiltale){
+            tiltale = false;
+            finnRolle(Rolle.AKTOR).aktiver(s.side() < Rolle.NØYTRAL);
+        }
+
         //Bøddelen har drept. Er han frelst av Jesus?
         if (aktiv(Rolle.BØDDEL))
             ut = sjekkBøddelFrelse(ut);
@@ -880,6 +897,27 @@ public class Spill implements ActionListener {
         tv.toFront();
     }
 
+    public void landsbyenSovner(){
+        if (seier) {
+            int svar = JOptionPane.showConfirmDialog(vindu,
+                    "Er du sikker på at du vil starte nytt spill?",
+                    "Sikker?", JOptionPane.YES_NO_OPTION);
+
+            if (svar == JOptionPane.YES_OPTION) {
+                timer.stop();
+                refresh();
+                spillere.restart();
+                vindu.restart();
+                vindu.startopp();
+            }
+        } else if (rakett) {
+            rakett = false;
+            nyFase(DISKUSJONSFASE);
+            restartMedTimer(null, tid - 2);
+        } else
+            natt();
+    }
+
     public String rapporterSide(Spiller s, int side, String ut) {
         if ((aktiv(Rolle.TROMPET) || aktiv(Rolle.BØDDEL)) && aktiv.snill())
             s.snipe(null);
@@ -907,6 +945,7 @@ public class Spill implements ActionListener {
     }
 
     public String detonerBombe(Spiller bombet, Spiller utstemt) {
+        bombe = false;
         String ut;
 
         // Utstemt
@@ -1080,19 +1119,8 @@ public class Spill implements ActionListener {
         }
     }
 
-    private class Special implements ActionListener {
+    private class Mafiaknapper implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // HALSHUGG
-            if (knapp(e, "Halshugg!")) {
-                timer.stop();
-                aktiv = finnRolle(Rolle.BØDDEL);
-                refresh();
-                proklamer("Hvem vil bøddelen halshugge?");
-                rapporter("Hvem vil bøddelen halshugge?");
-                vindu.setVeiledning(aktiv.getVeiledning());
-                return;
-            }
-
             // MAFIAKNAPPER
             if (knapp(e, "Snipe")) {
                 ((Mafia) finnRolle(Rolle.MAFIA)).snipe();
@@ -1121,30 +1149,7 @@ public class Spill implements ActionListener {
                 bg.skift();
                 tittuler(bg.oppgave());
             }
-
-            // LANDSBYEN SOVNER
-            else {
-                if (seier) {
-                    int svar = JOptionPane.showConfirmDialog(vindu,
-                            "Er du sikker på at du vil starte nytt spill?",
-                            "Sikker?", JOptionPane.YES_NO_OPTION);
-
-                    if (svar == JOptionPane.YES_OPTION) {
-                        timer.stop();
-                        refresh();
-                        spillere.restart();
-                        vindu.restart();
-                        vindu.startopp();
-                    }
-                } else if (rakett) {
-                    rakett = false;
-                    nyFase(DISKUSJONSFASE);
-                    restartMedTimer(null, tid - 2);
-                } else
-                    natt();
-            }
         }
-
     }
 
     @Override
