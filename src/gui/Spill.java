@@ -198,24 +198,18 @@ public class Spill implements ActionListener {
             vindu.kontroll(new Kontroll(), fase, new Knapp("Drep/Beskytt", Knapp.HALV, new Special()));
     }
 
-    public void setTittelFarge(Rolle r){
+    public void setTittelFarge(Rolle r) {
         if (r == null) {
             vindu.overskrift.setForeground(Color.BLACK);
-            System.out.println("Farge null");
             return;
         }
-        if (!r.funker() && !r.nyligKlonet()) {
+
+        if (!r.funker() && !r.nyligKlonet())
             vindu.overskrift.setForeground(Color.RED);
-            System.out.println("Farge red");
-        }
-        else if (r.skjerm() || r.informert() || r.nyligKlonet()) {
+        else if (r.skjerm() || r.informert() || r.nyligKlonet())
             vindu.overskrift.setForeground(Color.BLUE);
-            System.out.println("Farge blue");
-        }
-        else {
+        else
             vindu.overskrift.setForeground(Color.BLACK);
-            System.out.println("Farge black");
-        }
     }
 
     public void visMafiaKnapper() {
@@ -242,9 +236,6 @@ public class Spill implements ActionListener {
         vindu.stemmeKnapper(innhold, this);
         vindu.kontroll(new Kontroll(), -1);
         vindu.oppdaterRamme(innhold);
-
-        if (sjekkRolle(Rolle.BØDDEL) && dag && finnRolle(Rolle.BØDDEL).lever())
-            innhold.add(halshugg);
     }
 
     public void refresh(Spiller s, Boolean alene) {
@@ -254,7 +245,7 @@ public class Spill implements ActionListener {
         vindu.oppdaterRamme(innhold);
 
         if (sjekkRolle(Rolle.BØDDEL) && dag && finnRolle(Rolle.BØDDEL).lever())
-            innhold.add(halshugg);
+            innhold.add(new Knapp("Halshugg!", Knapp.HALV, new Special()));
     }
 
     public void pek(Rolle r) {
@@ -270,7 +261,7 @@ public class Spill implements ActionListener {
             Rolle r = i.next();
 
             while (!r.aktiv() || r == aktiv) {
-                if (r.id(Rolle.JESUS) || r.id(Rolle.BESTEMOR))
+                if (r.id(Rolle.JESUS) || r.id(Rolle.BESTEMOR) || r.id(Rolle.TYSTER))
                     r.oppgave();
                 if (i.hasNext())
                     r = i.next();
@@ -324,8 +315,10 @@ public class Spill implements ActionListener {
                 startAvstemning();
         else if (fase(TIEBREAKERFASE))
             godkjenn(null);
+        else if (fase(AVSTEMNINGSFASE))
+            nesteAvstemming();
         else
-            System.out.println("UKJENT FASE: " + fase);
+            System.out.println("UKJENT FASE: " + fase + "(tidenErUte)");
     }
 
     public void tilbakeKnapp() {
@@ -380,7 +373,7 @@ public class Spill implements ActionListener {
     public void avstemming(Spiller s) {
         tittuler("Hvem stemmer på " + s.navn() + "?");
         timer.setText("Hvem stemmer på " + s.navn() + "?");
-        timer.nyStartSek(15);
+        timer.nyStartSek(20);
         if (s.lever() && s.harFlyers()) {
             Spiller marius = new Spiller("Grafiske Marius");
             spillere.stem(marius, s);
@@ -412,8 +405,6 @@ public class Spill implements ActionListener {
 
 
     public void startForsvarsTaler(ArrayList<Spiller> talere) {
-        nyFase(TALEFASE);
-
         Spiller først = talere.get(0);
 
         startForsvarstale(først);
@@ -435,6 +426,7 @@ public class Spill implements ActionListener {
     }
 
     public void startForsvarstale(Spiller valgt) {
+        nyFase(TALEFASE);
         timer.stop();
         vindu.kontroll.setVisible(false);
         innhold = vindu.innhold();
@@ -467,7 +459,6 @@ public class Spill implements ActionListener {
     }
 
     public void forsvarstale(Spiller s) {
-        nyFase(TALEFASE);
         s.tal();
         tittuler(s.navn() + " forsvarer seg!");
         rapporter(s.navn() + " forsvarer seg!");
@@ -493,8 +484,16 @@ public class Spill implements ActionListener {
         tittuler(tittel == null ? "Hvem er de mistenkte?" : tittel);
         spillere.nullstillAvstemming();
         spillere.nominerTalereOgFlyers();
-        visMistenkte();
+
         refresh();
+
+        if (taler > 2) {
+            oppgjøretsTime();
+            annonse += "\nOppgjørets Time - Ingen flere forsvarstaler!\n";
+        }
+
+        visMistenkte();
+
         timer.nyStartMin(nyTid);
     }
 
@@ -517,7 +516,13 @@ public class Spill implements ActionListener {
     public void setVeiledning(int fase) {
         switch (fase) {
             case DISKUSJONSFASE:
-                if (taler < 3)
+                if (sjekkOffer(Rolle.BOMBER))
+                    vindu.setVeiledning("Diskusjonsfasen - Bombe:\n" +
+                            "Bomberen har plantet bomben, og spillerne har nå 2 minutter til å finne ut hvem de vil henrette.\n" +
+                            "For å henrette en spiller, trykker du på vedkommendes navn. Det blir ingen forsvarstaler eller organisert avstemning. Landsbyen må bare bli enige\n" +
+                            "Klarer landsbyen å drepe bomberen, blir bomben desarmert, og kun bomberen dør. Henretter de noen andre, dør både denne personen OG den bomben er plantet hos.\n" +
+                            "Blir ingen henrettet, dør den bomben er plantet hos, og alle som besøkte vedkommende i natt.");
+                else if (taler < 3)
                     vindu.setVeiledning("Diskusjonsfasen:\n" +
                             "Spillerne skal nå diskutere, og finne ut hvem som er mistenkt for å være mafia.\n" +
                             "For å mistenke en person, trykker du på personens navn. Personen blir da lagt til i mistenktlista og blir en del av den kommende avstemningen.\n" +
@@ -526,17 +531,32 @@ public class Spill implements ActionListener {
                 else
                     vindu.setVeiledning("Diskusjonsfasen - Oppgjørets Time:\n" +
                             "Spillerne har nå en siste sjanse til å diskutere, og finne ut hvem som er mafia.\n" +
-                            "En dag kan maks inneholde 3 forsvarstaler (Kan bli flere ved uavgjort siste avstemning)." +
-                            "I oppgjørets time er det derfor ikke mulig å mistenke andre enn de som har holdt forsvarstale," +
+                            "En dag kan maks inneholde 3 forsvarstaler (Kan bli flere ved uavgjort siste avstemning). " +
+                            "I oppgjørets time er det derfor ikke mulig å mistenke andre enn de som har holdt forsvarstale, " +
                             "men alle disse kan nå stemmes på.\n");
                 break;
             case AVSTEMNINGSFASE:
-                vindu.setVeiledning("Avstemning:\n" +
-                        "Spillerne skal nå stemme på personen de tror er mafia.\n" +
-                        "For å registrere en stemme, trykker du på navnet til den som stemmer når den mistenktes navn vises." +
-                        "Hver person kan stemme én gang.\n" +
-                        "Alle navn i mistenktlista vil vises for avstemning i 20 sekunder. " +
-                        "Hvert navn vises kun én gang, og de som vil stemme på vedkommende må rekke opp hånda innen disse 20 sekundene.");
+                if (rakett)
+                    vindu.setVeiledning("Avstemning - Rakettoppskytning:\n" +
+                            "Astronauten har fullført raketten sin, og landsbyen skal nå anonymt stemme over hvem som skal sendes ut i rommet (og dø).\n" +
+                            "Alle spillere er nå mistenkt, og må lukke øynene før avstemningen begynner. Astronauten derimot, kan se alt.\n" +
+                            "Hver person vil være oppe til avstemning i 15 sekunder, og for å registrere stemmer, trykker du på navnet til de som rekker opp hånda.\n" +
+                            "Hvert navn vises kun én gang, og hver person kan stemme én gang, men Astronauten har dobbeltstemme.\n" +
+                            "Etter rakettoppskytningen fortsetter dagen som normalt, men med kortere tid.");
+                else if (sjekkOffer(Rolle.AKTOR))
+                    vindu.setVeiledning("Avstemning - Tiltale:\n" +
+                            "Spillerne skal nå stemme for eller imot å drepe den tiltalte.\n" +
+                            "For å registrere en stemme, trykker du på navnet til den som stemmer.\n" +
+                            "Avstemningen varer i 15 sekunder, og alle som stemmer for, gjør dette ved å tydelig rekke opp hånda.\n" +
+                            "Den tiltalte blir henrettet hvis han får minst halvparten av stemmene, " +
+                            "og ellers går vi til en ny natt uten henrettelse.");
+                else
+                    vindu.setVeiledning("Avstemning:\n" +
+                            "Spillerne skal nå stemme på personen de tror er mafia.\n" +
+                            "For å registrere en stemme, trykker du på navnet til den som stemmer når den mistenktes navn vises.\n" +
+                            "Hvert navn vises kun én gang, og hver person kan stemme én gang, " +
+                            "ved å tydelig rekke opp hånda når den de vil stemme på vises.\n" +
+                            "Alle navn i mistenktlista vil vises for avstemning i 15 sekunder.");
                 break;
             case GODKJENNINGSFASE:
                 vindu.setVeiledning("Godkjenning:\n" +
@@ -545,11 +565,18 @@ public class Spill implements ActionListener {
                         "Om noe er gått galt, og du vil avbryte henrettelsen, kan du trykke avbryt for å bli tatt tilbake til diskusjonsfasen.");
                 break;
             case TALEFASE:
-                vindu.setVeiledning("Forsvarstale:\n" +
-                        "Det er nå klart for forsvarstale. " +
-                        "Den forsvarende spilleren får ett minutt til å forsvare seg, hvor ingen andre spillere får si noe.\n" +
-                        "Når tiden går ut, starter en ny diskusjonsfase, hvor spillerne kan respondere på talen, og eventuelt finne nye mistenkte.\n" +
-                        "For å avslutte forsvarstalen tidlig, og gå tilbake til diskusjonsfasen, trykk fortsett.");
+                if (sjekkOffer(Rolle.AKTOR))
+                    vindu.setVeiledning("Forsvarstale - Tiltale:\n" +
+                            "Aktor har kommet med en tilale og vi går derfor rett til den tiltaltes forsvarstale.\n" +
+                            "Den tiltalte får ett minutt til å forsvare seg, hvor ingen andre spillere får si noe.\n" +
+                            "Når tiden går ut, går vi over i en avstemning, hvor spillerne skal stemme for eller imot å henrette den tiltalte.\n" +
+                            "For å avslutte forsvarstalen tidlig og gå rett til avstemningen, trykk fortsett.");
+                else
+                    vindu.setVeiledning("Forsvarstale:\n" +
+                            "Det er nå klart for forsvarstale.\n" +
+                            "Den forsvarende spilleren får ett minutt til å forsvare seg, hvor ingen andre spillere får si noe.\n" +
+                            "Når tiden går ut, starter en ny diskusjonsfase, hvor spillerne kan respondere på talen, og eventuelt finne nye mistenkte.\n" +
+                            "For å avslutte forsvarstalen tidlig og gå tilbake til diskusjonsfasen, trykk fortsett.");
                 break;
             case RØMNINGSFASE:
                 vindu.setVeiledning("Rømningsforsøk:\n" +
@@ -600,8 +627,8 @@ public class Spill implements ActionListener {
         return fase == testFase;
     }
 
-    public boolean aktiv(int rolle){
-        if(aktiv == null)
+    public boolean aktiv(int rolle) {
+        if (aktiv == null)
             return false;
 
         return aktiv.id(rolle);
@@ -616,7 +643,7 @@ public class Spill implements ActionListener {
         int temp = fase;
         faseHistorikk.add(temp);
         fase = nyFase;
-        System.out.println("Fra " + temp + " til " + nyFase);
+//        System.out.println("Fra " + temp + " til " + nyFase);
         setVeiledning(fase);
         return temp;
     }
@@ -650,6 +677,7 @@ public class Spill implements ActionListener {
         refresh();
         aktiv = s.rolle();
         tittuler("Hvem vil Trompeten sprenge?");
+        setVeiledning(Rolle.TROMPET);
     }
 
     public void nominer(Spiller s, boolean leggTil) {
@@ -711,11 +739,6 @@ public class Spill implements ActionListener {
 
     public void talt(int nyTid) {
         nyFase(DISKUSJONSFASE);
-
-        if (taler > 2) {
-            oppgjøretsTime();
-            annonse += "\nOppgjørets Time - Ingen flere forsvarstaler!\n";
-        }
 
         if (nyTid < 2) nyTid = 2;
         restartMedTimer("Hvem er de mistenkte?", nyTid);
@@ -1066,6 +1089,7 @@ public class Spill implements ActionListener {
                 refresh();
                 proklamer("Hvem vil bøddelen halshugge?");
                 rapporter("Hvem vil bøddelen halshugge?");
+                vindu.setVeiledning(aktiv.getVeiledning());
                 return;
             }
 
@@ -1164,7 +1188,7 @@ public class Spill implements ActionListener {
             } else if (fase(TIEBREAKERFASE))
                 godkjenn(valgt);
             else {
-                System.out.println("UKJENT FASE: " + fase);
+                System.out.println("UKJENT FASE: " + fase + "(valgt på dagen)");
             }
         }
 

@@ -24,8 +24,9 @@ public abstract class Rolle {
 	INSIDER = JESUS+1,
 	UNDERCOVER = INSIDER+1,
 	ERIK = UNDERCOVER+1,
+    TYSTER = ERIK+1,
 
-	MAFIA = ERIK+1,
+    MAFIA = TYSTER+1,
 
 	DIDRIK = MAFIA+1,
 	INFORMANT = DIDRIK+1,

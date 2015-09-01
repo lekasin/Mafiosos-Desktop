@@ -31,7 +31,7 @@ public class Smith extends Rolle {
 	@Override
 	public boolean pek(Spiller spiller) {
 		for(Spiller s: tv.spillere().spillere())
-			if(s.id(SMITH) && s.lever()){
+			if(s.id(SMITH) && s.funker()){
 				s.setOffer(spiller);
 				if(!this.spiller.lever() && spiller.lever())
 					setSpiller(s);

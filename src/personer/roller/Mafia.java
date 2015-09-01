@@ -75,7 +75,7 @@ public class Mafia extends Rolle {
 		
 		offer = spiller;
 		for(Spiller s: tv.spillere().spillere())
-			if(s.id(MAFIA) && s.lever()){
+			if(s.id(MAFIA) && s.funker()){
 				s.setOffer(spiller);
 				if(!this.spiller.lever())
 					setSpiller(s);

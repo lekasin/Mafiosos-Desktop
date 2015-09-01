@@ -10,12 +10,14 @@ public class Sofasurfer extends Rolle {
 	
 	public Sofasurfer(){
 		super("SofaSurfer");
-		oppgave = "Hvem vil SofaSurferen bo hos?";
-		veiledning = "SofaSurfer:\n" +
-				"SofaSurferen velger hver natt en person å snylte på.\n" +
-				"Når snylteren har valgt, trykker du på vedkommendes navn for å snylte på dem.\n" +
-				"Snylteren vil da bli påvirke av de samme effektene som den valgte.";
-		side = BORGER;
+        oppgave = "Hvem vil SofaSurferen bo hos?";
+        veiledning = "SofaSurferen våkner første natt, og velger en person han vil sove hos.\n" +
+                "Når sofaSurferen har valgt, trykker du på personens navn, for la surferen flytte inn.\n" +
+                "Den valgte personens rolle kommer da opp på skjermen, og sofasurferen skal fra da av våkne med denne rollen.\n" +
+                "Når den valgte rollen våkner, vil vedkommende få beskjed på skjermen om at de har fått besøk på sofaen.\n" +
+                "Sofasurferen kan så ikke velge en ny person før den han sover hos dør.";
+
+        side = BORGER;
 		prioritet = SOFA;
 		fortsett = false;
 	}
@@ -27,7 +29,6 @@ public class Sofasurfer extends Rolle {
 	
 	@Override
 	public String oppgave() {
-		// TODO Auto-generated method stub
 		System.out.println("Aktiv oppgave: " + aktiv);
 
 		return super.oppgave();

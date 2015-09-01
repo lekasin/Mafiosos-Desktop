@@ -12,7 +12,7 @@ public class Filosof extends Rolle {
 		super("Filosofen");
 		oppgave = "Hvem vil Filosofen studere?";
 		veiledning = "Filosofen:\n" +
-				"Filosofen våkner første natt, og velger en person, han vil filosofere rundt.\n" +
+				"Filosofen våkner første natt, og velger en person han vil filosofere rundt.\n" +
 				"Når filosofen har valgt, trykker du på personens navn, og vedkommendes rolle kommer da opp på skjermen.\n" +
 				"Filosofen kommer da ikke til å våkne på nytt, før den valgte personen dør. " +
                 "Når det skjer, kan filosofen velge en ny person.\n";

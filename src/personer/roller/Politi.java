@@ -46,7 +46,7 @@ public class Politi extends Rolle {
 	@Override
 	public boolean pek(Spiller spiller) {
 		for(Spiller s: tv.spillere().spillere())
-			if(s.id(POLITI) && s.lever()){
+			if(s.id(POLITI) && s.funker()){
 				s.setOffer(spiller);
 				if(!this.spiller.lever())
 					setSpiller(s);
