@@ -21,12 +21,6 @@ public class Ravn extends Rolle {
 	
 	@Override
 	public String oppgave() {
-		// TODO Auto-generated method stub
-		ut = "";
-		if(gjest == null) 
-			ut = "\nIngen fiskesuppe idag\n";
-		if(!lever && gjest != null || !funker && gjest == null)
-			leggVed(ut);
 		gjest = null;
 		return super.oppgave();
 	}
@@ -41,11 +35,9 @@ public class Ravn extends Rolle {
 			ut = "";
 		
 		if(this.spiller.lever() && spiller.lever() && !blokkert) {
-            ut = "\n" + spiller + " spiser Friduns fiskesuppe på Den Blå Fisk\n";
             spiller.inviterPåSuppe();
         }
 
-		leggVed(ut);
 		return true;
 	}
 }

@@ -178,10 +178,14 @@ public class Spiller {
 	}
 
     public void inviterPåSuppe(){
-        spiser = true;
+		if (!spiser)
+			rolle().leggVed("\n" + navn + " spiser Friduns fiskesuppe på Den Blå Fisk.\n");
+		spiser = true;
     }
 
     public void trykkOppFlyers(){
+		if (!flyers)
+			rolle().leggVed("\nFlyerne påstår at " + navn + " er mafia!\n");
         flyers = true;
     }
 

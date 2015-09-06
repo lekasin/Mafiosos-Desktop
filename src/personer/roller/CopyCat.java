@@ -47,7 +47,7 @@ public class CopyCat extends Rolle {
 		if(negativ != null && !blokkert) {
 			Rolle rolle = negativ.rolle();
 
-			if(rolle.pri() > UNDERCOVER && rolle.pri() < CUPID && !spiller.id(COPYCAT) && !spiller.id(BERIT) || rolle.id(SMITH)) {
+			if(rolle.pri() > UNDERCOVER && rolle.pri() < CUPID && !spiller.id(COPYCAT) && !spiller.id(BERIT) || rolle.id(SMITH) || rolle.id(RAVN) || rolle.id(MARIUS)) {
 				Spiller forb = rolle.forbud();
 				rolle.forby(null);
 
