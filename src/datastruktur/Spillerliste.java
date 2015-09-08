@@ -654,16 +654,12 @@ public class Spillerliste {
     public String tyster(Spiller tyster, boolean skjult) {
         String ut = "Tysteren stemte med: ";
 
-        System.out.println("Skjult: " + skjult);
-
         if (!skjult)
             for (Rolle rolle : hentStemmerPå(hentSisteStemmeFra(tyster)))
                 ut += "\n" + rolle;
         else
-            for (Rolle rolle : hentStemmerPå(hentSisteStemmeFra(tyster))) {
-                System.out.println(rolle);
+            for (Rolle rolle : hentStemmerPå(hentSisteStemmeFra(tyster)))
                 ut += "\n" + randomRolle(0, Rolle.ANARKIST, Rolle.TYSTER);
-            }
 
         return ut;
     }
