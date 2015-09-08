@@ -86,7 +86,7 @@ public class Spiller {
 		beskytter = null;
 		reddet = false;
 		redning = null;
-		skjult = false;
+		if (!id(Rolle.TYSTER)) skjult = false;
 		skjuler = null;
 		løgn = false;
 		løgner = null;

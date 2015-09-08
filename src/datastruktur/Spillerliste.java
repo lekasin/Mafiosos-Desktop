@@ -102,8 +102,15 @@ public class Spillerliste {
         return gjeldendeStemmer().remove(k);
     }
 
-    public Spiller hentSisteStemme(Spiller k) {
-        return gjeldendeStemmer().get(k);
+    public Spiller hentSisteStemmeFra(Spiller k) {
+        if (stemmeHistorikk.size() < 2)
+            return null;
+
+        HashMap stemmeDag = stemmeHistorikk.get(stemmeHistorikk.size()-2);
+        if (stemmeDag != null)
+            return (Spiller) stemmeDag.get(k);
+        else
+            return null;
     }
 
     public Spiller hentStemmeFraDag(Spiller k, int dag) {
@@ -119,15 +126,20 @@ public class Spillerliste {
 
     public ArrayList<Rolle> hentStemmerPå(Spiller mistenkt) {
         ArrayList<Rolle> stemmer = new ArrayList<>();
-        HashMap<Spiller, Spiller> stemmeDag = stemmeHistorikk.get(stemmeHistorikk.size() - 1);
+        HashMap<Spiller, Spiller> stemmeDag;
+
+        if (stemmeHistorikk.size() < 2)
+            return null;
+
+        stemmeDag = stemmeHistorikk.get(stemmeHistorikk.size() - 2);
 
         if (stemmeDag == null)
             return stemmer;
 
         for (Map.Entry<Spiller, Spiller> stemme : stemmeDag.entrySet()) {
-            if (stemme.getValue() != null && stemme.getValue() == mistenkt && !stemmer.contains(stemme.getKey().rolle()))
-                if (!stemme.getValue().id(Rolle.TYSTER))
-                    stemmer.add(stemme.getKey().rolle());
+            if (stemme.getValue() != null && stemme.getValue() == mistenkt &&
+                    !stemme.getKey().id(Rolle.TYSTER) && !stemmer.contains(stemme.getKey().rolle()))
+                stemmer.add(stemme.getKey().rolle());
         }
         return stemmer;
     }
@@ -140,6 +152,7 @@ public class Spillerliste {
         for (Spiller s : spillere) {
             s.sov();
             s.vekk();
+            s.rensAlle();
         }
         sl.clear();
     }
@@ -535,7 +548,6 @@ public class Spillerliste {
 
     public void cupider(Cupid cupid) {
         Spiller mann = cupid.getMann(), kvinne = cupid.getKvinne();
-        System.out.println(mann +" - " +kvinne);
         if (kvinne == null || mann == null)
             return;
 
@@ -642,12 +654,16 @@ public class Spillerliste {
     public String tyster(Spiller tyster, boolean skjult) {
         String ut = "Tysteren stemte med: ";
 
+        System.out.println("Skjult: " + skjult);
+
         if (!skjult)
-            for (Rolle rolle : hentStemmerPå(hentSisteStemme(tyster)))
+            for (Rolle rolle : hentStemmerPå(hentSisteStemmeFra(tyster)))
                 ut += "\n" + rolle;
         else
-            for (Rolle rolle : hentStemmerPå(hentSisteStemme(tyster)))
+            for (Rolle rolle : hentStemmerPå(hentSisteStemmeFra(tyster))) {
+                System.out.println(rolle);
                 ut += "\n" + randomRolle(0, Rolle.ANARKIST, Rolle.TYSTER);
+            }
 
         return ut;
     }

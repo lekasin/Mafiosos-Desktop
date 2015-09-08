@@ -99,7 +99,7 @@ public class Countdown {
 		public void run() {
 			if (tid > 0) {
 				klokke.setText(format(tid));
-				spill.informer(format(tid--) + "\n" + tekst);
+				spill.informer(format(tid--) + tekst);
 			} else {
 				spill.tidenErUte();
 				this.cancel();

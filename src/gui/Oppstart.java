@@ -265,6 +265,7 @@ public class Oppstart implements ActionListener {
         fortsett.setVisible(true);
         fortsett.setText("Start spill!");
         innhold.add(fortsett);
+        vindu.info.setText("");
         vindu.overskrift.setText("Klar til å begynne spillet?");
     }
 
@@ -283,6 +284,7 @@ public class Oppstart implements ActionListener {
                 hvemErHva();
                 informer("Følgende roller er med:");
                 visRoller(spillere.visRoller(roller));
+                vindu.info.setText(spillere.visRoller(roller));
                 break;
             case STARTSPILL:
                 startSpill();
@@ -350,6 +352,7 @@ public class Oppstart implements ActionListener {
 
     public void informer(String informasjon) {
         tv.vis(informasjon);
+        vindu.info.setText(informasjon);
     }
 
     private void visRoller(String rollerListe) {

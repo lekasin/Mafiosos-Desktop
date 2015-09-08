@@ -41,12 +41,13 @@ public class Obduksjonist extends Rolle {
 
 	@Override
 	public boolean evne(Spiller spiller) {
+		ut += "\n\n";
 		if(this.spiller.skjult())
-			ut += "\nObduksjonen viser at " + spiller + " var " + tv.spillere().randomSpiller(this.spiller).rolle() + "!";
+			ut += "Obduksjonen viser at " + spiller + " var " + tv.spillere().randomSpiller(this.spiller).rolle() + "!";
 		else {
 			if(!spiller.id(Rolle.ZOMBIE) && !spiller.id(Rolle.MAFIA) && !spiller.id(Rolle.POLITI)) 
 				spiller.rolle().aktiver(false);
-			ut += "\nObduksjonen viser at " + spiller + " var " + spiller.rolle() + "!";
+			ut += "Obduksjonen viser at " + spiller + " var " + spiller.rolle() + "!";
 		}
 		
 		if(blokkert)

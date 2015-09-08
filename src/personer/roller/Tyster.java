@@ -17,7 +17,7 @@ public class Tyster extends Rolle {
 
     @Override
     public String oppgave() {
-        if (tv.spillere().hentSisteStemme(spiller) != null)
+        if (tv.spillere().hentSisteStemmeFra(spiller) != null)
             evne(spiller);
         return super.oppgave();
     }
@@ -27,8 +27,9 @@ public class Tyster extends Rolle {
         if (blokkert)
             return false;
 
-        finnRolle(Rolle.MAFIA).informer(this, "\n\n" + tv.spillere().tyster(spiller, spiller.skjult()));
 
+        finnRolle(Rolle.MAFIA).informer(this, "\n\n" + tv.spillere().tyster(spiller, spiller.skjult()));
+        spiller.rens(finnRolle(DIDRIK));
         return true;
     }
 }

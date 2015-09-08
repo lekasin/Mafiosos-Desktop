@@ -137,9 +137,10 @@ public class Spill implements ActionListener {
 
         rapporter("");
 
-        if (valgt == null)
+        if (valgt == null) {
             proklamer("Ingen henrettet!");
-        else if (rakett){
+            rapporter("Ingen henrettet!");
+        } else if (rakett){
             proklamer(valgt + " sendes opp i verdensrommet!");
             rapporter(valgt + "(" + valgt.rolle() + ")" + " sendes opp i verdensrommet!");
         } else {
@@ -386,7 +387,7 @@ public class Spill implements ActionListener {
 
     public void avstemming(Spiller s) {
         tittuler("Hvem stemmer på " + s.navn() + "?");
-        timer.setText("Hvem stemmer på " + s.navn() + "?\n" + hentMistenkte());
+        timer.setText("\nHvem stemmer på " + s.navn() + "?\n" + hentMistenkte());
         timer.nyStartSek(20);
         if (s.lever() && s.harFlyers()) {
             Spiller marius = new Spiller("Grafiske Marius");
@@ -476,7 +477,7 @@ public class Spill implements ActionListener {
         s.tal();
         tittuler(s.navn() + " forsvarer seg!");
         rapporter(s.navn() + " forsvarer seg!");
-        timer.setText(s.navn() + " forsvarer seg!");
+        timer.setText("\n" + s.navn() + " forsvarer seg!");
         timer.nyStartMin(1);
         taler++;
     }
@@ -738,7 +739,7 @@ public class Spill implements ActionListener {
     public void sprengTrompet(Spiller s) {
         refresh();
         aktiv = s.rolle();
-        tittuler("Hvem vil Trompeten sprenge?");
+        tittuler("\nHvem vil Trompeten sprenge?");
         setVeiledning(Rolle.TROMPET);
     }
 
@@ -879,9 +880,9 @@ public class Spill implements ActionListener {
             side = side - (2 * side);
 
         //Lag henrettelsestekst
-        if (s.forsvart() && !(aktiv(Rolle.TROMPET) && aktiv.snill())
-                && !(aktiv(Rolle.BØDDEL) && aktiv.snill())
-                && !s.id(Rolle.BOMBER)) {
+        if (s.forsvart()
+                && !((aktiv(Rolle.TROMPET) || aktiv(Rolle.BØDDEL)) && aktiv.snill())
+                && !bombe) {
             ut += " er beskyttet, og er derfor ikke død!";
         } else {
             ut = rapporterSide(s, side, ut);
@@ -936,7 +937,7 @@ public class Spill implements ActionListener {
         rapporter(ut);
 
         //Gå til resultatskjermen. Evt trompetsprengning
-        if (s.id(Rolle.TROMPET))
+        if (s.id(Rolle.TROMPET) && !s.forsvart())
             sprengTrompet(s);
         else
             dagensResultat();
@@ -1081,13 +1082,13 @@ public class Spill implements ActionListener {
     }
 
     public void dødsannonse() {
-        annonse = "Ingen døde i natt!";
+        annonse = "\nIngen døde i natt!";
 
         døde = spillere.dødsannonse();
         if (døde.size() > 0) {
-            annonse = "\n";
+            annonse = "";
             for (Spiller s : døde)
-                annonse += s + " er død!";
+                annonse += "\n" + s + " er død!";
         }
 
         annonse += tv.vedlegg();
@@ -1098,7 +1099,7 @@ public class Spill implements ActionListener {
             refresh();
         }
 
-        rapporter(annonse);
+        rapporter(annonse.substring(1));
         timer.setText(annonse + hentMistenkte());
     }
 
@@ -1107,7 +1108,7 @@ public class Spill implements ActionListener {
     }
 
     public String hentMistenkte() {
-        String mistenkte = "\nMistenkte";
+        String mistenkte = "\n\nMistenkte";
         if (spillere.nominerte().size() == 5)
             mistenkte += "(Max 5):";
         else
@@ -1154,7 +1155,7 @@ public class Spill implements ActionListener {
                 else {
                     if (aktiv(Rolle.HEISENBERG))
                         rapporter(((Heisenberg) aktiv).getRapport());
-                    if (aktiv.offer() == null && aktiv.funker())
+                    if (aktiv != null && aktiv.offer() == null && aktiv.funker())
                         rapporter(aktiv.rapport());
                     nesteRolle();
                 }
