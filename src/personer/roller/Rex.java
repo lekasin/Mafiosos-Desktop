@@ -32,7 +32,7 @@ public class Rex extends Rolle {
 		ut += spiller + " har hatt besøk av disse";
 		if(forsinkelse != null) 
 			ut += " forrige natt";
-		ut += ":\n" + tv.rex(spiller) + "\n" ;
+		ut += ":" + tv.rex(spiller) ;
 		
 		if(blokkert){
 			if(blokk != forsinkelse) ut = "Rex ble blokkert forrige natt!\n\n";

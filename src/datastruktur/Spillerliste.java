@@ -441,7 +441,7 @@ public class Spillerliste {
         Princess jon = ((Princess) finnRolle(Rolle.PRINCESS));
         if (jon == null) {
             befriFanger();
-            finnRolle(Rolle.MAFIA).leggVed("\nFangene er befridd!");
+            finnRolle(Rolle.MAFIA).leggVed("\n\nFangene er befridd!");
             return;
         }
 
@@ -450,7 +450,7 @@ public class Spillerliste {
 
         if (jon.befridd() && harFanger()) {
             befriFanger();
-            jon.leggVed("\nFangene er befridd!");
+            jon.leggVed("\n\nFangene er befridd!");
             return;
         }
         Iterator<Spiller> i = fanger.iterator();
@@ -462,7 +462,7 @@ public class Spillerliste {
             else if (s.kidnappet()) {
                 s.fang();
                 s.rolle().funk(false);
-                s.rolle().leggVed("\n" + s + " er kidnappet!");
+                s.rolle().leggVed("\n\n" + s + " er kidnappet!");
             }
         }
     }
@@ -493,23 +493,22 @@ public class Spillerliste {
     //MORGENMETODER
 
     public String youtube(Spiller spiller, boolean skjult) {
-        String ut = "";
+        String ut = "\n\n";
         if (spiller == null || finnRolle(Rolle.YOUTUBER).blokkert())
-            return ut;
+            return "";
 
         if (skjult) {
-            ut = "\nPå Youtube ser vi at " + new Random().nextInt(5) + " spillere besøkte " + spiller + " i natt!";
+            ut += "På Youtube ser vi at " + new Random().nextInt(5) + " spillere besøkte " + spiller + " i natt!";
             if (!spiller.lever())
                 ut += "\nVi ser også at " + spiller + " var " + randomRolle(-1, 100, -1) + "!";
-            ut += "\n";
-        } else {
-            ut = "\nPå Youtube ser vi at " + besøk(spiller, finnSpillerSomEr(Rolle.YOUTUBER)).size() + " spillere besøkte " + spiller + " i natt!";
+        }
+        else {
+            ut += "På Youtube ser vi at " + besøk(spiller, finnSpillerSomEr(Rolle.YOUTUBER)).size() + " spillere besøkte " + spiller + " i natt!";
             if (!spiller.lever() && !spiller.id(Rolle.BESTEMOR)) {
                 ut += "\nVi ser også at " + spiller + " var " + spiller.rolle() + "!";
                 if (!spiller.id(Rolle.ZOMBIE) && !spiller.id(Rolle.MAFIA) && !spiller.id(Rolle.POLITI))
                     spiller.rolle().aktiver(false);
             }
-            ut += "\n";
         }
         return ut;
     }
@@ -620,7 +619,7 @@ public class Spillerliste {
         int teller = 0;
         for (Spiller s : spillere)
             if (s.offer() == spiller && !s.id(Rolle.REX) && s.funker()) {
-                ut += s.navn() + "\n";
+                ut += "\n" + s.navn();
                 teller++;
             }
 
@@ -628,16 +627,16 @@ public class Spillerliste {
             ut = "";
             if (teller > 0)
                 while (teller > 0) {
-                    ut += randomSpiller(finnSpillerSomEr(Rolle.REX)) + "\n";
+                    ut += "\n" + randomSpiller(finnSpillerSomEr(Rolle.REX));
                     teller--;
                 }
             else
-                ut += randomSpiller(finnSpillerSomEr(Rolle.REX)) + "\n";
+                ut += "\n" + randomSpiller(finnSpillerSomEr(Rolle.REX));
             return ut;
         } else if (teller > 0)
             return ut;
         else
-            return "Ingen";
+            return "\n" + "Ingen";
     }
 
     public String tyster(Spiller tyster, boolean skjult) {
@@ -654,9 +653,9 @@ public class Spillerliste {
     }
 
     public String mafiaNavn() {
-        String ut = "Mafiaene er:\n";
+        String ut = "Mafiaene er:";
         for (Spiller s : spillere)
-            if (s.rolle() instanceof Mafia) ut += s + "\n";
+            if (s.rolle() instanceof Mafia) ut += "\n" + s;
         return ut;
     }
 
@@ -668,7 +667,7 @@ public class Spillerliste {
     }
 
     public String drøm(Spiller drømmer) {
-        String ut = (drømmer.forsinket()) ? "Drømmeren drømte om disse forrige natt:\n" : "Drømmeren ser disse i drømmen sin:\n";
+        String ut = (drømmer.forsinket()) ? "Drømmeren drømte om disse forrige natt:" : "Drømmeren ser disse i drømmen sin:";
         Boolean mafia = false;
         int teller = 0;
 
@@ -679,22 +678,18 @@ public class Spillerliste {
         if (drømmer.skjult()) {
             for (Spiller s : list)
                 if (s.lever() && !s.id(Rolle.DRØMMER) && teller < 3) {
-                    ut += s;
-                    if (teller < 3) {
-                        teller++;
-                        ut += "\n";
-                    }
-
+                    ut += "\n" + s;
+                    teller++;
                 }
         } else {
             for (Spiller s : list)
                 if (s.lever() && !s.id(Rolle.DRØMMER)) {
                     if (s.side() < 0 && !mafia) {
                         mafia = true;
-                        ut += s + "\n";
+                        ut += "\n" + s;
                     } else if (s.side() >= 0 && teller < 2) {
                         teller++;
-                        ut += s + "\n";
+                        ut += "\n" + s;
                     }
                 }
         }

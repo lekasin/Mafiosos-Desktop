@@ -23,7 +23,7 @@ public class Tyler extends Rolle {
 
 	@Override
 	public String oppgave() {
-		rolle = this;
+        rolle = this;
         if (nyligKlonet())
             return super.oppgave();
 
@@ -61,7 +61,7 @@ public class Tyler extends Rolle {
 			rolle.forby(forb);
 		}
 		rolle.setSpiller(original);
-		
+
 		return true;
 	}
 
@@ -78,8 +78,13 @@ public class Tyler extends Rolle {
 	@Override
 	public void sov() {
 		if(rolle != null && original != null)
-				rolle.setSpiller(original);
+            rolle.setSpiller(original);
 		super.sov();
 	}
 
+    @Override
+    public void vekk() {
+        rolle = this;
+        super.vekk();
+    }
 }

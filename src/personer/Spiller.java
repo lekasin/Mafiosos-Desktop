@@ -179,13 +179,13 @@ public class Spiller {
 
     public void inviterPåSuppe(){
 		if (!spiser)
-			rolle().leggVed("\n" + navn + " spiser Friduns fiskesuppe på Den Blå Fisk.\n");
+			rolle().leggVed("\n\n" + navn + " spiser Friduns fiskesuppe på Den Blå Fisk.");
 		spiser = true;
     }
 
     public void trykkOppFlyers(){
 		if (!flyers)
-			rolle().leggVed("\nFlyerne påstår at " + navn + " er mafia!\n");
+			rolle().leggVed("\n\nFlyerne påstår at " + navn + " er mafia!");
         flyers = true;
     }
 

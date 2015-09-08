@@ -121,7 +121,8 @@ public class Spill implements ActionListener {
         dødsannonse();
         sjekkVinner();
         timer.nyStartMin(tid);
-        dagsRoller();
+        sjekkDagsRoller();
+        aktiverDagsRoller();
         tv.toFront();
     }
 
@@ -134,14 +135,19 @@ public class Spill implements ActionListener {
         final String info = tv.getTvText();
         final String tittel = vindu.overskrift.getText();
 
+        rapporter("");
+
         if (valgt == null)
             proklamer("Ingen henrettet!");
-        else {
+        else if (rakett){
+            proklamer(valgt + " sendes opp i verdensrommet!");
+            rapporter(valgt + "(" + valgt.rolle() + ")" + " sendes opp i verdensrommet!");
+        } else {
             proklamer(valgt + " henrettes" + (valgt.kløna() ? " av kløna!" : "!"));
             rapporter(valgt + "(" + valgt.rolle() + ")" + " henrettes" + (valgt.kløna() ? " av kløna!" : "!"));
         }
 
-        innhold.add(new Knapp("Avbryt", Knapp.HEL, e -> {
+            innhold.add(new Knapp("Avbryt", Knapp.HEL, e -> {
             if (skalHaTimer()) {
                 nyFase(DISKUSJONSFASE);
                 restartMedTimer(null, 2);
@@ -352,7 +358,7 @@ public class Spill implements ActionListener {
         vindu.kontroll.setVisible(false);
         innhold = vindu.innhold();
 
-        rapporter("AVSTEMNING:");
+        rapporter("\nAVSTEMNING:");
         tittuler("Avstemning!");
         tv.avstemning();
 
@@ -380,7 +386,7 @@ public class Spill implements ActionListener {
 
     public void avstemming(Spiller s) {
         tittuler("Hvem stemmer på " + s.navn() + "?");
-        timer.setText("Hvem stemmer på " + s.navn() + "?");
+        timer.setText("Hvem stemmer på " + s.navn() + "?\n" + hentMistenkte());
         timer.nyStartSek(20);
         if (s.lever() && s.harFlyers()) {
             Spiller marius = new Spiller("Grafiske Marius");
@@ -390,7 +396,6 @@ public class Spill implements ActionListener {
     }
 
     public void avsluttAvstemning() {
-        rapporter("");
         ArrayList<Spiller> utstemte = spillere.hentUtstemte();
         ArrayList<Spiller> talere = spillere.hentTalere(utstemte);
 
@@ -401,7 +406,7 @@ public class Spill implements ActionListener {
                 uavgjort(utstemte);
             else {
                 Spiller utstemt = utstemte.get(0);
-                if (tiltale)
+                if (tiltale && !rakett)
                     utstemt = spillere.fikkAktorDrept();
                 godkjenn(utstemt);
             }
@@ -415,6 +420,7 @@ public class Spill implements ActionListener {
     public void startForsvarsTaler(ArrayList<Spiller> talere) {
         Spiller først = talere.get(0);
 
+        rapporter("");
         startForsvarstale(først);
 
         if (talere.size() > 1) {
@@ -479,7 +485,6 @@ public class Spill implements ActionListener {
         forsvarende = null;
         spillere.nullstillAvstemming();
         spillere.nominerTalereOgFlyers();
-        rapporter("");
         talt(2);
     }
 
@@ -498,7 +503,7 @@ public class Spill implements ActionListener {
 
         if (taler > 2) {
             oppgjøretsTime();
-            annonse += "\nOppgjørets Time - Ingen flere forsvarstaler!\n";
+            annonse += "\n\nOppgjørets Time - Ingen flere forsvarstaler!";
         }
 
         visMistenkte();
@@ -506,22 +511,68 @@ public class Spill implements ActionListener {
         timer.nyStartMin(nyTid);
     }
 
-    public void dagsRoller() {
-        if (sjekkOffer(Rolle.AKTOR)) {
-            tiltale = true;
-            spillere.nominer(finnOffer(Rolle.AKTOR));
-            startForsvarstale(finnOffer(Rolle.AKTOR));
-            informer(annonse);
-            finnRolle(Rolle.AKTOR).pek(null);
-        }
-
+    public void sjekkDagsRoller() {
         if (sjekkOffer(Rolle.ASTRONAUT))
-            rakettoppskytning();
-
-        if (sjekkOffer(Rolle.BOMBER)) {
+            rakett = true;
+        if (sjekkOffer(Rolle.BOMBER))
             bombe = true;
-            timer.nyStartMin(2);
+        if (sjekkOffer(Rolle.AKTOR))
+            tiltale = true;
+    }
+
+    public void aktiverDagsRoller(){
+        if (rakett)
+            rakettoppskytning();
+        else if (bombe)
+            plantetBombe();
+        else if (tiltale)
+            tiltale();
+    }
+
+    public void rakettoppskytning() {
+        timer.stop();
+
+        for (Spiller s : spillere.spillere())
+            if (s.lever())
+                spillere.nominer(s);
+
+        startAvstemning();
+        informer(annonse + "\nDet er tid for rakettoppskytning!!!");
+        rapporter("\nDet er tid for rakettoppskytning!!!");
+        tittuler("Hvem skal sendes opp i raketten?");
+    }
+
+    public void avsluttRakett(){
+        rakett = false;
+        nyFase(DISKUSJONSFASE);
+        restartMedTimer(null, tid - 2);
+        aktiverDagsRoller();
+    }
+
+    public void plantetBombe(){
+        timer.setText(annonse + "\n\nBomben er plantet!!!");
+        timer.nyStartMin(2);
+        tittuler("Hvem vil landsbyen drepe?");
+
+        //Utsett aktor
+        if (tiltale) {
+            finnRolle(Rolle.AKTOR).aktiver(true);
+            tiltale = false;
         }
+    }
+
+    public void tiltale(){
+        Spiller tiltalt = finnOffer(Rolle.AKTOR);
+
+        if (!tiltalt.lever()) {
+            finnRolle(Rolle.AKTOR).aktiver(true);
+            tiltale = false;
+            return;
+        }
+
+        spillere.nominer(tiltalt);
+        startForsvarstale(tiltalt);
+        informer(annonse + "\n\n" + tiltalt + " står på TILTALEBENKEN!");
     }
 
     public void setVeiledning(int fase) {
@@ -699,26 +750,6 @@ public class Spill implements ActionListener {
         visMistenkte();
     }
 
-    public void rakettoppskytning() {
-        rakett = true;
-        timer.stop();
-
-        for (Spiller s : spillere.spillere())
-            if (s.lever())
-                spillere.nominer(s);
-
-        startAvstemning();
-        informer(annonse + "\nDet er tid for rakettoppskytning!!!");
-        rapporter("\nDet er tid for rakettoppskytning!!!");
-        tittuler("Hvem skal sendes opp i raketten?");
-    }
-
-    public void avsluttRakett(){
-        rakett = false;
-        nyFase(DISKUSJONSFASE);
-        restartMedTimer(null, tid - 2);
-    }
-
     public void halshugging() {
         timer.stop();
         aktiv = finnRolle(Rolle.BØDDEL);
@@ -836,7 +867,8 @@ public class Spill implements ActionListener {
                 dagensResultat();
                 return;
             }
-
+        else if (sjekkOffer(Rolle.BOMBER))
+            bombet = finnOffer(Rolle.BOMBER);
 
         tittuler(s.navn() + " ble henrettet!");
         ut = s.toString();
@@ -858,7 +890,7 @@ public class Spill implements ActionListener {
         }
 
         //Sjekk Bomberen
-        if (sjekkOffer(Rolle.BOMBER) && !aktiv(Rolle.TROMPET)) {
+        if (sjekkOffer(Rolle.BOMBER) && !aktiv(Rolle.TROMPET) && !rakett) {
             ut = detonerBombe(bombet, s);
         }
 
@@ -936,7 +968,7 @@ public class Spill implements ActionListener {
             ut += " kan ha vært hva som helst.\nPapirene er rotet bort.";
         else if (side > Rolle.MAFIOSO)
             if (s.id(Rolle.TROMPET))
-                ut += " var IKKE mafia, men var TROMPET!!!\n" +
+                ut += " var IKKE mafia, men var TROMPET!!!" +
                         "Hvem vil trompeten sprenge?";
             else
                 ut += " var IKKE mafia!";
@@ -970,7 +1002,8 @@ public class Spill implements ActionListener {
                     ut = utstemt + " var IKKE Bomberen, men var Mafia!";
                 else if (utstemt.id(Rolle.TROMPET))
                     ut = utstemt
-                            + " var IKKE Bomberen, men var TROMPET!!!\nHvem vil trompeten sprenge?";
+                            + " var IKKE Bomberen, men var TROMPET!!!" +
+                            "\nHvem vil trompeten sprenge?";
                 else
                     ut = utstemt + " var IKKE Bomberen, og heller IKKE Mafia!";
             }
@@ -1048,13 +1081,13 @@ public class Spill implements ActionListener {
     }
 
     public void dødsannonse() {
-        annonse = "Ingen døde i natt!\n";
+        annonse = "Ingen døde i natt!";
 
         døde = spillere.dødsannonse();
         if (døde.size() > 0) {
-            annonse = "";
+            annonse = "\n";
             for (Spiller s : døde)
-                annonse += s + " er død!\n";
+                annonse += s + " er død!";
         }
 
         annonse += tv.vedlegg();

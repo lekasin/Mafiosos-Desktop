@@ -23,11 +23,10 @@ public class Bomber extends Rolle {
 			offer = null;
 			return false;		
 		}
-		
-		if(spiller != null && lever()) {
-			tv.leggVed("\nBomben er plantet!!!");
+
+		if(spiller != null && lever())
 			aktiver(false);
-		}
+
 		return true;
 	}
 }

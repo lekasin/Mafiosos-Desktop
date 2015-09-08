@@ -26,7 +26,6 @@ public class Aktor extends Rolle {
 		
 		if(spiller != null) {
 			spiller.beskytt(this);
-			tv.leggVed("\n" + spiller + " står på TILTALEBENKEN!");
 			aktiver(false);
 		}
 		return true;

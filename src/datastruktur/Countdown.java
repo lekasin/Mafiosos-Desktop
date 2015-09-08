@@ -35,14 +35,10 @@ public class Countdown {
 	public void setTid(int t) {
 		tid = t;
 	}
-	
-	public void setKortTid(int t) {
-		tid = t;
-	}
-	
+
 	public void setText(String t) {
 		tekst = t;
-        spill.informer(format(tid) + "\n" + tekst);
+        spill.informer(format(tid) + tekst);
 	}
 	
 	public void stop() {
@@ -83,7 +79,7 @@ public class Countdown {
 	
 	public void startNyTimer(int t) {
 		aktiv = true;
-		spill.informer(format(tid) + "\n" + tekst);
+		spill.informer(format(tid) + tekst);
 		pause();
 		tid = t;
 		fortsett();
