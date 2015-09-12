@@ -48,25 +48,25 @@ public class Kirsten extends Rolle {
 				return false;
 			}
 
-			if(offer.side() < 0) {
+			if(kvinne.side() < 0) {
 				if(mann.side() < 0) {
-					offer.beskytt(this);
+                    kvinne.beskytt(this);
 					mann.beskytt(this);
 				} else {
 					if(snill)
-						mann.snipe(this);
+						mann.snipe(kvinne.rolle());
 					else
-						mann.drep(this);
+						mann.drep(kvinne.rolle());
 				}
 			}
 			else
 				if(mann.side() < 0) {
 					if(snill)
-						offer.snipe(this);
+                        kvinne.snipe(mann.rolle());
 					else
-						offer.drep(this);
+                        kvinne.drep(mann.rolle());
 				} else {
-					offer.beskytt(this);
+                    kvinne.beskytt(this);
 					mann.beskytt(this);
 				}
         }
