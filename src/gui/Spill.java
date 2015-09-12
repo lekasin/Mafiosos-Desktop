@@ -149,18 +149,18 @@ public class Spill implements ActionListener {
         }
 
             innhold.add(new Knapp("Avbryt", Knapp.HEL, e -> {
-            if (skalHaTimer()) {
-                nyFase(DISKUSJONSFASE);
-                restartMedTimer(null, 2);
-            } else {
-                if (forrigefase() == TIEBREAKERFASE)
-                    uavgjort(spillere.hentUtstemte());
-                else {
-                    restart(tittel, info);
-                    nyFase(forrigefase());
+                if (skalHaTimer()) {
+                    nyFase(DISKUSJONSFASE);
+                    restartMedTimer(null, 2);
+                } else {
+                    if (forrigefase() == TIEBREAKERFASE)
+                        uavgjort(spillere.hentUtstemte());
+                    else {
+                        restart(tittel, info);
+                        nyFase(forrigefase());
+                    }
                 }
-            }
-        }));
+            }));
         innhold.add(new Knapp("Godkjenn", Knapp.HEL, e -> {
             henrett(valgt);
         }
@@ -194,8 +194,9 @@ public class Spill implements ActionListener {
         vindu.oppdaterRamme(innhold);
         setTittelFarge(null);
 
-        if (sjekkRolle(Rolle.BØDDEL) && dag && finnRolle(Rolle.BØDDEL).lever())
+        if (sjekkRolle(Rolle.BØDDEL) && dag && finnRolle(Rolle.BØDDEL).lever()) {
             vindu.kontroll(new Kontroll(), fase, new Knapp("Halshugg!", Knapp.HALV, e -> halshugging()));
+        }
     }
 
     public void refresh(Rolle r) {
@@ -755,6 +756,7 @@ public class Spill implements ActionListener {
         timer.stop();
         aktiv = finnRolle(Rolle.BØDDEL);
         refresh();
+        vindu.finnKnappForRolle(innhold, Rolle.BØDDEL).setEnabled(false);
         proklamer("Hvem vil bøddelen halshugge?");
         rapporter("Hvem vil bøddelen halshugge?");
         vindu.setVeiledning(aktiv.getVeiledning());

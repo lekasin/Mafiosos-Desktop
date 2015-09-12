@@ -166,7 +166,7 @@ public class Vindu extends JFrame {
         tilbake = new Knapp("Tilbake", Knapp.HEL, al);
         kontroll.add(tilbake);
 
-        if (knapp!=null)
+        if (knapp != null)
             kontroll.add(knapp);
 
         if (fase == Oppstart.VELGROLLER) {
@@ -181,6 +181,15 @@ public class Vindu extends JFrame {
         kontroll.revalidate();
         kontroll.repaint();
         kontroll.setVisible(true);
+    }
+
+    public Knapp finnKnappForRolle(Container panel, int rolle){
+        for(Component c : panel.getComponents()){
+            if (c instanceof Knapp)
+                if (((Knapp) c).spiller().id(rolle))
+                    return (Knapp) c;
+        }
+        return null;
     }
 
     public void personknapper(JPanel panel, ActionListener al) {
@@ -237,7 +246,7 @@ public class Vindu extends JFrame {
                 k.setForeground(Color.BLACK);
                 if (k.spiller() != null) {
                     if (r == null || !r.funker() || k.spiller() == r.forbud() || k.spiller() == r.forbud2() || r.fanget() || k.spiller.fange() || !r.aktiv() ||
-                            r.id(Rolle.JØRGEN) || r.id(Rolle.BEDRAGER) || r.id(Rolle.QUISLING) ||
+                            r.id(Rolle.JØRGEN) || r.id(Rolle.BEDRAGER) || r.id(Rolle.QUISLING) || r.id(Rolle.BESTEMOR) ||
                             r.id(Rolle.BESTEVENN) || r.id(Rolle.DRØMMER) || (r.id(Rolle.ASTRONAUT) && (!r.aktiv() || k.spiller != r.spiller())) ||
                             (r.id(Rolle.SPECIAL) && r.lever()) || (r.id(Rolle.SMITH) && k.spiller().id(Rolle.SMITH)) ||
                             !r.funker() || (r.id(Rolle.OBDUK) && (k.spiller().funker() || k.spiller().skjult())))

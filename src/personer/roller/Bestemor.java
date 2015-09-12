@@ -30,7 +30,10 @@ public class Bestemor extends Rolle {
 	public boolean evne(Spiller spiller) {
 		if(this.spiller.død() || this.spiller.rolle().id(SMITH))
 			return false;
-		
+
+		//I tilfelle bestemor får velge av en eller annen grunn
+		spiller = this.spiller;
+
 		spiller.rensAlle();
 		
 		ArrayList<Spiller> besøk = tv.spillere().besøk(spiller, null);

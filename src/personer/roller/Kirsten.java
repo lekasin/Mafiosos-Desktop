@@ -22,18 +22,17 @@ public class Kirsten extends Rolle {
 
 	@Override
 	public String oppgave() {
-		mann = null;
 		fortsett = false;
 		return super.oppgave();
 	}
 
 	@Override
 	public boolean evne(Spiller spiller) {
-		if(spiller != offer)
+        if(spiller != offer)
 			return false;
-		
-		if(mann == null) {
-			mann = spiller;
+
+        if(mann == null) {
+            mann = spiller;
 			forbud2 = forbud;
 			forby(mann);
 			if(mann != kvinne) 
@@ -41,10 +40,10 @@ public class Kirsten extends Rolle {
 			return true;
 		} else {
 			offer = spiller;
-			fortsett = true;
 			kvinne = spiller;
-			
-			if(blokkert){
+			fortsett = true;
+
+            if(blokkert){
 				mann = null;
 				return false;
 			}
@@ -70,9 +69,9 @@ public class Kirsten extends Rolle {
 					offer.beskytt(this);
 					mann.beskytt(this);
 				}
-		}
-		
-		forbud2 = null;
+        }
+
+        forbud2 = null;
 		return true;
 	}
 	
@@ -88,8 +87,10 @@ public class Kirsten extends Rolle {
 				ut += ", og de er en match!";
 			else
 				ut += ", men de matcher ikke!";
-		}
+            //Reset for neste natt
+            mann = null;
+        }
 
-		return ut;
+        return ut;
 	}
 }
