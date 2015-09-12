@@ -91,7 +91,6 @@ public class Spill implements ActionListener {
             nesteRolle();
             døgn++;
             spillere.nyPekeHistorikk();
-            spillere.nyStemmeHistorikk();
         }
     }
 
@@ -115,6 +114,7 @@ public class Spill implements ActionListener {
 
         forsvarende = null;
         spillere.våknOpp();
+        spillere.nyStemmeHistorikk();
         spillere.nominerTalereOgFlyers();
         refresh();
         tittuler("Hvem er de mistenkte?");
@@ -981,7 +981,7 @@ public class Spill implements ActionListener {
                 ut += "\n\nOg dermed trer VaraMafiaen inn i hans sted!";
                 Spiller vara = finnSpiller(Rolle.VARA);
                 if (vara.lever()) {
-                    vara.setRolle(s.rolle());
+                    vara.setRolle(finnRolle(Rolle.MAFIA));
                     ((Mafia) vara.rolle()).fler();
                 }
             }

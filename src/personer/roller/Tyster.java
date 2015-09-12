@@ -27,9 +27,10 @@ public class Tyster extends Rolle {
         if (blokkert)
             return false;
 
-
         finnRolle(Rolle.MAFIA).informer(this, "\n\n" + tv.spillere().tyster(spiller, spiller.skjult()));
-        spiller.rens(finnRolle(DIDRIK));
+
+        if (finnRolle(DIDRIK) != null)
+            spiller.rens(finnRolle(DIDRIK));
         return true;
     }
 }

@@ -103,10 +103,10 @@ public class Spillerliste {
     }
 
     public Spiller hentSisteStemmeFra(Spiller k) {
-        if (stemmeHistorikk.size() < 2)
+        if (stemmeHistorikk.isEmpty())
             return null;
 
-        HashMap stemmeDag = stemmeHistorikk.get(stemmeHistorikk.size()-2);
+        HashMap stemmeDag = stemmeHistorikk.get(stemmeHistorikk.size()-1);
         if (stemmeDag != null)
             return (Spiller) stemmeDag.get(k);
         else
@@ -128,10 +128,10 @@ public class Spillerliste {
         ArrayList<Rolle> stemmer = new ArrayList<>();
         HashMap<Spiller, Spiller> stemmeDag;
 
-        if (stemmeHistorikk.size() < 2)
+        if (stemmeHistorikk.isEmpty())
             return null;
 
-        stemmeDag = stemmeHistorikk.get(stemmeHistorikk.size() - 2);
+        stemmeDag = stemmeHistorikk.get(stemmeHistorikk.size() - 1);
 
         if (stemmeDag == null)
             return stemmer;
