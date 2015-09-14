@@ -37,7 +37,7 @@ public class Marius extends Rolle {
 			ut = "";
 		
 		if(this.spiller.lever() && spiller.lever() && !blokkert) {
-            spiller.trykkOppFlyers();
+            spiller.trykkOppFlyers(this);
         }
 					
 		return true;

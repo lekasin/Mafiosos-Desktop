@@ -9,7 +9,7 @@ public class Spiller {
 	String navn, gjenstand;
 	Rolle rolle;
 	Spiller offer;
-	Rolle beskytter, forsvarer, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse;
+	Rolle beskytter, forsvarer, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse, supperpartner, grafiker;
 	int mafiarolle = 0;
 	boolean lever = true, funker = true, død = false, beskyttet = false, forsvart = false, forsinket = false,
 			reddet = false, skjult = false, løgn = false, kløna = false, nyligKlonet = false, skalKlones = false, fange = false, kidnappet = false,
@@ -97,7 +97,9 @@ public class Spiller {
 		kidnappet = false;
 		drapsmann = null;
         spiser = false;
+        supperpartner = null;
         flyers = false;
+        grafiker = null;
 		rolle.sov();
 	}
 
@@ -130,6 +132,14 @@ public class Spiller {
 			forsinkelse = null;
 			forsinket = false;
 		}
+        if (supperpartner == r){
+            supperpartner = null;
+            spiser = false;
+        }
+        if (grafiker == r){
+            grafiker = null;
+            flyers = false;
+        }
 		if(drapsmann == r) {
 			drapsmann = null;
 		}
@@ -154,6 +164,10 @@ public class Spiller {
 		kløna = false;
 		forsinkelse = null;
 		forsinket = false;
+        spiser = false;
+        supperpartner = null;
+        flyers = false;
+        grafiker = null;
 	}
 
 	public void stopp(){
@@ -177,15 +191,13 @@ public class Spiller {
 			vekk();
 	}
 
-    public void inviterPåSuppe(){
-		if (!spiser)
-			rolle().leggVed("\n\n" + navn + " spiser Friduns fiskesuppe på Den Blå Fisk.");
+    public void inviterPåSuppe(Rolle r){
+        supperpartner = r;
 		spiser = true;
     }
 
-    public void trykkOppFlyers(){
-		if (!flyers)
-			rolle().leggVed("\n\nFlyerne påstår at " + navn + " er mafia!");
+    public void trykkOppFlyers(Rolle r){
+        grafiker = r;
         flyers = true;
     }
 

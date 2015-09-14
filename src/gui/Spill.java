@@ -103,6 +103,8 @@ public class Spill implements ActionListener {
         if (sjekkOffer(Rolle.YOUTUBER) && finnSpiller(Rolle.YOUTUBER).funker())
             tv.leggVed(spillere.youtube(finnOffer(Rolle.YOUTUBER),
                     finnSpiller(Rolle.YOUTUBER).skjult()));
+        if (sjekkRolle(Rolle.RAVN) || sjekkRolle(Rolle.MARIUS))
+            tv.leggVed(spillere.leggVedInfo());
         if (sjekkOffer(Rolle.CUPID))
             spillere.cupider((Cupid) finnRolle(Rolle.CUPID));
         if (sjekkOffer(Rolle.SNYLTER))
@@ -200,7 +202,7 @@ public class Spill implements ActionListener {
     }
 
     public void refresh(Rolle r) {
-        vindu.oppdaterKnapper(innhold, this, r);
+        vindu.oppdaterKnapper(innhold, r);
         if (r == null) return;
         timer.stop();
         vindu.kontroll(new Kontroll(), -1);
@@ -275,10 +277,9 @@ public class Spill implements ActionListener {
     public void nesteRolle() {
         if (i.hasNext()) {
             Rolle r = i.next();
+            r.autoEvne();
 
             while (!r.aktiv() || r == aktiv) {
-                if (r.id(Rolle.JESUS) || r.id(Rolle.BESTEMOR) || r.id(Rolle.TYSTER))
-                    r.oppgave();
                 if (i.hasNext())
                     r = i.next();
                 else

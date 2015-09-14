@@ -83,10 +83,11 @@ public class Kirsten extends Rolle {
 		else
 			ut += " valgte ingen.";
 		if(mann != offer) {
-			if(mann.side() == offer.side())
+			if((mann.side() < 0 && offer.side() < 0) || mann.side() >= 0 && offer.side() >= 0)
 				ut += ", og de er en match!";
 			else
 				ut += ", men de matcher ikke!";
+
             //Reset for neste natt
             mann = null;
         }

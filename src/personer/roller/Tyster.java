@@ -16,10 +16,9 @@ public class Tyster extends Rolle {
     }
 
     @Override
-    public String oppgave() {
+    public void autoEvne() {
         if (tv.spillere().hentSisteStemmeFra(spiller) != null)
             evne(spiller);
-        return super.oppgave();
     }
 
     @Override

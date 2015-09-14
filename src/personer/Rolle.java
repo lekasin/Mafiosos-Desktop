@@ -378,4 +378,5 @@ public abstract class Rolle {
 	//Evner/Arv
 	public abstract boolean evne(Spiller spiller);
 
+    public void autoEvne(){}
 }

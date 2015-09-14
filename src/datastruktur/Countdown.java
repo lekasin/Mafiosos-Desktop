@@ -67,6 +67,7 @@ public class Countdown {
 	public void fortsett() {
 		start = new Start();
 		timer.schedule(start, 0, 1000);
+		klokke.setVisible(true);
 	}
 	
 	public void nyStartSek(int t) {

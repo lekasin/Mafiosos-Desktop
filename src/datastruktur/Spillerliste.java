@@ -106,7 +106,7 @@ public class Spillerliste {
         if (stemmeHistorikk.isEmpty())
             return null;
 
-        HashMap stemmeDag = stemmeHistorikk.get(stemmeHistorikk.size()-1);
+        HashMap stemmeDag = stemmeHistorikk.get(stemmeHistorikk.size() - 1);
         if (stemmeDag != null)
             return (Spiller) stemmeDag.get(k);
         else
@@ -228,7 +228,7 @@ public class Spillerliste {
     public Rolle tylersRolle() {
         int id = -1;
         Random random = new Random();
-        while (finnSpillerSomEr(id) == null || id == Rolle.TYLER || !finnRolle(id).fortsetter() || id == Rolle.CUPID || id == Rolle.KIRSTEN || id == Rolle.COPYCAT || id == Rolle.BERIT)
+        while (finnSpillerSomEr(id) == null || id == Rolle.TYLER || !finnRolle(id).fortsetter() || id == Rolle.CUPID || id == Rolle.KIRSTEN || id == Rolle.COPYCAT || id == Rolle.BERIT || (id == Rolle.PRINCESS && !finnRolle(Rolle.PRINCESS).funker()))
             id = random.nextInt((Rolle.MARIUS - Rolle.UNDERCOVER) + 1) + Rolle.UNDERCOVER;
         return finnRolle(id);
     }
@@ -514,8 +514,7 @@ public class Spillerliste {
             ut += "På Youtube ser vi at " + new Random().nextInt(5) + " spillere besøkte " + spiller + " i natt!";
             if (!spiller.lever())
                 ut += "\nVi ser også at " + spiller + " var " + randomRolle(-1, 100, -1) + "!";
-        }
-        else {
+        } else {
             ut += "På Youtube ser vi at " + besøk(spiller, finnSpillerSomEr(Rolle.YOUTUBER)).size() + " spillere besøkte " + spiller + " i natt!";
             if (!spiller.lever() && !spiller.id(Rolle.BESTEMOR)) {
                 ut += "\nVi ser også at " + spiller + " var " + spiller.rolle() + "!";
@@ -526,23 +525,36 @@ public class Spillerliste {
         return ut;
     }
 
+    public String leggVedInfo() {
+        String ut = "";
+        for (Spiller s : levende()) {
+            if (s.spiser())
+                ut += "\n\n" + s + " spiser Friduns fiskesuppe på Den Blå Fisk.";
+            if (s.harFlyers())
+                ut += "\n\nFlyerne påstår at " + s + " er mafia!";
+        }
+
+        return ut;
+    }
+
     public void snylt(Spiller snylter) {
         if (!snylter.funker()) return;
         Spiller spiller = snylter.offer();
+        Rolle r = snylter.rolle();
 
         if (spiller.rolle().blokkert()) return;
 
-        if (!spiller.lever())       snylter.rolle().drep();
-        if (spiller.beskyttet())    snylter.beskytt(spiller.beskytter());
-        if (spiller.forsvart())     snylter.forsvar(spiller.forsvarer());
-        if (spiller.reddet())       snylter.redd(spiller.redning());
-        if (spiller.løgn())         snylter.lyv(spiller.løgner());
-        if (spiller.skjult())       snylter.skjul(spiller.skjuler());
-        if (spiller.kløna())        snylter.kløn(spiller.kløne());
-        if (spiller.skalKlones())   snylter.klon(finnRolle(Rolle.SMITH));
-        if (spiller.kidnappet())    snylter.kidnapp(finnRolle(Rolle.PRINCESS));
-        if (spiller.harFlyers())    snylter.trykkOppFlyers();
-        if (spiller.spiser())       snylter.inviterPåSuppe();
+        if (!spiller.lever()) snylter.rolle().drep();
+        if (spiller.beskyttet()) snylter.beskytt(r);
+        if (spiller.forsvart()) snylter.forsvar(r);
+        if (spiller.reddet()) snylter.redd(r);
+        if (spiller.løgn()) snylter.lyv(r);
+        if (spiller.skjult()) snylter.skjul(r);
+        if (spiller.kløna()) snylter.kløn(r);
+        if (spiller.skalKlones()) snylter.klon(finnRolle(Rolle.SMITH));
+        if (spiller.kidnappet()) snylter.kidnapp(finnRolle(Rolle.PRINCESS));
+        if (spiller.harFlyers()) snylter.trykkOppFlyers(r);
+        if (spiller.spiser()) snylter.inviterPåSuppe(r);
 
     }
 
@@ -553,32 +565,32 @@ public class Spillerliste {
 
         if (kvinne.rolle().blokkert()) ; //HMMMMMMM
         if (!kvinne.lever() && !(kvinne.id(Rolle.QUISLING) && kvinne.drapsmann().id(Rolle.MAFIA)))
-                                mann.drep(finnRolle(Rolle.CUPID));
+            mann.drep(finnRolle(Rolle.CUPID));
         if (kvinne.beskyttet()) mann.beskytt(kvinne.beskytter());
-        if (kvinne.forsvart())  mann.forsvar(kvinne.forsvarer());
-        if (kvinne.reddet())    mann.redd(kvinne.redning());
-        if (kvinne.løgn())      mann.lyv(kvinne.løgner());
-        if (kvinne.skjult())    mann.skjul(kvinne.skjuler());
-        if (kvinne.kløna())     mann.kløn(kvinne.kløne());
-        if (kvinne.skalKlones())mann.klon(finnRolle(Rolle.SMITH));
+        if (kvinne.forsvart()) mann.forsvar(kvinne.forsvarer());
+        if (kvinne.reddet()) mann.redd(kvinne.redning());
+        if (kvinne.løgn()) mann.lyv(kvinne.løgner());
+        if (kvinne.skjult()) mann.skjul(kvinne.skjuler());
+        if (kvinne.kløna()) mann.kløn(kvinne.kløne());
+        if (kvinne.skalKlones()) mann.klon(finnRolle(Rolle.SMITH));
         if (kvinne.kidnappet()) mann.kidnapp(finnRolle(Rolle.PRINCESS));
-        if (kvinne.harFlyers()) mann.trykkOppFlyers();
-        if (kvinne.spiser())    mann.inviterPåSuppe();
+        if (kvinne.harFlyers()) mann.trykkOppFlyers(cupid);
+        if (kvinne.spiser()) mann.inviterPåSuppe(cupid);
 
 
         if (mann.rolle().blokkert()) ;//HMMMMMMM
         if (!mann.lever() && !(mann.id(Rolle.QUISLING) && mann.drapsmann().id(Rolle.MAFIA)))
-                                kvinne.drep(finnRolle(Rolle.CUPID));
-        if (mann.beskyttet())   kvinne.beskytt(kvinne.beskytter());
-        if (mann.forsvart())    kvinne.forsvar(kvinne.forsvarer());
-        if (mann.reddet())      kvinne.redd(kvinne.redning());
-        if (mann.løgn())        kvinne.lyv(kvinne.løgner());
-        if (mann.skjult())      kvinne.skjul(kvinne.skjuler());
-        if (mann.kløna())       kvinne.kløn(kvinne.kløne());
-        if (mann.skalKlones())  kvinne.klon(finnRolle(Rolle.SMITH));
-        if (mann.kidnappet())   kvinne.kidnapp(finnRolle(Rolle.PRINCESS));
-        if (mann.harFlyers())   kvinne.trykkOppFlyers();
-        if (mann.spiser())      kvinne.inviterPåSuppe();
+            kvinne.drep(finnRolle(Rolle.CUPID));
+        if (mann.beskyttet()) kvinne.beskytt(kvinne.beskytter());
+        if (mann.forsvart()) kvinne.forsvar(kvinne.forsvarer());
+        if (mann.reddet()) kvinne.redd(kvinne.redning());
+        if (mann.løgn()) kvinne.lyv(kvinne.løgner());
+        if (mann.skjult()) kvinne.skjul(kvinne.skjuler());
+        if (mann.kløna()) kvinne.kløn(kvinne.kløne());
+        if (mann.skalKlones()) kvinne.klon(finnRolle(Rolle.SMITH));
+        if (mann.kidnappet()) kvinne.kidnapp(finnRolle(Rolle.PRINCESS));
+        if (mann.harFlyers()) kvinne.trykkOppFlyers(cupid);
+        if (mann.spiser()) kvinne.inviterPåSuppe(cupid);
 
         cupid.nullstill();
     }

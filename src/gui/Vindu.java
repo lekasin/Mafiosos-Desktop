@@ -183,8 +183,8 @@ public class Vindu extends JFrame {
         kontroll.setVisible(true);
     }
 
-    public Knapp finnKnappForRolle(Container panel, int rolle){
-        for(Component c : panel.getComponents()){
+    public Knapp finnKnappForRolle(Container panel, int rolle) {
+        for (Component c : panel.getComponents()) {
             if (c instanceof Knapp)
                 if (((Knapp) c).spiller().id(rolle))
                     return (Knapp) c;
@@ -237,8 +237,13 @@ public class Vindu extends JFrame {
         }
     }
 
-    public void oppdaterKnapper(JPanel panel, ActionListener al, Rolle r) {
+    public void oppdaterKnapper(JPanel panel, Rolle r) {
         Component[] knapper = panel.getComponents();
+
+        if (r.id(Rolle.OBDUK)) {
+            visDødeKnapper(panel);
+            return;
+        }
 
         for (Component c : knapper) {
             if (c instanceof Knapp) {
@@ -262,6 +267,28 @@ public class Vindu extends JFrame {
         }
         panel.revalidate();
         panel.repaint();
+    }
+
+    public void visDødeKnapper(JPanel panel) {
+        Component[] knapper = panel.getComponents();
+
+        for (Component c : knapper) {
+            if (c instanceof Knapp) {
+                Knapp k = (Knapp) c;
+                Spiller s = k.spiller();
+                k.setForeground(Color.BLACK);
+
+                if (s != null && !s.funker() || s.id(Rolle.ZOMBIE) && s.rolle().aktiv())
+                    k.setEnabled(true);
+                else
+                    k.setEnabled(false);
+
+            } else if (c instanceof JPanel)
+                panel.remove(c);
+        }
+        panel.revalidate();
+        panel.repaint();
+
     }
 
     public void nullstillKnapper(JPanel panel, ActionListener al) {

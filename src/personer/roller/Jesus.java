@@ -31,22 +31,20 @@ public class Jesus extends Rolle {
 	public Spiller frelst() {
 		return frelst;
 	}
-	
+
 	@Override
-	public String oppgave() {
-		// TODO Auto-generated method stub
-		if(frelst != null && lever()) {
-			frelst.beskytt(this);
-			frelst.forsvar(this);
-			this.spiller.beskytt(this);
-		}
-		else if(!lever()) 
-			dag--;
-			
-		if(oppstanden()) 
-			tv.leggVed("\nJESUS (aka " + spiller + ") ER OPPSTANDEN!!!");
-		return super.oppgave();
-	}
+	public void autoEvne() {
+        if(frelst != null && lever()) {
+            frelst.beskytt(this);
+            frelst.forsvar(this);
+            this.spiller.beskytt(this);
+        }
+        else if(!lever())
+            dag--;
+
+        if(oppstanden())
+            tv.leggVed("\nJESUS (aka " + spiller + ") ER OPPSTANDEN!!!");
+    }
 
 	@Override
 	public boolean evne(Spiller spiller) {

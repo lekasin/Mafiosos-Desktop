@@ -35,7 +35,7 @@ public class Ravn extends Rolle {
 			ut = "";
 		
 		if(this.spiller.lever() && spiller.lever() && !blokkert) {
-            spiller.inviterPåSuppe();
+            spiller.inviterPåSuppe(this);
         }
 
 		return true;
