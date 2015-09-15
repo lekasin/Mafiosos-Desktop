@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -46,10 +47,10 @@ public class Arving extends Rolle {
 			if(spiller.nyligKlonet())
 				return super.oppgave();
 
-			tv.vis("Arvingen har nå arvet rollen " + riking.rolle() + "!");
+			TvUtil.vis("Arvingen har nå arvet rollen " + riking.rolle() + "!");
 			if(informert) 
-				tv.leggtil(info);
-			tv.toFront();
+				TvUtil.leggTil(info);
+			TvUtil.toFront();
 			arvet = true;
 			return "Arvingen våkner";
 		}

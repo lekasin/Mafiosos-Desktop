@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -74,7 +75,7 @@ public class Mafia extends Rolle {
 		if(spiller == null) return false;
 		
 		offer = spiller;
-		for(Spiller s: tv.spillere().spillere())
+		for(Spiller s: Spill.spillere.spillere())
 			if(s.id(MAFIA) && s.funker()){
 				s.setOffer(spiller);
 				if(!this.spiller.lever())

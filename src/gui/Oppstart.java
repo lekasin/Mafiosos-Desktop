@@ -18,7 +18,6 @@ public class Oppstart implements ActionListener {
     JTextField navnefelt;
     JLabel tekst;
     Vindu vindu;
-    TV tv;
     Spillerliste spillere;
 
     Rolle[] roller;
@@ -32,7 +31,6 @@ public class Oppstart implements ActionListener {
 
     public Oppstart(Vindu vindu) {
         this.vindu = vindu;
-        this.tv = vindu.tv;
         this.spillere = vindu.spillere;
         this.innhold = vindu.innhold;
 
@@ -62,7 +60,7 @@ public class Oppstart implements ActionListener {
         fortsett.setVisible(true);
         Knapp fjern = new Knapp("Fjern", Knapp.HEL, e -> {
                 String n = navnefelt.getText();
-                if (spillere.finnSpiller(n) != null)
+                if (spillere.finnSpillerMedNavn(n) != null)
                     antallspillere--;
                 spillere.fjern(n);
                 informer(spillere.toString());
@@ -351,12 +349,12 @@ public class Oppstart implements ActionListener {
     }
 
     public void informer(String informasjon) {
-        tv.vis(informasjon);
+        TvUtil.vis(informasjon);
         vindu.info.setText(informasjon);
     }
 
     private void visRoller(String rollerListe) {
-        tv.visRoller(rollerListe);
+        TvUtil.visRoller(rollerListe);
     }
 
     public void inverserKnapper(Knapp knapp) {
@@ -494,7 +492,7 @@ public class Oppstart implements ActionListener {
         if (fase == VELGSPILLERE) {
             if (navnefelt.getText().matches("[0-9]|[0-9][0-9]")) {
                 tid = Integer.parseInt(navnefelt.getText());
-            } else if (spillere.finnSpiller(navnefelt.getText()) == null) {
+            } else if (spillere.finnSpillerMedNavn(navnefelt.getText()) == null) {
                 spillere.leggTil(new Spiller(navnefelt.getText()));
                 antallspillere++;
                 informer(spillere.toString());
@@ -549,9 +547,9 @@ public class Oppstart implements ActionListener {
             }
         } else if (fase == VELGGJENSTANDER) {
             gjenstander.add(k.getText());
-            tv.leggtil("\n" + k.getText());
+            TvUtil.leggTil("\n" + k.getText());
 
-            vindu.informer(tv.tv.getText());
+            vindu.informer(TvUtil.getText());
 
             if (gjenstander.size() == spillere.spillere().size()) {
                 spillere.fordelGjenstander(gjenstander);

@@ -1,5 +1,7 @@
 package personer.roller;
 
+import gui.Spill;
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -24,12 +26,12 @@ public class Obduksjonist extends Rolle {
 		if(spiller.nyligKlonet())
 			return super.oppgave();
 
-		tv.vis("Hvem vil Obduksjonisten undersøke?\n");
+		TvUtil.vis("Hvem vil Obduksjonisten undersøke?\n");
 		int i = 1;
-		for(Spiller s: tv.spillere().lik())
-			tv.leggtil("\n" + i++ + " " + s);
+		for(Spiller s: Spill.spillere.lik())
+			TvUtil.leggTil("\n" + i++ + " " + s);
 
-		if(informert) tv.leggtil(info);
+		if(informert) TvUtil.leggTil(info);
 		return oppgave;
 	}
 
@@ -43,7 +45,7 @@ public class Obduksjonist extends Rolle {
 	public boolean evne(Spiller spiller) {
 		ut += "\n\n";
 		if(this.spiller.skjult())
-			ut += "Obduksjonen viser at " + spiller + " var " + tv.spillere().randomSpiller(this.spiller).rolle() + "!";
+			ut += "Obduksjonen viser at " + spiller + " var " + Spill.spillere.randomSpiller(this.spiller).rolle() + "!";
 		else {
 			if(!spiller.id(Rolle.ZOMBIE) && !spiller.id(Rolle.MAFIA) && !spiller.id(Rolle.POLITI)) 
 				spiller.rolle().aktiver(false);
@@ -54,7 +56,7 @@ public class Obduksjonist extends Rolle {
 			return false;
 
 		spiller.skjul(this);
-		tv.leggVed(ut);
+		TvUtil.leggVed(ut);
 		return true;
 	}
 }

@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -19,12 +20,12 @@ public class Bedrager extends Rolle {
 	@Override
 	public String oppgave() {
         aktiver(false);
-		tv.toFront();
+		TvUtil.toFront();
         if (klonet)
             return super.oppgave();
 
-		tv.bedrag();
-		if(informert) tv.leggtil(info);
+		TvUtil.visMafiaer();
+		if(informert) TvUtil.leggTil(info);
 		return oppgave;
 	}
 

@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 public class Vindu extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    TV tv;
     JPanel rammeverk, header, innhold, display, kontroll, rammen;
     JLabel overskrift, klokke;
     JTextArea info, veiledning;
@@ -34,7 +33,7 @@ public class Vindu extends JFrame {
 
         super(tittel);
         this.spillere = spillere;
-        tv = new TV("MafiososInfo", spillere);
+        TvUtil.setTv(spillere);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -322,10 +321,7 @@ public class Vindu extends JFrame {
     }
 
     public void visSkjulTvRamme() {
-        tv.dispose();
-        tv.setUndecorated(!tv.isUndecorated());
-        tv.setExtendedState(MAXIMIZED_BOTH);
-        tv.setVisible(true);
+        TvUtil.visSkjulRamme();
     }
 
     public void setVeiledning(String tekst) {

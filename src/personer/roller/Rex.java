@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -27,19 +28,19 @@ public class Rex extends Rolle {
 	
 	@Override
 	public boolean evne(Spiller spiller) {
-		tv.toFront();
+		TvUtil.toFront();
 		
 		ut += spiller + " har hatt besøk av disse";
 		if(forsinkelse != null) 
 			ut += " forrige natt";
-		ut += ":" + tv.rex(spiller) ;
+		ut += ":" + TvUtil.hentRextLukter(spiller);
 		
 		if(blokkert){
 			if(blokk != forsinkelse) ut = "Rex ble blokkert forrige natt!\n\n";
-			tv.vis("Rex er blokkert!");
+			TvUtil.vis("Rex er blokkert!");
 			return false;
 		}
-		tv.vis(ut);
+		TvUtil.vis(ut);
 		return true;
 	}
 }

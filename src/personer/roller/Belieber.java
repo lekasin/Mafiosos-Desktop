@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -42,8 +43,8 @@ public class Belieber extends Rolle {
 	public boolean evne(Spiller spiller) {
 		justin = spiller;
 		justin.rolle().informer(this, "\n\n" + spiller +", " + this.spiller.navn() + " er nå din belieber!");
-		tv.vis("Belieberen er nå en " + spiller.rolle() + "liber!");
-		tv.toFront();
+		TvUtil.vis("Belieberen er nå en " + spiller.rolle() + "liber!");
+		TvUtil.toFront();
 		aktiver(false);
 		return true;
 	}

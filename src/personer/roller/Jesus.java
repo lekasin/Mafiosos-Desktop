@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -43,7 +44,7 @@ public class Jesus extends Rolle {
             dag--;
 
         if(oppstanden())
-            tv.leggVed("\nJESUS (aka " + spiller + ") ER OPPSTANDEN!!!");
+            TvUtil.leggVed("\nJESUS (aka " + spiller + ") ER OPPSTANDEN!!!");
     }
 
 	@Override

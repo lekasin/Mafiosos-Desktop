@@ -1,6 +1,7 @@
 
 package personer;
 
+import gui.Spill;
 import personer.roller.Bestemor;
 import personer.roller.Smith;
 
@@ -268,7 +269,7 @@ public class Spiller {
 	
 	public void kidnapp(Rolle r) {
 		kidnappet = true;
-		rolle.tv.spillere().kidnappSpiller(this);
+        Spill.spillere.kidnappSpiller(this);
 	}
 	
 	public void fang() {

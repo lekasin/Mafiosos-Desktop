@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -35,7 +36,7 @@ public class CopyCat extends Rolle {
 		if(!kopi) {
 			forby(spiller);
 			kopi = true;
-			tv.vis("Hvem vil Copycaten velge?");
+			TvUtil.vis("Hvem vil Copycaten velge?");
 			if(blokkert)
 				return false;
 			negativ = spiller;

@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -32,17 +33,17 @@ public class Quisling extends Rolle {
 	public String oppgave() {
 		// TODO Auto-generated method stub
 		if(spiller.rolle() == this) {
-			tv.quisling(lever, spiller);
+			TvUtil.visQuislingBeskjed(lever, spiller);
 		}
 		else {
 			if(funker) funk(false);
-			tv.vis("Quisling har allerede konvertert.");
+			TvUtil.vis("Quisling har allerede konvertert.");
 		}
 		if(spiller.nyligKlonet())
 			return super.oppgave();
 
-		if(informert) tv.leggtil(info);
-		tv.toFront();
+		if(informert) TvUtil.leggTil(info);
+		TvUtil.toFront();
 		return oppgave;
 	}
 	

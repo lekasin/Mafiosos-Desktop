@@ -16,7 +16,6 @@ public class Innstillinger extends JFrame implements ActionListener {
     Oppstart oppstart;
     Spill spill;
     Spillerliste spillere;
-    TV tv;
     Vindu vindu;
     JMenuBar menuBar;
     JPanel innhold;
@@ -26,7 +25,6 @@ public class Innstillinger extends JFrame implements ActionListener {
         oppstart = o;
         vindu = oppstart.vindu;
         spillere = sl;
-        tv = oppstart.tv;
 
         start();
     }
@@ -36,7 +34,6 @@ public class Innstillinger extends JFrame implements ActionListener {
         spill = s;
         vindu = spill.vindu;
         spillere = sl;
-        tv = spill.tv;
 
         start();
     }
@@ -113,7 +110,7 @@ public class Innstillinger extends JFrame implements ActionListener {
                     .showInputDialog("Skriv inn skriftstørrelse (Standard: 30)");
             if (input.matches("\\d{1,2}")) {
                 int størrelse = Integer.parseInt(input);
-                tv.setFont(størrelse);
+                TvUtil.setFont(størrelse);
             }
         }
 
@@ -135,7 +132,7 @@ public class Innstillinger extends JFrame implements ActionListener {
             String input = JOptionPane.showInputDialog("Navn på spiller:");
             if (input.length() == 0)
                 return;
-            if (spillere.finnSpiller(input) != null)
+            if (spillere.finnSpillerMedNavn(input) != null)
                 JOptionPane.showMessageDialog(this, "Finnes allerede!");
             else
                 leggTilSpiller(input);
@@ -152,7 +149,7 @@ public class Innstillinger extends JFrame implements ActionListener {
 
     // KNAPPEFUNKSJONER
     public void leggTilSpiller(String navn) {
-        if (spillere.finnSpiller(navn) == null) {
+        if (spillere.finnSpillerMedNavn(navn) == null) {
             spillere.leggTil(new Spiller(navn));
             oppstart.antallspillere++;
             oppstart.informer(spillere.rolleString(oppstart.roller,

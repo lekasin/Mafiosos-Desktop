@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -30,7 +31,7 @@ public class Smith extends Rolle {
 	
 	@Override
 	public boolean pek(Spiller spiller) {
-		for(Spiller s: tv.spillere().spillere())
+		for(Spiller s: Spill.spillere.spillere())
 			if(s.id(SMITH) && s.funker()){
 				s.setOffer(spiller);
 				if(!this.spiller.lever() && spiller.lever())

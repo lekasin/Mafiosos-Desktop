@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -29,15 +30,15 @@ public class Hammer extends Rolle {
 	
 	@Override
 	public boolean evne(Spiller spiller) {
-		tv.toFront();
+		TvUtil.toFront();
 		if(blokkert){
-			tv.vis("Hammer ble blokkert");
+			TvUtil.vis("Hammer ble blokkert");
 			return false;
 		}
 		
 		if(søk == 0 || valgt != spiller) {
 			valgt = spiller; 
-			tv.vis("Ikke nok research");
+			TvUtil.vis("Ikke nok research");
 			søk = 1;
 		}
 		else if(valgt == spiller){
@@ -46,7 +47,7 @@ public class Hammer extends Rolle {
 			ut = spiller + " er ";
 			if(resultat >= 0) ut += "ikke ";
 			ut += "mafia!";
-			tv.vis(ut);
+			TvUtil.vis(ut);
 			søk = 0;
 			valgt = null;
 		}

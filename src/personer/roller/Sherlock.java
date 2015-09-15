@@ -1,5 +1,7 @@
 package personer.roller;
 
+import gui.Spill;
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -28,10 +30,10 @@ public class Sherlock extends Rolle {
 
 	@Override
 	public boolean evne(Spiller spiller) {
-		tv.toFront();
+		TvUtil.toFront();
 		
 		if(this.spiller.skjult())
-			ut += spiller + " har besøkt " + tv.spillere().randomSpiller(null, spiller.offer());
+			ut += spiller + " har besøkt " + Spill.spillere.randomSpiller(null, spiller.offer());
 		else if(spiller.offer() != null)
 			ut += spiller + " har besøkt " + spiller.offer();
 		else 
@@ -41,11 +43,11 @@ public class Sherlock extends Rolle {
 		
 		if(blokkert){
 			if(blokk != forsinkelse) ut = "Sherlock ble blokkert forrige natt!\n\n";
-			tv.vis("Sherlock er blokkert!");
+			TvUtil.vis("Sherlock er blokkert!");
 			return false;
 		}
 		
-		tv.vis(ut);
+		TvUtil.vis(ut);
 		return true;
 	}
 }

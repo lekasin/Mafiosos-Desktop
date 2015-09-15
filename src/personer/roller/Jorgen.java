@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -24,12 +25,12 @@ public class Jorgen extends Rolle {
 			return super.oppgave();
 
 		if(blokkert)
-			tv.vis("Noen blokkerte Jørgen fra å gjøre jobben sin");
+			TvUtil.vis("Noen blokkerte Jørgen fra å gjøre jobben sin");
 		else
-			tv.jørgen();
+			TvUtil.visJørgensListe();
 		if(informert) 
-			tv.leggtil(info);
-		tv.toFront();
+			TvUtil.leggTil(info);
+		TvUtil.toFront();
 		return oppgave;
 	}
 	
@@ -37,11 +38,11 @@ public class Jorgen extends Rolle {
 	@Override
 	public boolean evne(Spiller spiller) {
 		if(blokkert) {
-			tv.vis("Noen blokkerte Jørgen fra å gjøre jobben sin");
+			TvUtil.vis("Noen blokkerte Jørgen fra å gjøre jobben sin");
 			return false;
 		}
 		
-		tv.jørgen();
+		TvUtil.visJørgensListe();
 		return true;
 	}
 }

@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -35,11 +36,11 @@ public class Sofasurfer extends Rolle {
 	}
 	@Override
 	public boolean evne(Spiller spiller) {
-		tv.toFront();
+		TvUtil.toFront();
 		
 		if(blokkert) {
 			ut += "Du ble blokkert og kom deg ikke ut døra!";
-			tv.vis(ut);
+			TvUtil.vis(ut);
 			return false;
 		}
 
@@ -48,7 +49,7 @@ public class Sofasurfer extends Rolle {
 
 		valgt = spiller;
 		aktiver(false);
-		tv.vis(ut);
+		TvUtil.vis(ut);
 		
 		return true;
 	}

@@ -1,6 +1,5 @@
 package datastruktur;
 
-import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 import personer.roller.*;
@@ -29,12 +28,12 @@ public class Spillerliste {
     }
 
     public void leggTil(Spiller s) {
-        if (finnSpiller(s.navn()) == null)
+        if (finnSpillerMedNavn(s.navn()) == null)
             spillere.add(s);
     }
 
     public void fjern(String s) {
-        spillere.remove(finnSpiller(s));
+        spillere.remove(finnSpillerMedNavn(s));
     }
 
     public void våknOpp() {
@@ -189,7 +188,7 @@ public class Spillerliste {
                 return 3;
             else
                 return 1;
-        } else if (fanger == snille + slemme - 1 && finnSpillerSomEr(Rolle.PRINCESS).lever())
+        } else if (fanger == snille + slemme - 1 && finnSpiller(Rolle.PRINCESS).lever())
             return 5;
         else
             return 0;
@@ -199,13 +198,13 @@ public class Spillerliste {
         return spillere.size();
     }
 
-    public Spiller finnSpiller(String n) {
+    public Spiller finnSpillerMedNavn(String n) {
         for (Spiller s : spillere)
             if (s.navn().equals(n)) return s;
         return null;
     }
 
-    public Spiller finnSpillerSomEr(int id) {
+    public Spiller finnSpiller(int id) {
         for (Spiller s : spillere)
             if (s.id(id)) return s;
         return null;
@@ -217,10 +216,22 @@ public class Spillerliste {
         return null;
     }
 
+    public Spiller finnOffer(int id) {
+        return finnRolle(id).offer();
+    }
+
+    public Boolean sjekkRolle(int id) {
+        return finnRolle(id) != null;
+    }
+
+    public Boolean sjekkOffer(int id) {
+        return sjekkRolle(id) && finnOffer(id) != null;
+    }
+
     public Rolle randomRolle(int nedre, int øvre, int eks) {
         int id = -1;
         Random random = new Random();
-        while (finnSpillerSomEr(id) == null || id == eks || !finnRolle(id).fortsetter())
+        while (finnSpiller(id) == null || id == eks || !finnRolle(id).fortsetter())
             id = random.nextInt((øvre - nedre) + 1) + nedre;
         return finnRolle(id);
     }
@@ -228,7 +239,7 @@ public class Spillerliste {
     public Rolle tylersRolle() {
         int id = -1;
         Random random = new Random();
-        while (finnSpillerSomEr(id) == null || id == Rolle.TYLER || !finnRolle(id).fortsetter() || id == Rolle.CUPID || id == Rolle.KIRSTEN || id == Rolle.COPYCAT || id == Rolle.BERIT || (id == Rolle.PRINCESS && !finnRolle(Rolle.PRINCESS).funker()))
+        while (finnSpiller(id) == null || id == Rolle.TYLER || !finnRolle(id).fortsetter() || id == Rolle.CUPID || id == Rolle.KIRSTEN || id == Rolle.COPYCAT || id == Rolle.BERIT || (id == Rolle.PRINCESS && !finnRolle(Rolle.PRINCESS).funker()))
             id = random.nextInt((Rolle.MARIUS - Rolle.UNDERCOVER) + 1) + Rolle.UNDERCOVER;
         return finnRolle(id);
     }
@@ -362,6 +373,16 @@ public class Spillerliste {
                 utstemte.add(s);
             }
         }
+
+        return utstemte;
+    }
+
+    public ArrayList<Spiller> hentUtstemte(Spiller ordfører) {
+        ArrayList<Spiller> utstemte = hentUtstemte();
+
+        //Fjern ordførers stemme ved uavgjort
+        if (utstemte.size() > 1 && ordfører.lever() && utstemte.contains(stemmer.get(ordfører)))
+            utstemte.remove(stemmer.get(ordfører));
 
         return utstemte;
     }
@@ -515,7 +536,7 @@ public class Spillerliste {
             if (!spiller.lever())
                 ut += "\nVi ser også at " + spiller + " var " + randomRolle(-1, 100, -1) + "!";
         } else {
-            ut += "På Youtube ser vi at " + besøk(spiller, finnSpillerSomEr(Rolle.YOUTUBER)).size() + " spillere besøkte " + spiller + " i natt!";
+            ut += "På Youtube ser vi at " + besøk(spiller, finnSpiller(Rolle.YOUTUBER)).size() + " spillere besøkte " + spiller + " i natt!";
             if (!spiller.lever() && !spiller.id(Rolle.BESTEMOR)) {
                 ut += "\nVi ser også at " + spiller + " var " + spiller.rolle() + "!";
                 if (!spiller.id(Rolle.ZOMBIE) && !spiller.id(Rolle.MAFIA) && !spiller.id(Rolle.POLITI))
@@ -626,15 +647,15 @@ public class Spillerliste {
     public String jørgensListe() {
         String ut = "Jørgens notater:";
 
-        if (finnSpillerSomEr(Rolle.JØRGEN) == null)
+        if (finnSpiller(Rolle.JØRGEN) == null)
             return ut;
 
         for (Spiller s : spillere)
             if (!s.funker())
-                if (!finnSpillerSomEr(Rolle.JØRGEN).skjult())
+                if (!finnSpiller(Rolle.JØRGEN).skjult())
                     ut += "\n" + s + " var " + s.rolle();
                 else
-                    ut += "\n" + s + " var " + randomSpiller(finnSpillerSomEr(Rolle.JØRGEN)).rolle();
+                    ut += "\n" + s + " var " + randomSpiller(finnSpiller(Rolle.JØRGEN)).rolle();
         return ut;
     }
 
@@ -647,15 +668,15 @@ public class Spillerliste {
                 teller++;
             }
 
-        if (finnSpillerSomEr(Rolle.REX).skjult()) {
+        if (finnSpiller(Rolle.REX).skjult()) {
             ut = "";
             if (teller > 0)
                 while (teller > 0) {
-                    ut += "\n" + randomSpiller(finnSpillerSomEr(Rolle.REX));
+                    ut += "\n" + randomSpiller(finnSpiller(Rolle.REX));
                     teller--;
                 }
             else
-                ut += "\n" + randomSpiller(finnSpillerSomEr(Rolle.REX));
+                ut += "\n" + randomSpiller(finnSpiller(Rolle.REX));
             return ut;
         } else if (teller > 0)
             return ut;

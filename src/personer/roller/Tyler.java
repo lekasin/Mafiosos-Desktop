@@ -1,5 +1,7 @@
 package personer.roller;
 
+import gui.Spill;
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -28,15 +30,15 @@ public class Tyler extends Rolle {
             return super.oppgave();
 
 		if(funker) {
-			rolle = tv.spillere().tylersRolle();
+			rolle = Spill.spillere.tylersRolle();
 			original = rolle.spiller();
 			rolle.setSpiller(this.spiller);
 		}
-		tv.vis("Tyler er nå " + rolle + "!\n");
+		TvUtil.vis("Tyler er nå " + rolle + "!\n");
 
-		tv.leggtil(oppgave);
-		tv.toFront();
-		if(informert) tv.leggtil(info);
+		TvUtil.leggTil(oppgave);
+		TvUtil.toFront();
+		if(informert) TvUtil.leggTil(info);
 
 		return oppgave;
 	}

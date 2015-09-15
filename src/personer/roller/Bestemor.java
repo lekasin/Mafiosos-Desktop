@@ -2,6 +2,8 @@ package personer.roller;
 
 import java.util.ArrayList;
 
+import gui.Spill;
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -27,7 +29,7 @@ public class Bestemor extends Rolle {
 
         spiller.rensAlle();
 
-        ArrayList<Spiller> besøk = tv.spillere().besøk(spiller, null);
+        ArrayList<Spiller> besøk = Spill.spillere.besøk(spiller, null);
         for(Spiller s: besøk) {
             if(s.rolle().blokkert())
                 break;
@@ -45,7 +47,7 @@ public class Bestemor extends Rolle {
         }
 
         if(!lever && flereBesøk) spiller.vekk();
-        if(spiller.kidnappet() && flereBesøk) tv.spillere().befriSpiller(spiller);
+        if(spiller.kidnappet() && flereBesøk) Spill.spillere.befriSpiller(spiller);
     }
 
     @Override

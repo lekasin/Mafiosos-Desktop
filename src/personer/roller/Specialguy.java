@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -27,11 +28,11 @@ public class Specialguy extends Rolle {
 			return super.oppgave();
 		// TODO Auto-generated method stub
 		if(brukt)
-			tv.vis("Special Guy har brukt opp kraften sin.");
+			TvUtil.vis("Special Guy har brukt opp kraften sin.");
 		else
-			tv.special(lever);
-		if(informert) tv.leggtil(info);
-		tv.toFront();
+			TvUtil.visSpecialGuyBeskjed(lever);
+		if(informert) TvUtil.leggTil(info);
+		TvUtil.toFront();
 		return oppgave;
 	}
 	

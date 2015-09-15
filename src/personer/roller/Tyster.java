@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -17,7 +18,7 @@ public class Tyster extends Rolle {
 
     @Override
     public void autoEvne() {
-        if (tv.spillere().hentSisteStemmeFra(spiller) != null)
+        if (Spill.spillere.hentSisteStemmeFra(spiller) != null)
             evne(spiller);
     }
 
@@ -26,7 +27,7 @@ public class Tyster extends Rolle {
         if (blokkert)
             return false;
 
-        finnRolle(Rolle.MAFIA).informer(this, "\n\n" + tv.spillere().tyster(spiller, spiller.skjult()));
+        finnRolle(Rolle.MAFIA).informer(this, "\n\n" + Spill.spillere.tyster(spiller, spiller.skjult()));
 
         if (finnRolle(DIDRIK) != null)
             spiller.rens(finnRolle(DIDRIK));

@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -34,17 +35,17 @@ public class Drommer extends Rolle {
 
 	@Override
 	public boolean evne(Spiller spiller) {
-		ut += tv.drøm(spiller) + "\n";
+		ut += TvUtil.hentDrøm(spiller) + "\n";
 
 		if(blokkert) {
 			if(blokk != forsinkelse) ut = "";
-			tv.vis("Drømmeren får ikke sove...");
+			TvUtil.vis("Drømmeren får ikke sove...");
 		}
 		else
-			tv.vis(ut);
+			TvUtil.vis(ut);
 		
-		if(informert) tv.leggtil(info);
-		tv.toFront();
+		if(informert) TvUtil.leggTil(info);
+		TvUtil.toFront();
 		return true;
 	}
 	

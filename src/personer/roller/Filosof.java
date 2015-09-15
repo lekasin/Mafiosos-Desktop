@@ -1,5 +1,7 @@
 package personer.roller;
 
+import gui.Spill;
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -36,10 +38,10 @@ public class Filosof extends Rolle {
 	}
 	@Override
 	public boolean evne(Spiller spiller) {
-		tv.toFront();
+		TvUtil.toFront();
 		
 		if(this.spiller.skjult())
-			ut += spiller + " har rollen " + tv.spillere().randomSpiller(this.spiller, spiller).rolle();
+			ut += spiller + " har rollen " + Spill.spillere.randomSpiller(this.spiller, spiller).rolle();
 		else
 			ut += spiller + " har rollen " + spiller.rolle();
 
@@ -47,13 +49,13 @@ public class Filosof extends Rolle {
 		
 		if(blokkert) {
 			if(blokk != forsinkelse) ut = "Filosofen ble blokkert forrige natt!\n\n";
-			tv.vis("Filosofen er blokkert"); 
+			TvUtil.vis("Filosofen er blokkert");
 			return false;
 		}
 
 		valgt = spiller;
 		aktiver(false);
-		tv.vis(ut);
+		TvUtil.vis(ut);
 		return true;
 	}
 	

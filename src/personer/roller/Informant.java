@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -24,9 +25,9 @@ public class Informant extends Rolle {
 			return false;
 		
 		if(this.spiller.skjult())
-			spiller.rolle().informer(this, "\n\nDu har fått info om at Mafiaen har besøkt " + tv.spillere().randomSpiller(null));
+			spiller.rolle().informer(this, "\n\nDu har fått info om at Mafiaen har besøkt " + Spill.spillere.randomSpiller(null));
 		else
-			spiller.rolle().informer(this, "\n\nDu har fått info om at Mafiaen har besøkt " + ((Mafia)tv.spillere().finnRolle(MAFIA)).offer());
+			spiller.rolle().informer(this, "\n\nDu har fått info om at Mafiaen har besøkt " + Spill.spillere.finnRolle(MAFIA).offer());
 		return true;
 	}
 }

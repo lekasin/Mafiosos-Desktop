@@ -1,8 +1,8 @@
 package personer;
 
+import gui.TvUtil;
 import personer.roller.Berit;
-import personer.roller.Mafia;
-import gui.TV;
+import gui.Spill;
 
 public abstract class Rolle {
 
@@ -10,7 +10,6 @@ public abstract class Rolle {
 	protected String tittel, veiledning;
 	protected Spiller offer, spiller, forbud, forbud2;
 	protected Rolle blokk, informant, forsinkelse;
-	protected TV tv;
 	protected int prioritet = 0, side = 1;
 	protected String oppgave, info = "";
 	public static int FAKEBORGER = -2, MAFIOSO = -1, NØYTRAL = 0, BORGER = 1,  FAKEMAFIA = 2;
@@ -82,7 +81,6 @@ public abstract class Rolle {
 	public Rolle()
 	{
 		vekk();
-		setTV(tv);
 	}
 
 	public Rolle(String tittel)
@@ -214,10 +212,6 @@ public abstract class Rolle {
 		}
 	}
 
-	public void setTV(TV tv){
-		this.tv = tv;
-	}
-
 	public void forby(Spiller s){
 		forbud = s;
 	}
@@ -306,7 +300,7 @@ public abstract class Rolle {
 	}
 
 	public boolean fanget() {
-		return tv.spillere().rolleFanget(prioritet);
+		return Spill.spillere.rolleFanget(prioritet);
 	}
 
 	public Spiller spiller(){
@@ -322,11 +316,11 @@ public abstract class Rolle {
 	}
 
 	public Rolle finnRolle(int id) {
-		return tv.spillere().finnRolle(id);
+		return Spill.spillere.finnRolle(id);
 	}
 
 	public void leggVed(String s) {
-		tv.leggVed(s);
+		TvUtil.leggVed(s);
 	}
 
 	//toString-metoder
@@ -339,9 +333,9 @@ public abstract class Rolle {
         if (klonet || nyligKlonet() && !id(SMITH))
             kloneRapport();
 
-		tv.vis(oppgave);
+		TvUtil.vis(oppgave);
 		if(informert)
-            tv.leggtil(info);
+            TvUtil.leggTil(info);
 		return oppgave;
 	}
 
@@ -367,7 +361,7 @@ public abstract class Rolle {
             informer(spiller.smith, "\n\n" + spiller + " er nå en Smith!");
         }
         spiller.setNyligKlonet(false);
-        tv.toFront();
+        TvUtil.toFront();
     }
 
 	public boolean flere(){

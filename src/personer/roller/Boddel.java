@@ -1,5 +1,6 @@
 package personer.roller;
 
+import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -24,7 +25,7 @@ public class Boddel extends Rolle {
         // TODO Auto-generated method stub
         if(spiller.nyligKlonet())
             return super.oppgave();
-		return tv.vis(oppgave);
+		return TvUtil.vis(oppgave);
 	}
 	
 	@Override
