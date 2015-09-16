@@ -56,7 +56,8 @@ public abstract class Rolle {
 	KLØNA = SPECIAL+1,
 	RAVN = KLØNA+1,
 	MARIUS = RAVN+1,
-	QUISLING = MARIUS+1,
+	CARLSEN = MARIUS+1,
+	QUISLING = CARLSEN+1,
 	FILOSOF = QUISLING+1,
 	HAMMER = FILOSOF+1,
 	YOUTUBER = HAMMER+1,
@@ -75,7 +76,8 @@ public abstract class Rolle {
 	JENTE = VARA+1,
 	BØDDEL = JENTE+1,
 	TROMPET = BØDDEL+1,
-	ANARKIST = TROMPET+1;
+	ANARKIST = TROMPET+1,
+    JOKER = ANARKIST+1;
 
 	//Konstruktører
 	public Rolle()

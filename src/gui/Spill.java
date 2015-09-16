@@ -11,15 +11,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.*;
 
 public class Spill implements ActionListener {
 
-    public static final int DISKUSJONSFASE = 0, AVSTEMNINGSFASE = 1,
-            TALEFASE = 2, GODKJENNINGSFASE = 3, TIEBREAKERFASE = 4, ORDFØRERFASE = 5, RØMNINGSFASE = 99;
+    public static final int ORDFØRERFASE = 0, DISKUSJONSFASE = 1, AVSTEMNINGSFASE = 2,
+            TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 99;
     public Vindu vindu;
     JPanel innhold;
     Countdown timer;
@@ -30,13 +27,12 @@ public class Spill implements ActionListener {
     LinkedList<Rolle> roller = new LinkedList<>();
     ListIterator<Rolle> i;
 
-    Spiller sisteDød, forsvarende, ordfører;
+    Spiller sisteDød, forsvarende, ordfører, dødsdømt;
     Rolle aktiv;
     String annonse;
     int fase, døgn, antallDøde, tid, taler;
-    boolean dag, seier, rakett, tiltale, bombe;
-    boolean sniper = false, flukt = false, sabotage = false,
-            forfalskning = false;
+    boolean dag, seier, rakett, tiltale, bombe, joker;
+    boolean sniper = false, flukt = false, sabotage = false, forfalskning = false;
 
     public Spill(Vindu v, Rolle[] r, int t) {
         vindu = v;
@@ -83,6 +79,7 @@ public class Spill implements ActionListener {
         refresh();
         i = roller.listIterator();
         bombe = tiltale = rakett = false;
+        dødsdømt = null;
 
         if (sjekkVinner()) {
             nesteRolle();
@@ -139,7 +136,7 @@ public class Spill implements ActionListener {
         }
     }
 
-    public void godkjenn(final Spiller valgt) {
+    public void godkjenn(Spiller valgt) {
         nyFase(GODKJENNINGSFASE);
         timer.stop();
         vindu.kontroll.setVisible(false);
@@ -149,6 +146,11 @@ public class Spill implements ActionListener {
         final String tittel = vindu.overskrift.getText();
 
         rapporter("");
+
+        if (dødsdømt != null) {
+            valgt = dødsdømt;
+            rapporter("Carlsen har slått " + dødsdømt);
+        }
 
         if (valgt == null) {
             proklamer("Ingen henrettet!");
@@ -174,7 +176,8 @@ public class Spill implements ActionListener {
                 }
             }
         }));
-        innhold.add(new Knapp("Godkjenn", Knapp.HEL, e -> henrett(valgt)
+        final Spiller henrettet = valgt;
+        innhold.add(new Knapp("Godkjenn", Knapp.HEL, e -> henrett(henrettet)
         ));
     }
 
@@ -235,7 +238,7 @@ public class Spill implements ActionListener {
     }
 
     public void refresh(Rolle r) {
-        vindu.oppdaterKnapper(innhold, r);
+        vindu.oppdaterKnapper(innhold, r, this);
         if (r == null) return;
         timer.stop();
         vindu.kontroll(new Kontroll(), -1);
@@ -246,6 +249,8 @@ public class Spill implements ActionListener {
             visMafiaKnapper();
         } else if (r instanceof BodyGuard)
             vindu.kontroll(new Kontroll(), fase, new Knapp("Drep/Beskytt", Knapp.HALV, new Mafiaknapper()));
+        else if (r instanceof Carlsen)
+            vindu.kontroll(new Kontroll(), fase, new Knapp("Angrep/Forsvar", Knapp.HALV, new Mafiaknapper()));
     }
 
     public void setTittelFarge(Rolle r) {
@@ -367,6 +372,8 @@ public class Spill implements ActionListener {
             godkjenn(null);
         else if (fase(AVSTEMNINGSFASE))
             nesteAvstemming();
+        else if (fase(JOKERFASE))
+            ultimatum();
         else
             System.out.println("UKJENT FASE: " + fase + "(tidenErUte)");
     }
@@ -460,6 +467,9 @@ public class Spill implements ActionListener {
 
         rapporter("");
         startForsvarstale(først);
+
+        if (taler == 0 && sjekkOffer(Rolle.CARLSEN))
+            dødsdømt = ((Carlsen) finnRolle(Rolle.CARLSEN)).sjekkResultat(talere.contains(finnOffer(Rolle.CARLSEN)));
 
         if (talere.size() > 1) {
             String ut = "";
@@ -556,15 +566,83 @@ public class Spill implements ActionListener {
             bombe = true;
         if (sjekkOffer(Rolle.AKTOR))
             tiltale = true;
+        if (sjekkRolle(Rolle.JOKER) && ((Joker) finnRolle(Rolle.JOKER)).erFerdig()) {
+            if (rakett)
+                finnRolle(Rolle.ASTRONAUT).aktiver(true);
+            if (bombe)
+                finnRolle(Rolle.BOMBER).aktiver(true);
+            if (tiltale)
+                finnRolle(Rolle.AKTOR).aktiver(true);
+            rakett = bombe = tiltale = false;
+            joker = true;
+        }
     }
 
     public void aktiverDagsRoller() {
-        if (rakett)
+        if (joker)
+            anarki();
+        else if (rakett)
             rakettoppskytning();
         else if (bombe)
             plantetBombe();
         else if (tiltale)
             tiltale();
+    }
+
+    public void anarki() {
+        nyFase(JOKERFASE);
+        timer.setText(annonse + "\n\nJokerens ultimatum!!!\nHva blir landsbyen enige om?");
+        timer.nyStartMin(2);
+        tittuler("Jokerens ultimatum!");
+        vindu.deaktiverPersonKNapper(innhold);
+    }
+
+    public void ultimatum() {
+        joker = false;
+        timer.stop();
+        refresh();
+        tittuler("Hvem stemmer OPP?");
+        informer("Jokerens Ultimatum!");
+        rapporter("Jokerns Ultimatum:");
+    }
+
+    public void avsluttUltimatum() {
+        spillere.fyllUltimatum();
+
+        ArrayList<Spiller> medJokeren = new ArrayList();
+
+        Joker joker = (Joker) finnRolle(Rolle.JOKER);
+        boolean fasit = joker.fasit();
+
+        for (Spiller s : spillere.levende())
+            if (spillere.getUltimatum().get(s).equals(fasit) && !s.equals(joker.spiller()))
+                medJokeren.add(s);
+
+        if (medJokeren.size() == 0){
+            godkjenn(joker.spiller());
+            informer("Landsbyen seiret!\nJokeren, " + joker.spiller() + ", er død!");
+        }
+        else if (medJokeren.size() == spillere.levende().size() - 1) {
+            for (Spiller s: medJokeren)
+                s.henrett();
+            dagensResultat();
+            tittuler("Jokeren vant!");
+            informer("Jokeren, " + joker.spiller() + " seiret, og vi har en vinner!");
+        }
+        else{
+            String ut = "Landsbyen seiret!\nMen noen gikk i Jokerens felle og døde:";
+            for (Spiller s: medJokeren) {
+                s.henrett();
+                ut += "\n\n" + s + (s.side() < Rolle.NØYTRAL ? " VAR " : " var IKKE ") + "mafia!";
+            }
+
+            tittuler("Landsbyen overlevde!");
+            informer(ut);
+            rapporter(ut);
+            dagensResultat();
+        }
+
+
     }
 
     public void rakettoppskytning() {
@@ -701,6 +779,15 @@ public class Spill implements ActionListener {
                         "Hvis ingen nylig avdøde vises på skjermen, må dette løses på annen måte. En mye brukt løsning er å ringe en opplysningstelefon.\n" +
                         "For å gå til en ny natt, uten å henrette noen, trykker du fortsett.");
                 break;
+            case JOKERFASE:
+                vindu.setVeiledning("Ultimatum:\n" +
+                        "Jokeren har nå kommet med sitt ultimatum, og landsbyen har to minutter til å komme frem til en avgjørelse.\n" +
+                        "De må sammen bestemme seg for å stemme opp eller ned for å prøve å unngå Jokerens vrede. Det er likevel lov til å stemme imot det landsbyen blir enige om.\n" +
+                        "Når landsbyen har bestemt seg, eller tiden går ut, må alle lukke øynene for en anonym avstemning, hvor alle skal velge enten tommel opp eller ned.\n" +
+                        "For å gå rett til avstemningen, trykker du på fortsett. Når avstemningen er i gang, trykker du på alle som stemmer OPP (appen ordner resten).\n" +
+                        "Når avstemningen er ferdig, trykker du fortsett igjen for å se resultatet.");
+                break;
+
             default:
                 vindu.setVeiledning("Veiledning");
                 break;
@@ -1198,6 +1285,8 @@ public class Spill implements ActionListener {
                         nesteAvstemming();
                     } else if (fase(ORDFØRERFASE)) {
                         velgOrdfører(null);
+                    } else if (fase(JOKERFASE) && !joker) {
+                        avsluttUltimatum();
                     } else {
                         tidenErUte();
                     }
@@ -1241,6 +1330,10 @@ public class Spill implements ActionListener {
                 BodyGuard bg = ((BodyGuard) finnRolle(Rolle.BODYGUARD));
                 bg.skift();
                 tittuler(bg.oppgave());
+            } else if (knapp(e, "Angrep/Forsvar")) {
+                Carlsen c = ((Carlsen) finnRolle(Rolle.CARLSEN));
+                c.skift();
+                tittuler(c.oppgave());
             }
         }
     }
@@ -1290,15 +1383,17 @@ public class Spill implements ActionListener {
                 timer.fortsett();
             } else if (fase(TIEBREAKERFASE))
                 godkjenn(valgt);
-            else {
+            else if (fase(JOKERFASE)) {
+                knapp(e).setEnabled(false);
+                spillere.registrerUltimatumValg(valgt);
+            } else {
                 System.out.println("UKJENT FASE: " + fase + "(valgt på dagen)");
             }
         }
 
         // VELGER PÅ NATTEN
         else {
-            if (aktiv.funker()
-                    || (aktiv instanceof Specialguy && aktiv.aktiv())) {
+            if (aktiv.funker() || (aktiv instanceof Specialguy && aktiv.aktiv())) {
                 spillere.lagrePek(aktiv.pri(), valgt);
                 aktiv.pek(valgt);
                 rapporter(aktiv.rapport());

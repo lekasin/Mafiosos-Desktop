@@ -5,6 +5,7 @@ import datastruktur.Spillerliste;
 import personer.Rolle;
 import personer.Spiller;
 import personer.roller.Hammer;
+import personer.roller.Joker;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -191,7 +192,7 @@ public class Vindu extends JFrame {
         return null;
     }
 
-    public void personknapper(JPanel panel, ActionListener al) {
+    public JPanel personknapper(JPanel panel, ActionListener al) {
         innhold();
         for (Spiller s : spillere.spillere()) {
             Knapp k = new Knapp(s.navn(), s, Knapp.HALV, al);
@@ -199,6 +200,7 @@ public class Vindu extends JFrame {
             if (s.talt()) k.setForeground(Color.RED);
             panel.add(k);
         }
+        return panel;
     }
 
     public void stemmeKnapper(JPanel panel, ActionListener al) {
@@ -236,34 +238,49 @@ public class Vindu extends JFrame {
         }
     }
 
-    public void oppdaterKnapper(JPanel panel, Rolle r) {
+    public void jokerKnapper(Joker joker) {
+        ActionListener jokerListener = e -> {
+            joker.setOpp(((Knapp) e.getSource()).getText().equals("Opp"));
+            spill.nesteRolle();
+        };
+        innhold.add(new Knapp("Opp", Knapp.HEL, jokerListener));
+        innhold.add(new Knapp("Ned", Knapp.HEL, jokerListener));
+        innhold.revalidate();
+        innhold.repaint();
+    }
+
+    public void oppdaterKnapper(JPanel panel, Rolle r, ActionListener al) {
         Component[] knapper = panel.getComponents();
 
         if (r.id(Rolle.OBDUK)) {
             visDødeKnapper(panel);
             return;
+        } else if (r.id(Rolle.JOKER)) {
+            jokerKnapper((Joker) r);
+            return;
         }
 
-        for (Component c : knapper) {
-            if (c instanceof Knapp) {
-                Knapp k = (Knapp) c;
-                k.setForeground(Color.BLACK);
-                if (k.spiller() != null) {
-                    if (r == null || !r.funker() || k.spiller() == r.forbud() || k.spiller() == r.forbud2() || r.fanget() || k.spiller.fange() || !r.aktiv() ||
-                            r.id(Rolle.JØRGEN) || r.id(Rolle.BEDRAGER) || r.id(Rolle.QUISLING) || r.id(Rolle.BESTEMOR) ||
-                            r.id(Rolle.BESTEVENN) || r.id(Rolle.DRØMMER) || (r.id(Rolle.ASTRONAUT) && (!r.aktiv() || k.spiller != r.spiller())) ||
-                            (r.id(Rolle.SPECIAL) && r.lever()) || (r.id(Rolle.SMITH) && k.spiller().id(Rolle.SMITH)) ||
-                            !r.funker() || (r.id(Rolle.OBDUK) && (k.spiller().funker() || k.spiller().skjult())))
+        if (r == null || !r.funker() || r.fanget() || !r.aktiv() || (r.id(Rolle.SPECIAL) && r.lever()) ||
+                r.id(Rolle.JØRGEN) || r.id(Rolle.BEDRAGER) || r.id(Rolle.QUISLING) || r.id(Rolle.BESTEMOR) || r.id(Rolle.BESTEVENN) || r.id(Rolle.DRØMMER))
+            deaktiverPersonKNapper(panel);
+        else
+            for (Component c : knapper) {
+                if (c instanceof Knapp) {
+                    Knapp k = (Knapp) c;
+                    k.setForeground(Color.BLACK);
+                    if (k.spiller() != null && k.spiller() == r.forbud() || k.spiller() == r.forbud2() || k.spiller.fange() ||
+                            (r.id(Rolle.SMITH) && k.spiller().id(Rolle.SMITH)) ||
+                            (r.id(Rolle.ASTRONAUT) && k.spiller != r.spiller()))
                         k.setEnabled(false);
-                    else if ((k.spiller().rolle().funker() && k.spiller().funker()) || r.id(Rolle.OBDUK)) {
+                    else if ((k.spiller().rolle().funker() && k.spiller().funker())) {
                         k.setEnabled(true);
                         if (r instanceof Hammer && ((Hammer) r).valgt() == k.spiller() || r.id(Rolle.HEISENBERG) && r.offer() == k.spiller())
                             k.setForeground(Color.GREEN);
                     }
-                }
-            } else if (c instanceof JPanel)
-                panel.remove(c);
-        }
+                } else if (c instanceof JPanel)
+                    panel.remove(c);
+            }
+
         panel.revalidate();
         panel.repaint();
     }

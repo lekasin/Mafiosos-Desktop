@@ -131,7 +131,8 @@ public class Oppstart implements ActionListener {
         innhold.add(new Knapp("Insider", new Insider(politi), Knapp.KVART, this));
 
         innhold.add(new Knapp("Jesus", new Jesus(), Knapp.KVART, this));
-        //		innhold.add(new Knapp("Joker", new Joker(), Knapp.KVART, this));
+        if (antallspillere > 6)
+            innhold.add(new Knapp("Joker", new Joker(), Knapp.KVART, this));
         innhold.add(new Knapp("Julenissen", new Julenissen(), Knapp.KVART, this));
         innhold.add(new Knapp("Jørgen", new Jorgen(), Knapp.KVART, this));
 
@@ -142,7 +143,7 @@ public class Oppstart implements ActionListener {
         innhold.add(new Knapp("Liten jente", new Jente(), Knapp.KVART, this));
         innhold.add(new Knapp("Løgner", new Logner(), Knapp.KVART, this));
 
-        //		innhold.add(new Knapp("Magnus Carlsen", new Carlsen(), Knapp.KVART, this));
+        innhold.add(new Knapp("Magnus Carlsen", new Carlsen(), Knapp.KVART, this));
         innhold.add(new Knapp("Marius", new Marius(), Knapp.KVART, this));
         innhold.add(new Knapp("Morder", new Morder(), Knapp.KVART, this));
 
