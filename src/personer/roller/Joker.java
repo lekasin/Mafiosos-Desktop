@@ -44,7 +44,7 @@ public class Joker extends Rolle {
     @Override
     public String rapport() {
         String ut = tittel + "(" + spiller + ")";
-        ut += " har valgt " + (opp ? " OPP " : " NED ") + "!";
+        ut += " har valgt " + (opp ? "OPP" : "NED") + "!";
         return ut;
     }
 

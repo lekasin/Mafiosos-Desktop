@@ -603,7 +603,7 @@ public class Spill implements ActionListener {
         refresh();
         tittuler("Hvem stemmer OPP?");
         informer("Jokerens Ultimatum!");
-        rapporter("Jokerns Ultimatum:");
+        rapporter("\nJokerns Ultimatum:");
     }
 
     public void avsluttUltimatum() {
@@ -615,26 +615,31 @@ public class Spill implements ActionListener {
         joker.bliFerdig();
         boolean fasit = joker.fasit();
 
-        for (Spiller s : spillere.levende())
+        for (Spiller s : spillere.levendeOgFri())
             if (spillere.getUltimatum().get(s).equals(fasit) && !s.equals(joker.spiller()))
                 medJokeren.add(s);
+
+        rapporter("Med Jokeren: " + medJokeren.size() + "\n" +
+                "Mot Jokeren: " + (spillere.levendeOgFri().size() - medJokeren.size() - 1) + "\n");
 
         if (medJokeren.size() == 0){
             godkjenn(joker.spiller());
             informer("Landsbyen seiret!\nJokeren, " + joker.spiller() + ", er død!");
+            rapporter("Landsbyen seiret!\nJokeren, " + joker.spiller() + ", er død!");
         }
-        else if (medJokeren.size() == spillere.levende().size() - 1) {
+        else if (medJokeren.size() == spillere.levendeOgFri().size() - 1) {
             for (Spiller s: medJokeren)
                 s.henrett();
             dagensResultat();
             tittuler("Jokeren vant!");
             informer("Jokeren, " + joker.spiller() + " seiret, og vi har en vinner!");
+            rapporter("Jokeren, " + joker.spiller() + " seiret, og vi har en vinner!");
         }
         else{
-            String ut = "Landsbyen seiret!\nMen noen gikk i Jokerens felle og døde:";
+            String ut = "Landsbyen seiret!\nMen noen gikk i Jokerens felle og døde:\n";
             for (Spiller s: medJokeren) {
                 s.henrett();
-                ut += "\n\n" + s + (s.side() < Rolle.NØYTRAL ? " VAR " : " var IKKE ") + "mafia!";
+                ut += "\n" + s + (s.side() < Rolle.NØYTRAL ? " VAR " : " var IKKE ") + "mafia!";
             }
 
             spillere.dødsannonse();
@@ -980,6 +985,11 @@ public class Spill implements ActionListener {
             case 5:
                 informer("Princess98 har kidnappet hele landsbyen, og har vunnet!!");
                 rapporter("Princess98 har kidnappet hele landsbyen, og har vunnet!");
+                seier = true;
+                break;
+            case 6:
+                informer("Jokeren har vunnet!");
+                rapporter("Jokeren har vunnet!");
                 seier = true;
                 break;
 

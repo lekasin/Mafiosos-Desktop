@@ -169,6 +169,9 @@ public class Spillerliste {
         int smiths = 0;
         int fanger = 0;
 
+        if (levende().size() == 1 && levende().get(0).id(Rolle.JOKER))
+            return 6;
+
         for (Spiller s : spillere) {
             if (s.lever()) {
                 if (s.id(Rolle.ANARKIST)) anarki++;
@@ -287,6 +290,14 @@ public class Spillerliste {
             if (s.lever())
                 levende.add(s);
         return levende;
+    }
+
+    public ArrayList<Spiller> levendeOgFri(){
+        ArrayList<Spiller> levendeOgFri = levende();
+        for (Spiller s: levende())
+            if (s.fange())
+                levendeOgFri.remove(s);
+        return levendeOgFri;
     }
 
     public ArrayList<Spiller> nyligDøde() {
@@ -530,7 +541,7 @@ public class Spillerliste {
     }
 
     public void fyllUltimatum(){
-        for (Spiller s: levende())
+        for (Spiller s: levendeOgFri())
             if (!ultimatum.containsKey(s))
                 ultimatum.put(s, false);
         ultimatum.remove(finnRolle(Rolle.JOKER));
