@@ -6,6 +6,7 @@ import personer.Spiller;
 public class Carlsen extends Rolle {
 
     boolean angrep;
+    boolean dømt;
 
 	public Carlsen(){
 		super("Magnus Carlsen");
@@ -21,6 +22,13 @@ public class Carlsen extends Rolle {
 		prioritet = CARLSEN;
 	}
 
+    @Override
+    public void autoEvne() {
+        angrep = true;
+        skift();
+        dømt = false;
+    }
+
     public void skift() {
         angrep = !angrep;
         if(angrep)
@@ -29,8 +37,13 @@ public class Carlsen extends Rolle {
             oppgave = "Hvem vil Carlsen forsvare?";
     }
 
-	@Override
+    public boolean erDømt() {
+        return dømt;
+    }
+
+    @Override
 	public boolean evne(Spiller spiller) {
+        dømt = false;
 		if(blokkert)
 			return false;
 
@@ -41,8 +54,10 @@ public class Carlsen extends Rolle {
         if (angrep){
             if (treff)
                 return offer();
-            else
-                return spiller;
+            else {
+                dømt = true;
+                return null;
+            }
         }
         else {
             if (treff)

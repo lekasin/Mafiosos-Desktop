@@ -872,8 +872,11 @@ public class Spill implements ActionListener {
     }
 
     public void nominer(Spiller s, boolean leggTil) {
-        if (leggTil)
+        if (leggTil) {
             spillere.nominer(s);
+            if (s.id(Rolle.CARLSEN) && ((Carlsen)finnRolle(Rolle.CARLSEN)).erDømt())
+                dødsdømt = s;
+        }
         else
             spillere.avnominer(s);
         visMistenkte();
