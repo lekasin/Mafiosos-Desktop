@@ -29,7 +29,7 @@ public class Tyster extends Rolle {
 
         finnRolle(Rolle.MAFIA).informer(this, "\n\n" + Spill.spillere.tyster(spiller, spiller.skjult()));
 
-        if (finnRolle(DIDRIK) != null)
+        if (Spill.spillere.sjekkRolle(DIDRIK))
             spiller.rens(finnRolle(DIDRIK));
         return true;
     }

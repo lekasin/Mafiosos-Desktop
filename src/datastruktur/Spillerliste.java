@@ -12,7 +12,7 @@ public class Spillerliste {
     ArrayList<Spiller> nye = new ArrayList<>();
     ArrayList<Spiller> fanger = new ArrayList<>();
     ArrayList<Spiller> nominerte = new ArrayList<>();
-    HashMap<Spiller, Integer> stemmer = new HashMap<Spiller, Integer>();
+    HashMap<Spiller, Integer> stemmer = new HashMap<>();
     ArrayList<HashMap<Integer, Spiller>> pekeHistorikk = new ArrayList<>();
     ArrayList<HashMap<Spiller, Spiller>> stemmeHistorikk = new ArrayList<>();
 
@@ -245,20 +245,20 @@ public class Spillerliste {
     }
 
     public Spiller randomSpiller(Spiller eks) {
-        int id = -1;
+        int id;
         Random random = new Random();
         do
-            id = random.nextInt((spillere.size() - 1 - 0) + 1);
+            id = random.nextInt((spillere.size() - 1) + 1);
         while (spillere.get(id) == eks);
 
         return spillere.get(id);
     }
 
     public Spiller randomSpiller(Spiller eks, Spiller eks2) {
-        int id = -1;
+        int id;
         Random random = new Random();
         do
-            id = random.nextInt((spillere.size() - 1 - 0) + 1);
+            id = random.nextInt((spillere.size() - 1) + 1);
         while (spillere.get(id) == eks || spillere.get(id) == eks2);
 
         return spillere.get(id);
@@ -281,7 +281,7 @@ public class Spillerliste {
     }
 
     public ArrayList<Spiller> levende() {
-        ArrayList<Spiller> levende = new ArrayList<Spiller>();
+        ArrayList<Spiller> levende = new ArrayList<>();
         for (Spiller s : spillere)
             if (s.lever())
                 levende.add(s);
@@ -381,8 +381,8 @@ public class Spillerliste {
         ArrayList<Spiller> utstemte = hentUtstemte();
 
         //Fjern ordførers stemme ved uavgjort
-        if (utstemte.size() > 1 && ordfører.lever() && utstemte.contains(stemmer.get(ordfører)))
-            utstemte.remove(stemmer.get(ordfører));
+        if (utstemte.size() > 1 && ordfører.lever() && utstemte.contains(hentSisteStemmeFra(ordfører)))
+            utstemte.remove(hentSisteStemmeFra(ordfører));
 
         return utstemte;
     }
@@ -452,11 +452,11 @@ public class Spillerliste {
 
     public void fordelGjenstander(ArrayList<String> gjenstander) {
         for (String g : gjenstander) {
-            int id = -1;
+            int id;
             Random random = new Random();
             do
-                id = random.nextInt((spillere.size() - 1 - 0) + 1);
-            while (spillere.get(id).gjenstand() == "");
+                id = random.nextInt((spillere.size() - 1) + 1);
+            while (spillere.get(id).gjenstand().equals(""));
 
             spillere.get(id).setGjenstand(g);
         }
@@ -539,7 +539,7 @@ public class Spillerliste {
             ut += "På Youtube ser vi at " + besøk(spiller, finnSpiller(Rolle.YOUTUBER)).size() + " spillere besøkte " + spiller + " i natt!";
             if (!spiller.lever() && !spiller.id(Rolle.BESTEMOR)) {
                 ut += "\nVi ser også at " + spiller + " var " + spiller.rolle() + "!";
-                if (!spiller.id(Rolle.ZOMBIE) && !spiller.id(Rolle.MAFIA) && !spiller.id(Rolle.POLITI))
+                if (!spiller.reddet() && !spiller.id(Rolle.ZOMBIE) && !spiller.id(Rolle.MAFIA) && !spiller.id(Rolle.POLITI))
                     spiller.rolle().aktiver(false);
             }
         }

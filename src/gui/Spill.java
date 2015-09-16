@@ -91,6 +91,15 @@ public class Spill implements ActionListener {
         }
     }
 
+    public void avsluttNatt() {
+        innhold = vindu.innhold();
+        vindu.kontroll.setVisible(false);
+        proklamer("Landsbyen Våkner");
+        innhold.add(new Knapp("Landsbyen våkner", Knapp.SUPER, e -> dag()));
+        innhold.revalidate();
+        innhold.repaint();
+    }
+
     public void dag() {
         dag = true;
         aktiv = null;
@@ -121,10 +130,13 @@ public class Spill implements ActionListener {
         sjekkVinner();
         timer.nyStartMin(tid);
         sjekkDagsRoller();
-        aktiverDagsRoller();
         TvUtil.toFront();
-//        if (ordfører == null)
-//            ordførerValg();
+        if (ordfører == null)
+            ordførerValg();
+        else {
+            aktiverDagsRoller();
+            TvUtil.visOrdfører(ordfører);
+        }
     }
 
     public void godkjenn(final Spiller valgt) {
@@ -162,23 +174,23 @@ public class Spill implements ActionListener {
                 }
             }
         }));
-        innhold.add(new Knapp("Godkjenn", Knapp.HEL, e -> {
-            henrett(valgt);
-        }
+        innhold.add(new Knapp("Godkjenn", Knapp.HEL, e -> henrett(valgt)
         ));
     }
 
     public void ordførerValg() {
-        timer.pause();
+        timer.stop();
         nyFase(ORDFØRERFASE);
         refresh();
         tittuler("Hvem skal være ordfører?");
+        informer(annonse.substring(1) + "\n\nDet er valgdag!\nHvem skal være ordfører?");
     }
 
     public void velgOrdfører(Spiller valgt) {
         if (valgt != null) {
             ordfører = valgt;
             rapporter(valgt + " er ny ordfører!");
+            TvUtil.visOrdfører(ordfører);
         } else {
             ordfører = new Spiller("Ingen");
             ordfører.setLiv(false);
@@ -187,6 +199,7 @@ public class Spill implements ActionListener {
         nyFase(DISKUSJONSFASE);
         tittuler("Hvem er de mistenkte?");
         timer.fortsett();
+        aktiverDagsRoller();
     }
 
     public void dagensResultat() {
@@ -308,9 +321,9 @@ public class Spill implements ActionListener {
             if (r.aktiv()) {
                 pek(r);
             } else
-                dag();
+                avsluttNatt();
         } else
-            dag();
+            avsluttNatt();
     }
 
     public void forrigeRolle() {
@@ -562,7 +575,7 @@ public class Spill implements ActionListener {
                 spillere.nominer(s);
 
         startAvstemning();
-        informer(annonse + "\nDet er tid for rakettoppskytning!!!");
+        informer(annonse.substring(1) + "\n\nDet er tid for rakettoppskytning!!!");
         rapporter("\nDet er tid for rakettoppskytning!!!");
         tittuler("Hvem skal sendes opp i raketten?");
     }
@@ -597,7 +610,7 @@ public class Spill implements ActionListener {
 
         spillere.nominer(tiltalt);
         startForsvarstale(tiltalt);
-        informer(annonse + "\n\n" + tiltalt + " står på TILTALEBENKEN!");
+        informer(annonse.substring(1) + "\n\n" + tiltalt + " står på TILTALEBENKEN!");
     }
 
     public void setVeiledning(int fase) {
@@ -608,7 +621,7 @@ public class Spill implements ActionListener {
                         "Før spillet begynner for alvor, må landsbyen bestemme seg for om de ønsker en ordfører, og hvem dette i så fall skal være.\n" +
                         "Når en ordfører er valgt, trykker du på denne personens navn for å innsette vedkommende." +
                         "Om dere ikke ønsker å ha med noen ordfører, trykker du på fortsett.");
-            break;
+                break;
             case DISKUSJONSFASE:
                 if (sjekkOffer(Rolle.BOMBER))
                     vindu.setVeiledning("Diskusjonsfasen - Bombe:\n" +
@@ -697,23 +710,23 @@ public class Spill implements ActionListener {
     // //////////////////////////////////// SMÅ METODER
     // ///////////////////////////////////
 
-    public boolean sjekkRolle(int id){
+    public boolean sjekkRolle(int id) {
         return spillere.sjekkRolle(id);
     }
 
-    public boolean sjekkOffer(int id){
+    public boolean sjekkOffer(int id) {
         return spillere.sjekkOffer(id);
     }
 
-    public Spiller finnSpiller(int id){
+    public Spiller finnSpiller(int id) {
         return spillere.finnSpiller(id);
     }
 
-    public Rolle finnRolle(int id){
+    public Rolle finnRolle(int id) {
         return spillere.finnRolle(id);
     }
 
-    public Spiller finnOffer(int id){
+    public Spiller finnOffer(int id) {
         return spillere.finnOffer(id);
     }
 
@@ -722,10 +735,7 @@ public class Spill implements ActionListener {
     }
 
     public boolean aktiv(int rolle) {
-        if (aktiv == null)
-            return false;
-
-        return aktiv.id(rolle);
+        return aktiv != null && aktiv.id(rolle);
     }
 
     public int forrigefase() {
@@ -935,7 +945,7 @@ public class Spill implements ActionListener {
             s.henrett();
 
         //Aktor har drept. Får han reset?
-        if (tiltale) {
+        if (tiltale && s.equals(finnOffer(Rolle.AKTOR))) {
             tiltale = false;
             finnRolle(Rolle.AKTOR).aktiver(s.side() < Rolle.NØYTRAL);
         }
@@ -1135,6 +1145,7 @@ public class Spill implements ActionListener {
         }
 
         rapporter(annonse.substring(1));
+
         visMistenkte();
     }
 
@@ -1264,9 +1275,10 @@ public class Spill implements ActionListener {
                 knapp(e).setEnabled(false);
                 spillere.stem(valgt, forsvarende);
 
-                if (valgt == ordfører || (rakett && valgt.equals(finnSpiller(Rolle.ASTRONAUT))))
+                if ((rakett && valgt.equals(finnSpiller(Rolle.ASTRONAUT))))
                     spillere.stem(valgt, forsvarende);
-
+                if (valgt == ordfører)
+                    spillere.stem(valgt, forsvarende);
             } else if (dag && fase(RØMNINGSFASE)) {
                 valgt.henrett();
                 nyFase(DISKUSJONSFASE);
