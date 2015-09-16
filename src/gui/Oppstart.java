@@ -131,8 +131,7 @@ public class Oppstart implements ActionListener {
         innhold.add(new Knapp("Insider", new Insider(politi), Knapp.KVART, this));
 
         innhold.add(new Knapp("Jesus", new Jesus(), Knapp.KVART, this));
-        if (antallspillere > 6)
-            innhold.add(new Knapp("Joker", new Joker(), Knapp.KVART, this));
+        innhold.add(new Knapp("Joker", new Joker(), Knapp.KVART, this));
         innhold.add(new Knapp("Julenissen", new Julenissen(), Knapp.KVART, this));
         innhold.add(new Knapp("Jørgen", new Jorgen(), Knapp.KVART, this));
 

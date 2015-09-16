@@ -22,8 +22,10 @@ public class Joker extends Rolle {
         aktiv = false;
 	}
 
-    public boolean erFerdig(){
-        return ferdig;
+
+    public void bliFerdig(){
+        aktiver(false);
+        ferdig = true;
     }
 
 	@Override
@@ -33,8 +35,6 @@ public class Joker extends Rolle {
 
     public void setOpp(boolean opp) {
         this.opp = opp;
-        aktiver(false);
-        ferdig = true;
     }
 
     public boolean fasit(){

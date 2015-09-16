@@ -239,8 +239,10 @@ public class Vindu extends JFrame {
     }
 
     public void jokerKnapper(Joker joker) {
+        innhold();
         ActionListener jokerListener = e -> {
             joker.setOpp(((Knapp) e.getSource()).getText().equals("Opp"));
+            spill.rapporter(joker.rapport());
             spill.nesteRolle();
         };
         innhold.add(new Knapp("Opp", Knapp.HEL, jokerListener));
@@ -249,7 +251,7 @@ public class Vindu extends JFrame {
         innhold.repaint();
     }
 
-    public void oppdaterKnapper(JPanel panel, Rolle r, ActionListener al) {
+    public void oppdaterKnapper(JPanel panel, Rolle r) {
         Component[] knapper = panel.getComponents();
 
         if (r.id(Rolle.OBDUK)) {

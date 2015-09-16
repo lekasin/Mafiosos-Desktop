@@ -238,7 +238,7 @@ public class Spill implements ActionListener {
     }
 
     public void refresh(Rolle r) {
-        vindu.oppdaterKnapper(innhold, r, this);
+        vindu.oppdaterKnapper(innhold, r);
         if (r == null) return;
         timer.stop();
         vindu.kontroll(new Kontroll(), -1);
@@ -566,7 +566,7 @@ public class Spill implements ActionListener {
             bombe = true;
         if (sjekkOffer(Rolle.AKTOR))
             tiltale = true;
-        if (sjekkRolle(Rolle.JOKER) && ((Joker) finnRolle(Rolle.JOKER)).erFerdig()) {
+        if (sjekkRolle(Rolle.JOKER) && finnRolle(Rolle.JOKER).aktiv()) {
             if (rakett)
                 finnRolle(Rolle.ASTRONAUT).aktiver(true);
             if (bombe)
@@ -612,6 +612,7 @@ public class Spill implements ActionListener {
         ArrayList<Spiller> medJokeren = new ArrayList();
 
         Joker joker = (Joker) finnRolle(Rolle.JOKER);
+        joker.bliFerdig();
         boolean fasit = joker.fasit();
 
         for (Spiller s : spillere.levende())
@@ -636,13 +637,12 @@ public class Spill implements ActionListener {
                 ut += "\n\n" + s + (s.side() < Rolle.NØYTRAL ? " VAR " : " var IKKE ") + "mafia!";
             }
 
+            spillere.dødsannonse();
             tittuler("Landsbyen overlevde!");
             informer(ut);
             rapporter(ut);
             dagensResultat();
         }
-
-
     }
 
     public void rakettoppskytning() {
