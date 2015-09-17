@@ -1,5 +1,8 @@
 package gui;
 
+import Utils.SkjermUtil;
+import Utils.TvUtil;
+import Utils.VeiledningsUtil;
 import datastruktur.Countdown;
 import datastruktur.Spillerliste;
 import personer.Rolle;
@@ -143,7 +146,7 @@ public class Spill implements ActionListener {
         innhold = vindu.innhold();
 
         final String info = TvUtil.getText();
-        final String tittel = vindu.overskrift.getText();
+        final String tittel = SkjermUtil.hentTittel();
 
         rapporter("");
 
@@ -255,16 +258,16 @@ public class Spill implements ActionListener {
 
     public void setTittelFarge(Rolle r) {
         if (r == null) {
-            vindu.overskrift.setForeground(Color.BLACK);
+            SkjermUtil.fargTittel(Color.BLACK);
             return;
         }
 
         if (!r.funker() && !r.nyligKlonet())
-            vindu.overskrift.setForeground(Color.RED);
+            SkjermUtil.fargTittel(Color.RED);
         else if (r.skjerm() || r.informert() || r.nyligKlonet())
-            vindu.overskrift.setForeground(Color.BLUE);
+            SkjermUtil.fargTittel(Color.BLUE);
         else
-            vindu.overskrift.setForeground(Color.BLACK);
+            SkjermUtil.fargTittel(Color.BLACK);
     }
 
     public void visMafiaKnapper() {
@@ -306,7 +309,7 @@ public class Spill implements ActionListener {
     public void pek(Rolle r) {
         aktiv = r;
         if (aktiv != null)
-            vindu.setVeiledning(aktiv.getVeiledning());
+            VeiledningsUtil.setTekst(aktiv.getVeiledning());
         refresh(r);
 
         // TvUtil.leggTil(spillere.valg(r));
@@ -745,108 +748,7 @@ public class Spill implements ActionListener {
         informer(annonse.substring(1) + "\n\n" + tiltalt + " står på TILTALEBENKEN!");
     }
 
-    public void setVeiledning(int fase) {
-        switch (fase) {
-            case ORDFØRERFASE:
-                vindu.setVeiledning("Valgfase:\n" +
-                        "Det er på tide å velge en ordfører, som får dobbeltstemme ved alle avstemninger!\n" +
-                        "Før spillet begynner for alvor, må landsbyen bestemme seg for om de ønsker en ordfører, og hvem dette i så fall skal være.\n" +
-                        "Når en ordfører er valgt, trykker du på denne personens navn for å innsette vedkommende." +
-                        "Om dere ikke ønsker å ha med noen ordfører, trykker du på fortsett.");
-                break;
-            case DISKUSJONSFASE:
-                if (sjekkOffer(Rolle.BOMBER))
-                    vindu.setVeiledning("Diskusjonsfasen - Bombe:\n" +
-                            "Bomberen har plantet bomben, og spillerne har nå 2 minutter til å finne ut hvem de vil henrette.\n" +
-                            "For å henrette en spiller, trykker du på vedkommendes navn. Det blir ingen forsvarstaler eller organisert avstemning. Landsbyen må bare bli enige\n" +
-                            "Klarer landsbyen å drepe bomberen, blir bomben desarmert, og kun bomberen dør. Henretter de noen andre, dør både denne personen OG den bomben er plantet hos.\n" +
-                            "Blir ingen henrettet, dør den bomben er plantet hos, og alle som besøkte vedkommende i natt.");
-                else if (taler < 3)
-                    vindu.setVeiledning("Diskusjonsfasen:\n" +
-                            "Spillerne skal nå diskutere, og finne ut hvem som er mistenkt for å være mafia.\n" +
-                            "For å mistenke en person, trykker du på personens navn. Personen blir da lagt til i mistenktlista og blir en del av den kommende avstemningen.\n" +
-                            "For å fjerne en person fra mistenktlista, trykker du på personens navn igjen.\n" +
-                            "Personer med navn i blått, er mistenkte, mens personer i rødt er både mistenkt, og vil dø om de får flest stemmer (som oftest fordi de har holdt forsvarstale).");
-                else
-                    vindu.setVeiledning("Diskusjonsfasen - Oppgjørets Time:\n" +
-                            "Spillerne har nå en siste sjanse til å diskutere, og finne ut hvem som er mafia.\n" +
-                            "En dag kan maks inneholde 3 forsvarstaler (Kan bli flere ved uavgjort siste avstemning). " +
-                            "I oppgjørets time er det derfor ikke mulig å mistenke andre enn de som har holdt forsvarstale, " +
-                            "men alle disse kan nå stemmes på.\n");
-                break;
-            case AVSTEMNINGSFASE:
-                if (rakett)
-                    vindu.setVeiledning("Avstemning - Rakettoppskytning:\n" +
-                            "Astronauten har fullført raketten sin, og landsbyen skal nå anonymt stemme over hvem som skal sendes ut i rommet (og dø).\n" +
-                            "Alle spillere er nå mistenkt, og må lukke øynene før avstemningen begynner. Astronauten derimot, kan se alt.\n" +
-                            "Hver person vil være oppe til avstemning i 15 sekunder, og for å registrere stemmer, trykker du på navnet til de som rekker opp hånda.\n" +
-                            "Hvert navn vises kun én gang, og hver person kan stemme én gang, men Astronauten har dobbeltstemme.\n" +
-                            "Etter rakettoppskytningen fortsetter dagen som normalt, men med kortere tid.");
-                else if (tiltale)
-                    vindu.setVeiledning("Avstemning - Tiltale:\n" +
-                            "Spillerne skal nå stemme for eller imot å drepe den tiltalte.\n" +
-                            "For å registrere en stemme, trykker du på navnet til den som stemmer.\n" +
-                            "Avstemningen varer i 15 sekunder, og alle som stemmer for, gjør dette ved å tydelig rekke opp hånda.\n" +
-                            "Den tiltalte blir henrettet hvis han får minst halvparten av stemmene, " +
-                            "og ellers går vi til en ny natt uten henrettelse.");
-                else
-                    vindu.setVeiledning("Avstemning:\n" +
-                            "Spillerne skal nå stemme på personen de tror er mafia.\n" +
-                            "For å registrere en stemme, trykker du på navnet til den som stemmer når den mistenktes navn vises.\n" +
-                            "Hvert navn vises kun én gang, og hver person kan stemme én gang, " +
-                            "ved å tydelig rekke opp hånda når den de vil stemme på vises.\n" +
-                            "Alle navn i mistenktlista vil vises for avstemning i 15 sekunder.");
-                break;
-            case GODKJENNINGSFASE:
-                vindu.setVeiledning("Godkjenning:\n" +
-                        "Spillerne har nå stemt ut en mistenkt, og vedkommende er i ferd med å henrettes.\n" +
-                        "Ved å trykke godkjenn, henrettes den utsemte, og det avsløres om vedkommende var på mafiaens eller borgernes side.\n" +
-                        "Om noe er gått galt, og du vil avbryte henrettelsen, kan du trykke avbryt for å bli tatt tilbake til diskusjonsfasen.");
-                break;
-            case TALEFASE:
-                if (tiltale)
-                    vindu.setVeiledning("Forsvarstale - Tiltale:\n" +
-                            "Aktor har kommet med en tilale og vi går derfor rett til den tiltaltes forsvarstale.\n" +
-                            "Den tiltalte får ett minutt til å forsvare seg, hvor ingen andre spillere får si noe.\n" +
-                            "Når tiden går ut, går vi over i en avstemning, hvor spillerne skal stemme for eller imot å henrette den tiltalte.\n" +
-                            "For å avslutte forsvarstalen tidlig og gå rett til avstemningen, trykk fortsett.");
-                else
-                    vindu.setVeiledning("Forsvarstale:\n" +
-                            "Det er nå klart for forsvarstale.\n" +
-                            "Den forsvarende spilleren får ett minutt til å forsvare seg, hvor ingen andre spillere får si noe.\n" +
-                            "Når tiden går ut, starter en ny diskusjonsfase, hvor spillerne kan respondere på talen, og eventuelt finne nye mistenkte.\n" +
-                            "For å avslutte forsvarstalen tidlig og gå tilbake til diskusjonsfasen, trykk fortsett.");
-                break;
-            case RØMNINGSFASE:
-                vindu.setVeiledning("Rømningsforsøk:\n" +
-                        "Du kan her fjerne en spiller fra spillet ved å la vedkommende rømme.\n" +
-                        "For å la en spiller rømme, trykker du på spillerens navn nå.\n" +
-                        "Spilleren blir da fjernet fra spillet, og du går tilbake til diskusjonsfasen\n" +
-                        "For å gå tilbake uten å foreta en rømning, trykker du på fortsett.");
-                break;
-            case TIEBREAKERFASE:
-                vindu.setVeiledning("Uavgjort:\n" +
-                        "Ved å klikke på et navn nå, vil du umiddelbart henrette vedkommende.\n" +
-                        "Ved uavgjort avstemning har de siste som døde muligheten til å komme med en avgjørende stemme." +
-                        "Dette forutsetter at disse ikke har vært våken på natten, eller på annen måte fått avslørt hvem som er mafia." +
-                        "De som har muligheten til å avgi sin stemme kommer opp på skjermen.\n" +
-                        "Hvis ingen nylig avdøde vises på skjermen, må dette løses på annen måte. En mye brukt løsning er å ringe en opplysningstelefon.\n" +
-                        "For å gå til en ny natt, uten å henrette noen, trykker du fortsett.");
-                break;
-            case JOKERFASE:
-                vindu.setVeiledning("Ultimatum:\n" +
-                        "Jokeren har nå kommet med sitt ultimatum, og landsbyen har to minutter til å komme frem til en avgjørelse.\n" +
-                        "De må sammen bestemme seg for å stemme opp eller ned for å prøve å unngå Jokerens vrede. Det er likevel lov til å stemme imot det landsbyen blir enige om.\n" +
-                        "Når landsbyen har bestemt seg, eller tiden går ut, må alle lukke øynene for en anonym avstemning, hvor alle skal velge enten tommel opp eller ned.\n" +
-                        "For å gå rett til avstemningen, trykker du på fortsett. Når avstemningen er i gang, trykker du på alle som stemmer OPP (appen ordner resten).\n" +
-                        "Når avstemningen er ferdig, trykker du fortsett igjen for å se resultatet.");
-                break;
 
-            default:
-                vindu.setVeiledning("Veiledning");
-                break;
-        }
-    }
 
     // //////////////////////////////////// SMÅ METODER
     // ///////////////////////////////////
@@ -889,7 +791,7 @@ public class Spill implements ActionListener {
         faseHistorikk.add(temp);
         fase = nyFase;
 //        System.out.println("Fra " + temp + " til " + nyFase);
-        setVeiledning(fase);
+        setVeiledning();
         return temp;
     }
 
@@ -922,7 +824,7 @@ public class Spill implements ActionListener {
         refresh();
         aktiv = s.rolle();
         tittuler("\nHvem vil Trompeten sprenge?");
-        setVeiledning(Rolle.TROMPET);
+        VeiledningsUtil.setTekst(finnRolle(Rolle.TROMPET).getVeiledning());
     }
 
     public void nominer(Spiller s, boolean leggTil) {
@@ -943,8 +845,34 @@ public class Spill implements ActionListener {
         vindu.finnKnappForRolle(innhold, Rolle.BØDDEL).setEnabled(false);
         proklamer("Hvem vil bøddelen halshugge?");
         rapporter("Hvem vil bøddelen halshugge?");
-        vindu.setVeiledning(aktiv.getVeiledning());
+        VeiledningsUtil.setTekst(aktiv.getVeiledning());
         return;
+    }
+
+    public void setVeiledning() {
+        int unntak = -1;
+
+        switch (fase) {
+            case DISKUSJONSFASE:
+                if (sjekkOffer(Rolle.BOMBER))
+                    unntak = VeiledningsUtil.FASE_BOMBE;
+                else if (taler > 2)
+                    unntak = VeiledningsUtil.FASE_OPPGJØR;
+                break;
+            case AVSTEMNINGSFASE:
+                if (rakett)
+                    unntak = VeiledningsUtil.FASE_RAKETT;
+                else if (tiltale)
+                    unntak = VeiledningsUtil.FASE_TILTALE;
+                break;
+            case TALEFASE:
+                if (tiltale)
+                    unntak = VeiledningsUtil.FASE_TILTALE;
+                break;
+            default:
+                unntak = -1;
+        }
+        VeiledningsUtil.setVeiledningForFase(fase, unntak);
     }
 
     // ////////////////////////////////// KVELDEN ///////////////////////////////////////
@@ -1258,18 +1186,16 @@ public class Spill implements ActionListener {
     }
 
     public void proklamer(String tekst) {
-        vindu.overskrift.setText(tekst);
+        SkjermUtil.tittuler(tekst);
         TvUtil.vis(tekst);
     }
 
     public void tittuler(String tekst) {
-        vindu.overskrift.setText(tekst);
+        SkjermUtil.tittuler(tekst);
     }
 
     public void rapporter(String tekst) {
-        if (vindu.info.getText().length() > 1)
-            vindu.info.append("\n");
-        vindu.info.append(tekst);
+        SkjermUtil.logg(tekst);
     }
 
     public void dødsannonse() {

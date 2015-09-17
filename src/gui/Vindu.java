@@ -1,6 +1,9 @@
 package gui;
 
-import datastruktur.ImgUtil;
+import Utils.ImgUtil;
+import Utils.SkjermUtil;
+import Utils.TvUtil;
+import Utils.VeiledningsUtil;
 import datastruktur.Spillerliste;
 import personer.Rolle;
 import personer.Spiller;
@@ -17,8 +20,7 @@ public class Vindu extends JFrame {
 
     private static final long serialVersionUID = 1L;
     JPanel rammeverk, header, innhold, display, kontroll, rammen;
-    JLabel overskrift, klokke;
-    JTextArea info, veiledning;
+    JLabel klokke;
     JScrollPane innholdScroll;
     Knapp tilbake, fortsett;
     Border ramme = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
@@ -34,7 +36,7 @@ public class Vindu extends JFrame {
 
         super(tittel);
         this.spillere = spillere;
-        TvUtil.setTv(spillere);
+        TvUtil.init(spillere);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -76,7 +78,7 @@ public class Vindu extends JFrame {
                 new Innstillinger("Innstillinger", spill, spillere);
         });
 
-        overskrift = new JLabel();
+        JLabel overskrift = new JLabel();
         overskrift.setFont(new Font("Arial", Font.BOLD, Oppstart.TITTEL));
         overskrift.setText("Velkommen til Oslo Mafiosos!");
         overskrift.setHorizontalAlignment(SwingConstants.CENTER);
@@ -98,23 +100,25 @@ public class Vindu extends JFrame {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 
-        veiledning = new JTextArea();
+        JTextArea veiledning = new JTextArea();
         veiledning.setColumns(40);
         veiledning.setBorder(border);
         veiledning.setEditable(false);
         veiledning.setLineWrap(true);
         veiledning.setWrapStyleWord(true);
         veiledning.setFont(new Font("Serif", Font.PLAIN, 15));
+        VeiledningsUtil.init(veiledning);
 
         veiledning.setText("Veiledning");
         display.add(veiledning, BorderLayout.NORTH);
 
-        info = new JTextArea();
+        JTextArea info = new JTextArea();
         info.setColumns(40);
         info.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         info.setEditable(false);
         info.setLineWrap(true);
         info.setWrapStyleWord(true);
+        SkjermUtil.init(info, overskrift);
         //info.setFont(new Font("Serif", Font.BOLD, 15));
         JScrollPane scroller = new JScrollPane(info);
         scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -242,7 +246,6 @@ public class Vindu extends JFrame {
         innhold();
         ActionListener jokerListener = e -> {
             joker.setOpp(((Knapp) e.getSource()).getText().equals("Opp"));
-            spill.rapporter(joker.rapport());
             spill.nesteRolle();
         };
         innhold.add(new Knapp("Opp", Knapp.HEL, jokerListener));
@@ -335,26 +338,11 @@ public class Vindu extends JFrame {
         return klokke;
     }
 
-    public void visSkjulVeiledning() {
-        veiledning.setVisible(!veiledning.isVisible());
-    }
-
-    public void visSkjulTvRamme() {
-        TvUtil.visSkjulRamme();
-    }
-
-    public void setVeiledning(String tekst) {
-        veiledning.setText(tekst);
-        if (tekst.isEmpty())
-            veiledning.setVisible(false);
-    }
-
     public void nullstill() {
         rammen.removeAll();
         header = new JPanel();
         display = new JPanel();
         innhold = new JPanel();
-        overskrift = new JLabel();
     }
 
     public void restart() {
@@ -372,9 +360,5 @@ public class Vindu extends JFrame {
     public void startopp() {
         Oppstart o = new Oppstart(this);
         o.setAntall(spillere.length());
-    }
-
-    public void informer(String informasjon) {
-        info.setText(informasjon);
     }
 }

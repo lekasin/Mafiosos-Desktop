@@ -1,6 +1,6 @@
 package personer;
 
-import gui.TvUtil;
+import Utils.TvUtil;
 import personer.roller.Berit;
 import gui.Spill;
 

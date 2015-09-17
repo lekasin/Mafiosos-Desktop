@@ -1,5 +1,8 @@
 package gui;
 
+import Utils.SkjermUtil;
+import Utils.TvUtil;
+import Utils.VeiledningsUtil;
 import datastruktur.Spillerliste;
 import personer.Rolle;
 import personer.Spiller;
@@ -42,7 +45,7 @@ public class Oppstart implements ActionListener {
 
     private void velgSpillere() {
         vindu.kontroll.setVisible(false);
-        vindu.setVeiledning("Spillerregistrering:\n" +
+        VeiledningsUtil.setTekst("Spillerregistrering:\n" +
                 "Skriv inn navnet på nye spillere og trykk enter, eller klikk på registrer for å registrere dem." +
                 "For å fjerne en spiller, skriver du inn det registrerte navnet og trykker fjern.\n" +
                 "Trykk fortsett for å gå til neste steg.");
@@ -52,7 +55,7 @@ public class Oppstart implements ActionListener {
         navnefelt.addActionListener(this);
         navnefelt.requestFocusInWindow();
 
-        vindu.overskrift.setText("Hvem skal spille?");
+        SkjermUtil.tittuler("Hvem skal spille?");
 
         Knapp registrer = new Knapp("Registrer", Knapp.HEL, this);
         fortsett = vindu.getFortsett();
@@ -80,7 +83,7 @@ public class Oppstart implements ActionListener {
 
     public void velgRoller() {
         vindu.kontroll.setVisible(true);
-        vindu.setVeiledning("Rollevalg:\n" +
+        VeiledningsUtil.setTekst("Rollevalg:\n" +
                 "Velg hvilke roller som skal være med i spill ved å klikke på rollens navn.\n" +
                 "Når du velger en rolle, vil knappen deaktiveres, med mindre rollen kan ha flere spillere.\n" +
                 "For å fjerne en rolle trykker du på fjern, og velger rollen som skal fjernes.\n" +
@@ -88,7 +91,7 @@ public class Oppstart implements ActionListener {
                 "Når nok roller er valgt, blir du automatisk tatt videre til neste steg.");
 
         innhold = vindu.innhold();
-        vindu.overskrift.setText("Hvilke roller skal være med?");
+        SkjermUtil.tittuler("Hvilke roller skal være med?");
         vindu.kontroll(new Lytter(), VELGROLLER);
 
         Mafia mafia = new Mafia();
@@ -187,7 +190,7 @@ public class Oppstart implements ActionListener {
     public void velgGjenstander() {
         gjenstander = new ArrayList<>();
         innhold = vindu.innhold();
-        vindu.overskrift.setText("Hvilke gjenstander skal være med?");
+        SkjermUtil.tittuler("Hvilke gjenstander skal være med?");
 
         innhold.add(new Knapp("Pistol", Knapp.KVART, this));
         innhold.add(new Knapp("Skuddsikker vest", Knapp.KVART, this));
@@ -205,14 +208,14 @@ public class Oppstart implements ActionListener {
     }
 
     public void hvemErHva() {
-        vindu.setVeiledning("Rollefordeling:\n" +
+        VeiledningsUtil.setTekst("Rollefordeling:\n" +
                 "Her skal rollene fordeles på spillerne ved å vekke rollen som vises til høyre, " +
                 "og trykke på navnene til personene som våkner.\n" +
                 "Husk at noen roller har flere spillere, og at alle mafiaspesialister er mafia.\n" +
                 "Husk også at roller som undercover og insider må våkne sammen med henholdsvis mafia og politi.");
 
         innhold = vindu.innhold();
-        vindu.overskrift.setText("Hvem er hva?");
+        SkjermUtil.tittuler("Hvem er hva?");
         vindu.kontroll(new Lytter(), -1);
         fortsett = vindu.getFortsett();
         fortsett.setVisible(false);
@@ -263,8 +266,8 @@ public class Oppstart implements ActionListener {
         fortsett.setVisible(true);
         fortsett.setText("Start spill!");
         innhold.add(fortsett);
-        vindu.info.setText("");
-        vindu.overskrift.setText("Klar til å begynne spillet?");
+        SkjermUtil.fullLogg("");
+        SkjermUtil.tittuler("Klar til å begynne spillet?");
     }
 
     public void nyfase(int f) {
@@ -282,7 +285,7 @@ public class Oppstart implements ActionListener {
                 hvemErHva();
                 informer("Følgende roller er med:");
                 visRoller(spillere.visRoller(roller));
-                vindu.info.setText(spillere.visRoller(roller));
+                SkjermUtil.fullLogg(spillere.visRoller(roller));
                 break;
             case STARTSPILL:
                 startSpill();
@@ -350,7 +353,7 @@ public class Oppstart implements ActionListener {
 
     public void informer(String informasjon) {
         TvUtil.vis(informasjon);
-        vindu.info.setText(informasjon);
+        SkjermUtil.fullLogg(informasjon);
     }
 
     private void visRoller(String rollerListe) {
@@ -549,7 +552,7 @@ public class Oppstart implements ActionListener {
             gjenstander.add(k.getText());
             TvUtil.leggTil("\n" + k.getText());
 
-            vindu.informer(TvUtil.getText());
+            SkjermUtil.fullLogg(TvUtil.getText());
 
             if (gjenstander.size() == spillere.spillere().size()) {
                 spillere.fordelGjenstander(gjenstander);

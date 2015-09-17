@@ -1,5 +1,7 @@
 package gui;
 
+import Utils.TvUtil;
+import Utils.VeiledningsUtil;
 import datastruktur.Spillerliste;
 import personer.Spiller;
 
@@ -90,7 +92,7 @@ public class Innstillinger extends JFrame implements ActionListener {
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
         if (((Knapp) e.getSource()).getText() == "Vis/skjul veiledning") {
-            vindu.visSkjulVeiledning();
+            VeiledningsUtil.visSkjulVeiledning();
         }
 
         if (((Knapp) e.getSource()).getText() == "Sett dagtid") {
@@ -125,7 +127,7 @@ public class Innstillinger extends JFrame implements ActionListener {
         }
 
         if (((Knapp) e.getSource()).getText() == "Fullskjerm TV") {
-            vindu.visSkjulTvRamme();
+            TvUtil.visSkjulRamme();
         }
 
         if (((Knapp) e.getSource()).getText() == "Legg til spiller") {

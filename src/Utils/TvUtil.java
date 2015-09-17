@@ -1,6 +1,7 @@
-package gui;
+package Utils;
 
 import datastruktur.Spillerliste;
+import gui.TV;
 import personer.Spiller;
 
 import javax.swing.*;
@@ -12,7 +13,7 @@ public class TvUtil {
     private static TV tv;
     public static String roller;
 
-    public static void setTv(Spillerliste spillere) {
+    public static void init(Spillerliste spillere) {
         tv = new TV("MafiososInfo", spillere);
     }
 
@@ -95,5 +96,4 @@ public class TvUtil {
     public static String hentDrøm(Spiller spiller) {
         return tv.drøm(spiller);
     }
-
 }

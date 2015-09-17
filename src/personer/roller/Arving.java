@@ -1,6 +1,6 @@
 package personer.roller;
 
-import gui.TvUtil;
+import Utils.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -38,29 +38,15 @@ public class Arving extends Rolle {
 	}
 
 	@Override
-	public String oppgave() {
-		if(riking == null) {
+	public void autoEvne() {
+		if (arvet)
 			aktiver(false);
-			return super.oppgave();
-		} else {
-			aktiver(false);
-			if(spiller.nyligKlonet())
-				return super.oppgave();
-
-			TvUtil.vis("Arvingen har nå arvet rollen " + riking.rolle() + "!");
-			if(informert) 
-				TvUtil.leggTil(info);
+		else if(arv() && lever() && arvet == false) {
+			aktiver(true);
+			oppgave = "Arvingen har nå arvet rollen " + riking.rolle() + "!";
 			TvUtil.toFront();
 			arvet = true;
-			return "Arvingen våkner";
 		}
-	}
-
-	@Override
-	public boolean aktiv() {
-		if(arv() && lever() && arvet == false)
-			aktiver(true);
-		return super.aktiv();
 	}
 
 	@Override

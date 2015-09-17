@@ -1,7 +1,7 @@
 package personer.roller;
 
 import gui.Spill;
-import gui.TvUtil;
+import Utils.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 

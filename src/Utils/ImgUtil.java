@@ -1,4 +1,4 @@
-package datastruktur;
+package Utils;
 
 import sun.applet.Main;
 

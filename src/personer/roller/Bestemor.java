@@ -3,7 +3,6 @@ package personer.roller;
 import java.util.ArrayList;
 
 import gui.Spill;
-import gui.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
 

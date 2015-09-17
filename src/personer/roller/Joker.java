@@ -1,5 +1,6 @@
 package personer.roller;
 
+import Utils.SkjermUtil;
 import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
@@ -35,6 +36,7 @@ public class Joker extends Rolle {
 
     public void setOpp(boolean opp) {
         this.opp = opp;
+        SkjermUtil.logg(rapport());
     }
 
     public boolean fasit(){
