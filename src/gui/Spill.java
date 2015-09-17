@@ -195,6 +195,7 @@ public class Spill implements ActionListener {
     public void velgOrdfører(Spiller valgt) {
         if (valgt != null) {
             ordfører = valgt;
+            ordfører.ekstraStemme();
             rapporter(valgt + " er ny ordfører!");
             TvUtil.visOrdfører(ordfører);
         } else {
@@ -436,7 +437,7 @@ public class Spill implements ActionListener {
         timer.nyStartSek(20);
         if (s.lever() && s.harFlyers()) {
             Spiller marius = new Spiller("Grafiske Marius");
-            spillere.stem(marius, s);
+            marius.setStemmer(2);
             spillere.stem(marius, s);
         }
     }
@@ -709,6 +710,7 @@ public class Spill implements ActionListener {
             if (s.lever())
                 spillere.nominer(s);
 
+        finnSpiller(Rolle.ASTRONAUT).ekstraStemme();
         startAvstemning();
         informer(annonse.substring(1) + "\n\nDet er tid for rakettoppskytning!!!");
         rapporter("\nDet er tid for rakettoppskytning!!!");
@@ -718,6 +720,7 @@ public class Spill implements ActionListener {
     public void avsluttRakett() {
         rakett = false;
         nyFase(DISKUSJONSFASE);
+        finnSpiller(Rolle.ASTRONAUT).minkStemmer();
         restartMedTimer(null, tid - 2);
         aktiverDagsRoller();
     }
@@ -891,9 +894,6 @@ public class Spill implements ActionListener {
                 ut += " og " + s;
         }
         ut += " har like mange stemmer.\n\nHvem skal dø?";
-
-        if (ordfører.lever())
-            spillere.hentSisteStemmeFra(ordfører);
 
         ArrayList<Spiller> nye = spillere.nyligDøde();
         for (Spiller s : nye) {
@@ -1352,11 +1352,6 @@ public class Spill implements ActionListener {
             } else if (fase(AVSTEMNINGSFASE)) {
                 knapp(e).setEnabled(false);
                 spillere.stem(valgt, forsvarende);
-
-                if ((rakett && valgt.equals(finnSpiller(Rolle.ASTRONAUT))))
-                    spillere.stem(valgt, forsvarende);
-                if (valgt == ordfører)
-                    spillere.stem(valgt, forsvarende);
             } else if (dag && fase(RØMNINGSFASE)) {
                 valgt.henrett();
                 nyFase(DISKUSJONSFASE);

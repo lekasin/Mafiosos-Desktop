@@ -360,9 +360,9 @@ public class Spillerliste {
     public void stem(Spiller stemmende, Spiller spiller) {
         lagreStemme(stemmende, spiller);
         if (stemmer.containsKey(spiller))
-            stemmer.put(spiller, stemmer.get(spiller) + 1);
+            stemmer.put(spiller, stemmer.get(spiller) + stemmende.getStemmer());
         else
-            stemmer.put(spiller, 1);
+            stemmer.put(spiller, stemmende.getStemmer());
     }
 
     public int antallStemmer(Spiller spiller) {

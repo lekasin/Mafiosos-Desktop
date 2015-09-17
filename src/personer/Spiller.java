@@ -11,6 +11,7 @@ public class Spiller {
 	Rolle rolle;
 	Spiller offer;
 	Rolle beskytter, forsvarer, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse, supperpartner, grafiker;
+	int stemmer = 1;
 	int mafiarolle = 0;
 	boolean lever = true, funker = true, død = false, beskyttet = false, forsvart = false, forsinket = false,
 			reddet = false, skjult = false, løgn = false, kløna = false, nyligKlonet = false, skalKlones = false, fange = false, kidnappet = false,
@@ -55,7 +56,27 @@ public class Spiller {
 	public void setLiv(boolean lever) {
 		this.lever = lever;
 	}
-	
+
+    public void setStemmer(int stemmer){
+        this.stemmer = stemmer;
+    }
+
+    public int getStemmer() {
+        return stemmer;
+    }
+
+    public void ekstraStemme(){
+        stemmer++;
+    }
+
+    public void minkStemmer(){
+        stemmer--;
+    }
+
+    public void fjernStemmer(){
+        stemmer = 0;
+    }
+
 	public void setOffer(Spiller spiller) {
 		offer = spiller;
 	}
@@ -431,8 +452,7 @@ public class Spiller {
 		return mafiarolle;
 	}
 
-
-	public Rolle finnRolle(int id) {
+    public Rolle finnRolle(int id) {
 		return rolle.finnRolle(id);
 	}
 
