@@ -254,17 +254,17 @@ public class Vindu extends JFrame {
     public void oppdaterKnapper(JPanel panel, Rolle r) {
         Component[] knapper = panel.getComponents();
 
-        if (r.id(Rolle.OBDUK)) {
+
+        if (r == null || !r.funker() || r.fanget() || !r.aktiv() || (r.id(Rolle.SPECIAL) && r.lever()) ||
+                r.id(Rolle.JØRGEN) || r.id(Rolle.BEDRAGER) || r.id(Rolle.QUISLING) || r.id(Rolle.BESTEMOR) || r.id(Rolle.BESTEVENN) || r.id(Rolle.DRØMMER))
+            deaktiverPersonKNapper(panel);
+        else if (r.id(Rolle.OBDUK)) {
             visDødeKnapper(panel);
             return;
         } else if (r.id(Rolle.JOKER)) {
             jokerKnapper((Joker) r);
             return;
         }
-
-        if (r == null || !r.funker() || r.fanget() || !r.aktiv() || (r.id(Rolle.SPECIAL) && r.lever()) ||
-                r.id(Rolle.JØRGEN) || r.id(Rolle.BEDRAGER) || r.id(Rolle.QUISLING) || r.id(Rolle.BESTEMOR) || r.id(Rolle.BESTEVENN) || r.id(Rolle.DRØMMER))
-            deaktiverPersonKNapper(panel);
         else
             for (Component c : knapper) {
                 if (c instanceof Knapp) {

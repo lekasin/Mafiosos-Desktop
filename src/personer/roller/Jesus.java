@@ -59,7 +59,6 @@ public class Jesus extends Rolle {
 
 	@Override
 	public void drep() {
-		// TODO Auto-generated method stub
 		if(snill) dag = 2;
 		frelst = null;
 		super.drep();

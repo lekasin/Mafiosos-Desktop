@@ -66,11 +66,6 @@ public class Spiller {
 	
 	public void henrett(){
 		if(forsvart){
-			if(forsvarer.id(Rolle.JESUS) && !id(Rolle.JESUS)){
-				forsvarer.spiller().snipe(null);
-				forsvart = false;
-				forsvarer = null;
-			} 
 			return;
 		}
 

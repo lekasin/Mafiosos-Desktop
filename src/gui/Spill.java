@@ -638,8 +638,7 @@ public class Spill implements ActionListener {
         else{
             String ut = "Landsbyen seiret!\nMen noen gikk i Jokerens felle og døde:\n";
             for (Spiller s: medJokeren) {
-                s.henrett();
-                ut += "\n" + s + (s.side() < Rolle.NØYTRAL ? " VAR " : " var IKKE ") + "mafia!";
+                ut = jokerHenrett(s, ut);
             }
 
             spillere.dødsannonse();
@@ -648,6 +647,56 @@ public class Spill implements ActionListener {
             rapporter(ut);
             dagensResultat();
         }
+    }
+
+    public String jokerHenrett(Spiller s, String ut) {
+        s.henrett();
+        System.out.println("Joker - " + s);
+
+        int side = s.side();
+        ut += "\n" + s;
+        //Løgneren bytter side
+        if (s.løgn())
+            side = side - (2 * side);
+
+        //Lag henrettelsestekst
+        if (s.forsvart())
+            ut += " er beskyttet, og er derfor ikke død!";
+        else {
+            ut += (side < Rolle.NØYTRAL ? " VAR " : " var IKKE ") + "mafia!";
+
+            //Drep belieber hvis Justin er død
+            if (sjekkRolle(Rolle.BELIEBER) && finnRolle(Rolle.BELIEBER).funker()) {
+                Belieber belieber = (Belieber) finnRolle(Rolle.BELIEBER);
+                if (s.equals(belieber.justin())) {
+                    ut = jokerHenrett(belieber.spiller(), ut);
+                    belieber.spiller().snipe(finnRolle(Rolle.JOKER));
+                }
+            }
+        }
+
+        //Sjekk om spiller er reddet av Jesus, og drep jesus istedenfor
+        if (sjekkRolle(Rolle.JESUS)) {
+            Jesus jesus = (Jesus) finnRolle(Rolle.JESUS);
+            if (jesus.frelst() == s) {
+                ut = jokerHenrett(jesus.spiller(), ut);
+                jesus.spiller().snipe(jesus);
+            }
+        }
+
+        //Sjekk om den døde er illusjonistens gjemmested
+        if (sjekkRolle(Rolle.ILLUSJONIST) && finnOffer(Rolle.ILLUSJONIST) == s){
+            ut = jokerHenrett(finnSpiller(Rolle.ILLUSJONIST), ut);
+            finnSpiller(Rolle.ILLUSJONIST).snipe(finnRolle(Rolle.JOKER));
+        }
+
+        //Sjekk om princess er den døde, og befri i så fall fangene
+        if (s.id(Rolle.PRINCESS) && spillere.harFanger()) {
+            spillere.befriFanger();
+            ut += "\n\nFangene er befridd!";
+        }
+
+        return ut;
     }
 
     public void rakettoppskytning() {
@@ -1058,18 +1107,15 @@ public class Spill implements ActionListener {
         spillere.dødsannonse();
 
         //Sjekk om spiller er reddet av Jesus, og drep jesus istedenfor
-        if (finnSpiller(Rolle.JESUS) != null) {
+        if (sjekkRolle(Rolle.JESUS)) {
             Jesus jesus = (Jesus) finnRolle(Rolle.JESUS);
-
             if (jesus.frelst() == s || (bombet != null && s != finnSpiller(Rolle.BOMBER) && jesus.frelst() == bombet))
                 jesus.spiller().snipe(jesus);
         }
 
         //Sjekk om den døde er illusjonistens gjemmested
-        if (sjekkRolle(Rolle.ILLUSJONIST)
-                && finnRolle(Rolle.ILLUSJONIST).offer() == s)
-            finnRolle(Rolle.ILLUSJONIST).spiller().snipe(
-                    finnRolle(Rolle.ILLUSJONIST));
+        if (sjekkRolle(Rolle.ILLUSJONIST) && finnOffer(Rolle.ILLUSJONIST) == s)
+            finnSpiller(Rolle.ILLUSJONIST).snipe(finnRolle(Rolle.ILLUSJONIST));
 
         //Sjekk om princess er den døde, og befri i så fall fangene
         if (s.id(Rolle.PRINCESS) && spillere.harFanger()) {
