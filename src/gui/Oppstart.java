@@ -27,10 +27,10 @@ public class Oppstart implements ActionListener {
     ArrayList<String> gjenstander;
     Knapp fortsett, sniper, sjåfør, sabotør, forfalsker;
 
-    int fase = 0, antallspillere = 0, indeks = 0, mafiaer = -1, politi = -1, venner = -1, backup, tid = 6;
+    int fase = 100, antallspillere = 0, indeks = 0, mafiaer = -1, politi = -1, venner = -1, backup, tid = 6;
     boolean mafiaroller, fjerning, snipe, flukt, saboter, forfalsk;
 
-    public static final int TITTEL = 50, VELGSPILLERE = 0, VELGROLLER = 1, VELGGJENSTANDER = -1, HVEMERHVA = 2, STARTSPILL = 3;
+    public static final int TITTEL = 50, VELGSPILLERE = 100, VELGROLLER = 101, VELGGJENSTANDER = -1, HVEMERHVA = 102, STARTSPILL = 103;
 
     public Oppstart(Vindu vindu) {
         this.vindu = vindu;
@@ -153,7 +153,7 @@ public class Oppstart implements ActionListener {
 
         innhold.add(new Knapp("Politi", politi, Knapp.KVART, this));
         innhold.add(new Knapp("Princess98", new Princess(), Knapp.KVART, this));
-        //		innhold.add(new Knapp("Psykolog", new Psykolog(), Knapp.KVART, this));
+        innhold.add(new Knapp("Psykolog", new Psykolog(), Knapp.KVART, this));
 
         innhold.add(new Knapp("Quisling", new Quisling(), Knapp.KVART, this));
 
@@ -182,7 +182,7 @@ public class Oppstart implements ActionListener {
         innhold.add(new Knapp("Zombie", new Zombie(), Knapp.KVART, this));
 
         antallspillere = spillere.length();
-        roller = new Rolle[60];
+        roller = new Rolle[100];
         roller[Rolle.MAFIA] = mafia;
         informer(spillere.rolleString(roller, --antallspillere));
     }
