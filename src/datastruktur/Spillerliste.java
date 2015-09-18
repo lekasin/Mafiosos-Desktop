@@ -13,7 +13,7 @@ public class Spillerliste {
     ArrayList<Spiller> fanger = new ArrayList<>();
     ArrayList<Spiller> nominerte = new ArrayList<>();
     HashMap<Spiller, Integer> stemmer = new HashMap<>();
-    HashMap<Spiller, Boolean> ultimatum = new HashMap<>();
+    HashMap<Spiller, Boolean> dilemma = new HashMap<>();
     ArrayList<HashMap<Integer, Spiller>> pekeHistorikk = new ArrayList<>();
     ArrayList<HashMap<Spiller, Spiller>> stemmeHistorikk = new ArrayList<>();
 
@@ -536,19 +536,19 @@ public class Spillerliste {
         ((BodyGuard) bg.rolle()).setNektet(besøk(bg.offer(), bg));
     }
 
-    public void registrerUltimatumValg(Spiller s){
-        ultimatum.put(s, true);
+    public void registrerDilemmaValg(Spiller s){
+        dilemma.put(s, true);
     }
 
-    public void fyllUltimatum(){
+    public void fyllDilemma(){
         for (Spiller s: levendeOgFri())
-            if (!ultimatum.containsKey(s))
-                ultimatum.put(s, false);
-        ultimatum.remove(finnRolle(Rolle.JOKER));
+            if (!dilemma.containsKey(s))
+                dilemma.put(s, false);
+        dilemma.remove(finnRolle(Rolle.JOKER));
     }
 
-    public HashMap<Spiller, Boolean> getUltimatum() {
-        return ultimatum;
+    public HashMap<Spiller, Boolean> getDilemma() {
+        return dilemma;
     }
 
     //MORGENMETODER

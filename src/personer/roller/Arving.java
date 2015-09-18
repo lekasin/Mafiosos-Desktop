@@ -43,7 +43,7 @@ public class Arving extends Rolle {
 			aktiver(false);
 		else if(arv() && lever() && arvet == false) {
 			aktiver(true);
-			oppgave = "Arvingen har nå arvet rollen " + riking.rolle() + "!";
+			tvOppgave = "Arvingen har nå arvet rollen " + riking.rolle() + "!";
 			TvUtil.toFront();
 			arvet = true;
 		}

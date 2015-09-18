@@ -18,7 +18,7 @@ public class Tyster extends Rolle {
 
     @Override
     public void autoEvne() {
-        if (Spill.spillere.hentSisteStemmeFra(spiller) != null)
+        if (funker && Spill.spillere.hentSisteStemmeFra(spiller) != null)
             evne(spiller);
     }
 

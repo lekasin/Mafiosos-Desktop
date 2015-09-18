@@ -95,6 +95,7 @@ public class Spill implements ActionListener {
         innhold = vindu.innhold();
         vindu.kontroll.setVisible(false);
         proklamer("Landsbyen Våkner");
+        SkjermUtil.fargTittel(Color.black);
         innhold.add(new Knapp("Landsbyen våkner", Knapp.SUPER, e -> dag()));
         innhold.revalidate();
         innhold.repaint();
@@ -319,9 +320,9 @@ public class Spill implements ActionListener {
     public void nesteRolle() {
         if (i.hasNext()) {
             Rolle r = i.next();
-            r.autoEvne();
 
             while (!r.aktiv() || r == aktiv) {
+                r.autoEvne();
                 if (i.hasNext())
                     r = i.next();
                 else
@@ -377,7 +378,7 @@ public class Spill implements ActionListener {
         else if (fase(AVSTEMNINGSFASE))
             nesteAvstemming();
         else if (fase(JOKERFASE))
-            ultimatum();
+            dilemma();
         else
             System.out.println("UKJENT FASE: " + fase + "(tidenErUte)");
     }
@@ -435,11 +436,15 @@ public class Spill implements ActionListener {
         tittuler("Hvem stemmer på " + s.navn() + "?");
         timer.setText("\nHvem stemmer på " + s.navn() + "?\n" + hentMistenkte());
         timer.nyStartSek(20);
+
         if (s.lever() && s.harFlyers()) {
             Spiller marius = new Spiller("Grafiske Marius");
             marius.setStemmer(2);
             spillere.stem(marius, s);
         }
+
+        if (sjekkOffer(Rolle.PSYKOLOG) && !s.id(Rolle.PSYKOLOG) && finnOffer(Rolle.PSYKOLOG).equals(s))
+            spillere.stem(finnSpiller(Rolle.PSYKOLOG), s);
     }
 
     public void avsluttAvstemning() {
@@ -452,9 +457,12 @@ public class Spill implements ActionListener {
 
             if (utstemte.isEmpty())
                 godkjenn(null);
-            else if (utstemte.size() > 1)
-                uavgjort(utstemte);
-            else {
+            else if (utstemte.size() > 1) {
+                if (dødsdømt != null)
+                    godkjenn(dødsdømt);
+                else
+                    uavgjort(utstemte);
+            } else {
                 Spiller utstemt = utstemte.get(0);
                 if (tiltale && !rakett)
                     utstemt = spillere.fikkAktorDrept();
@@ -595,23 +603,23 @@ public class Spill implements ActionListener {
 
     public void anarki() {
         nyFase(JOKERFASE);
-        timer.setText(annonse + "\n\nJokerens ultimatum!!!\nHva blir landsbyen enige om?");
+        timer.setText(annonse + "\n\nJokerens dilemma!!!\nHva blir landsbyen enige om?");
         timer.nyStartMin(2);
-        tittuler("Jokerens ultimatum!");
+        tittuler("Jokerens dilemma!");
         vindu.deaktiverPersonKNapper(innhold);
     }
 
-    public void ultimatum() {
+    public void dilemma() {
         joker = false;
         timer.stop();
         refresh();
         tittuler("Hvem stemmer OPP?");
-        informer("Jokerens Ultimatum!");
-        rapporter("\nJokerns Ultimatum:");
+        informer("Jokerens dilemma!");
+        rapporter("\nJokerns dilemma:");
     }
 
-    public void avsluttUltimatum() {
-        spillere.fyllUltimatum();
+    public void avsluttDilemma() {
+        spillere.fyllDilemma();
 
         ArrayList<Spiller> medJokeren = new ArrayList();
 
@@ -620,7 +628,7 @@ public class Spill implements ActionListener {
         boolean fasit = joker.fasit();
 
         for (Spiller s : spillere.levendeOgFri())
-            if (spillere.getUltimatum().get(s).equals(fasit) && !s.equals(joker.spiller()))
+            if (spillere.getDilemma().get(s).equals(fasit) && !s.equals(joker.spiller()))
                 medJokeren.add(s);
 
         rapporter("Med Jokeren: " + medJokeren.size() + "\n" +
@@ -931,6 +939,7 @@ public class Spill implements ActionListener {
     }
 
     public boolean sjekkVinner() {
+        timer.stop();
         if (finnRolle(Rolle.ARVING) != null)
             ((Arving) finnRolle(Rolle.ARVING)).arv();
         switch (spillere.vinner()) {
@@ -1271,7 +1280,7 @@ public class Spill implements ActionListener {
                     } else if (fase(ORDFØRERFASE)) {
                         velgOrdfører(null);
                     } else if (fase(JOKERFASE) && !joker) {
-                        avsluttUltimatum();
+                        avsluttDilemma();
                     } else {
                         tidenErUte();
                     }
@@ -1354,6 +1363,8 @@ public class Spill implements ActionListener {
                 spillere.stem(valgt, forsvarende);
             } else if (dag && fase(RØMNINGSFASE)) {
                 valgt.henrett();
+                nominer(valgt, false);
+                if (valgt.equals(dødsdømt)) dødsdømt = null;
                 nyFase(DISKUSJONSFASE);
                 spillere.dødsannonse();
                 tittuler("Hvem er de mistenkte?");
@@ -1365,7 +1376,7 @@ public class Spill implements ActionListener {
                 godkjenn(valgt);
             else if (fase(JOKERFASE)) {
                 knapp(e).setEnabled(false);
-                spillere.registrerUltimatumValg(valgt);
+                spillere.registrerDilemmaValg(valgt);
             } else {
                 System.out.println("UKJENT FASE: " + fase + "(valgt på dagen)");
             }
@@ -1373,7 +1384,7 @@ public class Spill implements ActionListener {
 
         // VELGER PÅ NATTEN
         else {
-            if (aktiv.funker() || (aktiv instanceof Specialguy && aktiv.aktiv())) {
+            if (aktiv.funker() || (aktiv.id(Rolle.SPECIAL) && aktiv.aktiv())) {
                 spillere.lagrePek(aktiv.pri(), valgt);
                 aktiv.pek(valgt);
                 rapporter(aktiv.rapport());
@@ -1381,7 +1392,8 @@ public class Spill implements ActionListener {
             if (aktiv.fortsetter())
                 nesteRolle();
             else {
-                refresh(aktiv(Rolle.MAFIA) || aktiv(Rolle.COPYCAT) || aktiv(Rolle.KIRSTEN) || aktiv(Rolle.CUPID) ? aktiv : null);
+                //Ikke deaktiverknapper for flertrykksroller
+                refresh(aktiv(Rolle.MAFIA) || aktiv(Rolle.COPYCAT) || aktiv(Rolle.KIRSTEN) || aktiv(Rolle.CUPID) || aktiv(Rolle.PSYKOLOG) ? aktiv : null);
             }
         }
     }

@@ -29,7 +29,8 @@ public class Drommer extends Rolle {
 	public String oppgave() {
 		if(spiller.nyligKlonet() || klonet)
 			return super.oppgave();
-		evne(spiller);
+		if (funker)
+			evne(spiller);
 		return oppgave; 
 	}
 

@@ -174,9 +174,7 @@ public class Vindu extends JFrame {
             kontroll.add(knapp);
 
         if (fase == Oppstart.VELGROLLER) {
-            kontroll.add(new Knapp("Fjern", Knapp.HEL, e -> {
-                oppstart.inverserKnapper(null);
-            }));
+            kontroll.add(new Knapp("Fjern", Knapp.HEL, e -> oppstart.inverserKnapper(null)));
         } else {
             fortsett = new Knapp("Fortsett", Knapp.HEL, al);
             kontroll.add(fortsett);

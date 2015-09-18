@@ -19,15 +19,12 @@ public class Berit extends Rolle {
 	}
 
 	@Override
-	public String oppgave() {
+	public void autoEvne() {
 		if(forsinketSpiller != null && forsinketOffer != null && forsinketSpiller.funker() && (forsinketOffer.funker() && !forsinketSpiller.id(OBDUK))) {
-			if(!(	forsinketSpiller.id(REX) || forsinketSpiller.id(SHERLOCK) || forsinketSpiller.id(FILOSOF) 
-				|| 	forsinketSpiller.id(OBDUK) || forsinketSpiller.id(JØRGEN)  || forsinketSpiller.id(DRØMMER))) {
+			if(!(	forsinketSpiller.id(REX) || forsinketSpiller.id(SHERLOCK) || forsinketSpiller.id(FILOSOF)
+					|| 	forsinketSpiller.id(OBDUK) || forsinketSpiller.id(JØRGEN)  || forsinketSpiller.id(DRØMMER))) {
 				Spiller origOffer = forsinketSpiller.offer();
-				
-				System.out.println("forsinkelse: " + forsinketSpiller + " pekte på " + forsinketOffer);
 
-				
 				if(forsinketSpiller.rolle().blokkert()){
 					forsinketSpiller.rens(finnRolle(TJUKKAS));
 					forsinketSpiller.pek(forsinketOffer);
@@ -38,11 +35,11 @@ public class Berit extends Rolle {
 					forsinketSpiller.pek(forsinketOffer);
 					forsinketSpiller.pek(origOffer);
 				}
-					
-				
+
+
 			}
 		}
-		
+
 		if(forsinketSpiller != null){
 			forsinketRapport = forsinketSpiller.rolle() + "(" + forsinketSpiller + ") har valgt ";
 			if(forsinketOffer != null)
@@ -53,8 +50,6 @@ public class Berit extends Rolle {
 
 		forsinketSpiller = null;
 		forsinketOffer = null;
-
-		return super.oppgave();
 	}
 
 	@Override

@@ -3,15 +3,16 @@ package personer;
 import Utils.TvUtil;
 import personer.roller.Berit;
 import gui.Spill;
+import personer.roller.Psykolog;
 
 public abstract class Rolle {
 
 	protected boolean lever = true, blokkert = false, snill = false, informert = false, aktiv = true, funker = true, fortsett = true, skjerm = false, klonet = false;
-	protected String tittel, veiledning;
+	protected String tittel, oppgave, tvOppgave, veiledning;
 	protected Spiller offer, spiller, forbud, forbud2;
 	protected Rolle blokk, informant, forsinkelse;
 	protected int prioritet = 0, side = 1;
-	protected String oppgave, info = "";
+	protected String info = "";
 	public static int FAKEBORGER = -2, MAFIOSO = -1, NØYTRAL = 0, BORGER = 1,  FAKEMAFIA = 2;
 	public static int
 	ZOMBIE = 0,
@@ -71,7 +72,8 @@ public abstract class Rolle {
 	OBDUK = REX+1,
 
 	BESTEMOR = OBDUK+1,
-	ASTRONAUT = BESTEMOR+1,
+	PSYKOLOG = BESTEMOR+1,
+	ASTRONAUT = PSYKOLOG+1,
 	VARA = ASTRONAUT+1,
 	JENTE = VARA+1,
 	BØDDEL = JENTE+1,
@@ -102,7 +104,7 @@ public abstract class Rolle {
 	public void funk(Boolean f){
 		funker = f;
 		if(!f) {
-			if(!(id(Rolle.RAVN) || id(Rolle.MARIUS) || id(Rolle.AKTOR)))
+			if(!(id(Rolle.RAVN) || id(Rolle.MARIUS) || id(Rolle.AKTOR) || id(Rolle.PSYKOLOG)))
 				offer = null;
 			blokk = null;
 			blokkert = false;
@@ -118,6 +120,7 @@ public abstract class Rolle {
 
 	public void sov(){
 		offer = null;
+        tvOppgave = oppgave;
 		snill = false;
 		informert = false;
 		informant = null;
@@ -223,14 +226,23 @@ public abstract class Rolle {
 	}
 
 	public boolean pek(Spiller spiller){
-		this.spiller.setOffer(spiller);
+        this.spiller.setOffer(spiller);
+
 		if(this.spiller.forsinket && blokk == this.spiller.forsinkelse)
 			((Berit)this.spiller.forsinkelse).setOffer(spiller);
+
 		if(spiller == null) return false;
+
 		if(spiller.id(Rolle.HAVFRUE) && spiller.offer() == this.spiller) {
-			if(spiller.rolle().snill()) this.spiller.snipe(spiller.rolle());
-			else this.spiller.snipe(spiller.rolle());
+			if(spiller.rolle().snill())
+                this.spiller.snipe(spiller.rolle());
+			else
+                this.spiller.drep(spiller.rolle());
 		}
+
+        if (spiller.id(Rolle.PSYKOLOG))
+            ((Psykolog)spiller.rolle()).bestillTime(this.spiller);
+
 		offer = spiller;
 		evne(spiller);
 		return true;
@@ -335,7 +347,7 @@ public abstract class Rolle {
         if (klonet || nyligKlonet() && !id(SMITH))
             kloneRapport();
 
-		TvUtil.vis(oppgave);
+		TvUtil.vis(tvOppgave);
 		if(informert)
             TvUtil.leggTil(info);
 		return oppgave;
@@ -347,10 +359,10 @@ public abstract class Rolle {
 		if(offer != null){
 			ut += " har valgt " + offer + "(" + offer.rolle() + ")";
 			if(snill) ut += ", med hjelp fra nissen";
-			if(blokkert) ut += ", men ble blokkert av " + blokk + ".";
+			if(blokkert) ut += ", men ble blokkert av " + blokk;
 		}
 		else
-			ut += " valgte ingen.";
+			ut += " valgte ingen";
 		return ut;
 	}
 

@@ -23,9 +23,8 @@ public class CopyCat extends Rolle {
 	}
 
 	@Override
-	public String oppgave() {
+	public void autoEvne() {
 		fortsett = false;
-		return super.oppgave();
 	}
 
 	@Override

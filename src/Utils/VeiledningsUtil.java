@@ -1,7 +1,5 @@
 package Utils;
 
-import personer.Rolle;
-
 import javax.swing.*;
 
 /**
@@ -121,8 +119,8 @@ public class VeiledningsUtil {
                         "For å gå til en ny natt, uten å henrette noen, trykker du fortsett.");
                 break;
             case JOKERFASE:
-                setTekst("Ultimatum:\n" +
-                        "Jokeren har nå kommet med sitt ultimatum, og landsbyen har to minutter til å komme frem til en avgjørelse.\n" +
+                setTekst("Jokerens dilemma:\n" +
+                        "Jokeren har nå kommet med sitt dilemma, og landsbyen har to minutter til å komme frem til en avgjørelse.\n" +
                         "De må sammen bestemme seg for å stemme opp eller ned for å prøve å unngå Jokerens vrede. Det er likevel lov til å stemme imot det landsbyen blir enige om.\n" +
                         "Når landsbyen har bestemt seg, eller tiden går ut, må alle lukke øynene for en anonym avstemning, hvor alle skal velge enten tommel opp eller ned.\n" +
                         "For å gå rett til avstemningen, trykker du på fortsett. Når avstemningen er i gang, trykker du på alle som stemmer OPP (appen ordner resten).\n" +
