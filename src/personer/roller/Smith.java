@@ -49,7 +49,7 @@ public class Smith extends Rolle {
 
 	@Override
 	public boolean evne(Spiller spiller) {
-		if(!(spiller.id(Rolle.MAFIA) || blokkert || (spiller.beskyttet()) && !(spiller.id(Rolle.ILLUSJONIST) && spiller.rolle().offer().id(Rolle.SMITH)))) {
+		if(!blokkert) {
 			spiller.klon(this);
 			klone = spiller;
 		}

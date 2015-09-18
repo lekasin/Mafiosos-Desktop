@@ -269,10 +269,20 @@ public class Spiller {
     }
 
 	public void klon(Rolle r) {
+        if(id(Rolle.MAFIA) || (beskyttet() && !(id(Rolle.ILLUSJONIST) && rolle().offer().id(Rolle.SMITH))))
+            return;
+
 		smith = r;
         setSkalKlones(true);
         setNyligKlonet(true);
 	}
+
+    public void avbrytKloning(){
+        System.out.println("ER avbrutt");
+        smith = null;
+        setSkalKlones(false);
+        setNyligKlonet(false);
+    }
 
 	public void klon() {
         setSkalKlones(false);

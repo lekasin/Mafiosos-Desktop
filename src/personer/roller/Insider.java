@@ -17,7 +17,6 @@ public class Insider extends Rolle {
 	
 	@Override
 	public boolean evne(Spiller spiller) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
