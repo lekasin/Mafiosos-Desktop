@@ -278,7 +278,6 @@ public class Spiller {
 	}
 
     public void avbrytKloning(){
-        System.out.println("ER avbrutt");
         smith = null;
         setSkalKlones(false);
         setNyligKlonet(false);

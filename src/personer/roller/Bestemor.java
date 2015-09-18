@@ -41,22 +41,24 @@ public class Bestemor extends Rolle {
                 flereBesøk = true;
             }
 
-            if (nyligKlonet() && besøk.size() > 1) {
-                if (!s.id(SMITH)) {
-                    s.rens(this);
-                    System.out.println("SKAL klone " + s.rolle());
-                    s.klon(finnRolle(SMITH));
+            //Trenger ikke sjekke for Smith eller Princess hvis alle er døde
+            if (lever) {
+                if (nyligKlonet() && besøk.size() > 1) {
+                    if (!s.id(SMITH)) {
+                        s.rens(this);
+                        s.klon(finnRolle(SMITH));
+                        flereBesøk = true;
+                    }
+                } else if (spiller.kidnappet() && besøk.size() > 1 && !s.id(PRINCESS)) {
+                    s.kidnapp(null);
                     flereBesøk = true;
                 }
-            }
-            else if(spiller.kidnappet() && besøk.size() > 1 && !s.id(PRINCESS)) {
-                s.kidnapp(null);
-                flereBesøk = true;
             }
         }
 
         if(!lever && flereBesøk) spiller.vekk();
-        if(spiller.kidnappet() && flereBesøk) Spill.spillere.befriSpiller(spiller);
+        if(spiller.kidnappet() && flereBesøk)
+            Spill.spillere.befriSpiller(spiller);
         if(nyligKlonet() && flereBesøk) {
             spiller.avbrytKloning();
             aktiver(false);

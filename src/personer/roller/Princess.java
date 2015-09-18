@@ -22,7 +22,7 @@ public class Princess extends Rolle {
     }
 
     public boolean befridd() {
-        if (!spiller.lever() || (blokkert() && blokk.id(POLITI) && !infiltrert) || (offer != null && offer.rolle() != blokk && infiltrert))
+        if (!spiller.lever() || (blokkert() && blokk.id(POLITI) && !infiltrert) || (offer != null && offer.rolle() != blokk && infiltrert) || nyligKlonet())
             return true;
         return false;
     }

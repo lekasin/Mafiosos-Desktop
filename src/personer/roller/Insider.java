@@ -25,5 +25,5 @@ public class Insider extends Rolle {
 		politi.blokker(blokk);
 		blokkert = true;
 		rens();
-	}	
+	}
 }

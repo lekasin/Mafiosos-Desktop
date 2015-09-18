@@ -24,6 +24,7 @@ public class CopyCat extends Rolle {
 
 	@Override
 	public void autoEvne() {
+		kopi = false;
 		fortsett = false;
 	}
 
@@ -64,7 +65,6 @@ public class CopyCat extends Rolle {
 			negativ.rolle().setSpiller(negativ);
 		}
 
-		kopi = false;
 		fortsett = true;
 		forbud2 = this.spiller;
 		return true;
