@@ -111,8 +111,6 @@ public class Spill implements ActionListener {
         if (sjekkOffer(Rolle.YOUTUBER) && finnSpiller(Rolle.YOUTUBER).funker())
             TvUtil.leggVed(spillere.youtube(finnOffer(Rolle.YOUTUBER),
                     finnSpiller(Rolle.YOUTUBER).skjult()));
-        if (sjekkRolle(Rolle.RAVN) || sjekkRolle(Rolle.MARIUS))
-            TvUtil.leggVed(spillere.leggVedInfo());
         if (sjekkOffer(Rolle.CUPID))
             spillere.cupider((Cupid) finnRolle(Rolle.CUPID));
         if (sjekkOffer(Rolle.SNYLTER))
@@ -121,6 +119,8 @@ public class Spill implements ActionListener {
             spillere.bodyguarded(finnSpiller(Rolle.BODYGUARD));
         if (sjekkRolle(Rolle.QUISLING))
             spillere.svik((Quisling) finnRolle(Rolle.QUISLING));
+        if (sjekkRolle(Rolle.RAVN) || sjekkRolle(Rolle.MARIUS))
+            TvUtil.leggVed(spillere.leggVedInfo());
 
         forsvarende = null;
         spillere.våknOpp();

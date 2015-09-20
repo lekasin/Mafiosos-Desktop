@@ -149,6 +149,7 @@ public class Innstillinger extends JFrame implements ActionListener {
             oppstart.antallspillere++;
             oppstart.informer(spillere.rolleString(oppstart.roller,
                     oppstart.antallspillere));
+            oppstart.oppdaterKnapper();
         }
     }
 

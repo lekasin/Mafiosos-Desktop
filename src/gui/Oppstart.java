@@ -181,10 +181,19 @@ public class Oppstart implements ActionListener {
 
         innhold.add(new Knapp("Zombie", new Zombie(), Knapp.KVART, this));
 
-        antallspillere = spillere.length();
-        roller = new Rolle[100];
-        roller[Rolle.MAFIA] = mafia;
-        informer(spillere.rolleString(roller, --antallspillere));
+        if( roller == null) {
+            antallspillere = spillere.length();
+            roller = new Rolle[100];
+            roller[Rolle.MAFIA] = mafia;
+            informer(spillere.rolleString(roller, --antallspillere));
+        } else {
+            informer(spillere.rolleString(roller, antallspillere));
+            for (Component c : innhold.getComponents()){
+                if (c instanceof Knapp)
+                    c.setEnabled(false);
+            }
+        }
+
     }
 
     public void velgGjenstander() {
@@ -360,20 +369,40 @@ public class Oppstart implements ActionListener {
         TvUtil.visRoller(rollerListe);
     }
 
-    public void inverserKnapper(Knapp knapp) {
+    public void inverserKnapper(){
         fjerning = !fjerning;
+        oppdaterKnapper();
+    }
+
+    public void oppdaterKnapper() {
+        if (!fjerning && antallspillere == 0) {
+            for (Component k : innhold.getComponents())
+                if (k instanceof Knapp) k.setEnabled(false);
+            return;
+        }
+
         for (Component k : innhold.getComponents()) {
             Rolle r = ((Knapp) k).rolle();
             if (k.getSize().equals(Knapp.KVART)) {
                 if (fjerning) {
-                    if (!(r.id(Rolle.MAFIA) && r.flere()) && !((r.id(Rolle.POLITI) || r.id(Rolle.BESTEVENN)) && roller[r.pri()] != null))
-                        k.setEnabled(!k.isEnabled());
+                    k.setEnabled(harRolle(r));
+                    if (r.id(Rolle.MAFIA) && !r.flere())
+                        k.setEnabled(false);
+
                 } else if (r.id(Rolle.POLITI) || r.id(Rolle.MAFIA) || r.id(Rolle.BESTEVENN))
                     k.setEnabled(true);
-                else if (!k.equals(knapp))
-                    k.setEnabled(!k.isEnabled());
+                else
+                    k.setEnabled(!harRolle(r));
             }
         }
+    }
+
+    private boolean harRolle(Rolle rolle){
+        for (Rolle r : roller){
+            if (r != null && r.pri() == rolle.pri())
+                return true;
+        }
+        return false;
     }
 
     private class Lytter implements ActionListener {
@@ -394,9 +423,10 @@ public class Oppstart implements ActionListener {
             //////////////////////TILBAKE//////////////////////
             else if (e.getSource() == vindu.getTilbake()) {
                 if (fase == VELGROLLER) {
-                    if (antallspillere < (spillere.length() - 1)) {
+                    roller = null;
+                    if (antallspillere < (spillere.length() - 1))
                         nyfase(fase);
-                    } else
+                    else
                         nyfase(--fase);
                 } else if (fase == VELGGJENSTANDER) {
                     if (!gjenstander.isEmpty()) {
@@ -490,8 +520,8 @@ public class Oppstart implements ActionListener {
                         roller[i] = null;
                 }
 
-                inverserKnapper(k);
                 informer(spillere.rolleString(roller, ++antallspillere));
+                inverserKnapper();
 
                 return;
             }

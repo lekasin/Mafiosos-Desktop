@@ -22,7 +22,6 @@ public class Marius extends Rolle {
 
 	@Override
 	public String oppgave() {
-		// TODO Auto-generated method stub
 		gjest = null;
 		return super.oppgave();
 	}
