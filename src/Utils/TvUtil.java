@@ -118,7 +118,6 @@ public class TvUtil {
         fullskjerm.addActionListener(e -> TvUtil.visSkjulRamme());
         skjerm.add(fullskjerm);
 
-
         JMenu tekstMeny = new JMenu("Tekststørrelse");
         tekstMeny.setMnemonic(KeyEvent.VK_T);
         tekstMeny.getAccessibleContext().setAccessibleDescription(
@@ -146,6 +145,29 @@ public class TvUtil {
             }
         });
         tekstMeny.add(tekstItem);
+
+        JMenu fargeMeny = new JMenu("Farger");
+        fargeMeny.setMnemonic(KeyEvent.VK_T);
+        fargeMeny.getAccessibleContext().setAccessibleDescription(
+                "Endre fargene på displayet");
+        skjerm.add(fargeMeny);
+
+        JMenuItem fargeitem = new JMenuItem("Hoveddisplay");
+        fargeitem.addActionListener(e -> tv.setTvFarge(false));
+        fargeMeny.add(fargeitem);
+
+        fargeitem = new JMenuItem("Hoveddisplaytekst");
+        fargeitem.addActionListener(e -> tv.setTvFarge(true));
+        fargeMeny.add(fargeitem);
+
+        fargeitem = new JMenuItem("Rolleliste");
+        fargeitem.addActionListener(e -> tv.setRollerfarge(false));
+        fargeMeny.add(fargeitem);
+
+        fargeitem = new JMenuItem("Rollelistetekst");
+        fargeitem.addActionListener(e -> tv.setRollerfarge(true));
+        fargeMeny.add(fargeitem);
+
 
         return skjerm;
     }
