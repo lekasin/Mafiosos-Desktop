@@ -15,7 +15,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 public class Vindu extends JFrame {
 
@@ -189,7 +188,7 @@ public class Vindu extends JFrame {
             kontroll.add(knapp);
 
         if (fase == Oppstart.VELGROLLER) {
-            kontroll.add(new Knapp("Fjern", Knapp.HEL, e -> oppstart.inverserKnapper(null)));
+            kontroll.add(new Knapp("Fjern", Knapp.HEL, e -> oppstart.inverserKnapper()));
         } else {
             fortsett = new Knapp("Fortsett", Knapp.HEL, al);
             kontroll.add(fortsett);
@@ -287,7 +286,6 @@ public class Vindu extends JFrame {
 
     public void oppdaterKnapper(JPanel panel, Rolle r) {
         Component[] knapper = panel.getComponents();
-
 
         if (r == null || !r.funker() || r.fanget() || !r.aktiv() || (r.id(Rolle.SPECIAL) && r.lever()) ||
                 r.id(Rolle.JØRGEN) || r.id(Rolle.BEDRAGER) || r.id(Rolle.QUISLING) || r.id(Rolle.BESTEMOR) || r.id(Rolle.BESTEVENN) || r.id(Rolle.DRØMMER))

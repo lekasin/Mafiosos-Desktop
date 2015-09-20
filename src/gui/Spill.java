@@ -83,6 +83,7 @@ public class Spill implements ActionListener {
         i = roller.listIterator();
         bombe = tiltale = rakett = false;
         dødsdømt = null;
+        annonse = "";
 
         if (sjekkVinner()) {
             nesteRolle();
@@ -129,6 +130,7 @@ public class Spill implements ActionListener {
         tittuler("Hvem er de mistenkte?");
         dødsannonse();
         sjekkVinner();
+        if (seier) return;
         timer.nyStartMin(tid);
         sjekkDagsRoller();
         TvUtil.toFront();
@@ -220,6 +222,7 @@ public class Spill implements ActionListener {
             gjenoppliv();
 
         if (seier) {
+            tittuler("Vi har en vinner!");
             innhold.add(new Knapp("Nytt Spill", Knapp.SUPER, e -> nyttSpill()));
         } else if (rakett) {
             innhold.add(new Knapp("Fortsett", Knapp.SUPER, e -> avsluttRakett()));
@@ -343,6 +346,8 @@ public class Spill implements ActionListener {
     public void forrigeRolle() {
         if (i.hasPrevious()) {
             rapporter("Tilbake");
+            if (aktiv.id(Rolle.JOKER))
+                refresh();
 
             if (dag) {
                 dag = false;
@@ -948,37 +953,37 @@ public class Spill implements ActionListener {
             ((Arving) finnRolle(Rolle.ARVING)).arv();
         switch (spillere.vinner()) {
             case -1:
-                informer("Mafiaen har vunnet!");
+                informer("Mafiaen har vunnet!" + "\n" + annonse);
                 rapporter("Mafiaen har vunnet!");
                 seier = true;
                 break;
             case 1:
-                informer("Landsbyen har vunnet!");
+                informer("Landsbyen har vunnet!" + "\n" + annonse);
                 rapporter("Landsbyen har vunnet!");
                 seier = true;
                 break;
             case 2:
-                informer("Alle er døde! Ingen vant!");
+                informer("Alle er døde! Ingen vant!" + "\n" + annonse);
                 rapporter("Alle er døde! Ingen vant!");
                 seier = true;
                 break;
             case 3:
-                informer("Mafiaene er døde, men Anarkisten takler ikke freden og forgifter drikkevannet til landsbyen!\nAnarkisten har vunnet!");
+                informer("Mafiaene er døde, men Anarkisten takler ikke freden og forgifter drikkevannet til landsbyen!\nAnarkisten har vunnet!" + "\n" + annonse);
                 rapporter("Mafiaene er døde, men Anarkisten takler ikke freden og forgifter drikkevannet til landsbyen!\nAnarkisten har vunnet!");
                 seier = true;
                 break;
             case 4:
-                informer("Agent Smith har tatt over hele landsbyen, og har vunnet!");
+                informer("Agent Smith har tatt over hele landsbyen, og har vunnet!" + "\n" + annonse);
                 rapporter("Agent Smith har tatt over hele landsbyen, og har vunnet!");
                 seier = true;
                 break;
             case 5:
-                informer("Princess98 har kidnappet hele landsbyen, og har vunnet!!");
+                informer("Princess98 har kidnappet hele landsbyen, og har vunnet!!" + "\n" + annonse);
                 rapporter("Princess98 har kidnappet hele landsbyen, og har vunnet!");
                 seier = true;
                 break;
             case 6:
-                informer("Jokeren har vunnet!");
+                informer("Jokeren har vunnet!" + "\n" + annonse);
                 rapporter("Jokeren har vunnet!");
                 seier = true;
                 break;

@@ -155,6 +155,11 @@ public class Spillerliste {
             s.rensAlle();
         }
         sl.clear();
+        stemmeHistorikk.clear();
+        pekeHistorikk.clear();
+        stemmer.clear();
+        fanger.clear();
+        dilemma.clear();
     }
 
     public void slettRoller() {
