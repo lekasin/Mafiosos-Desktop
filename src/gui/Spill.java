@@ -1192,6 +1192,32 @@ public class Spill implements ActionListener {
         rapporter("Hvem vil rømme??");
     }
 
+    public void navnEndring(Innstillinger innstillinger) {
+        timer.stop();
+        proklamer("Hvem skal omdøpes?");
+        rapporter("Hvem skal omdøpes?");
+        VeiledningsUtil.setTekst("Navnendring:\n" +
+                "Trykk på spilleren du ønsker å døpe om.\n" +
+                "I vinduet som kommer opp, kan du så skrive inn det nye navnet.\n" +
+                "Trykk så ok for å utføre navnendringen og fortsette spillet.");
+        vindu.visAlleKnapper(innhold, e -> {
+            Spiller s = ((Knapp) e.getSource()).spiller();
+            String navn = s.navn();
+            innstillinger.endreSpillerNavn(s);
+            rapporter(navn + " endret navn til " + s);
+            tilbakeTilDiskusjon();
+        });
+    }
+
+    public void tilbakeTilDiskusjon(){
+        nyFase(DISKUSJONSFASE);
+        spillere.dødsannonse();
+        tittuler("Hvem er de mistenkte?");
+        refresh();
+        visMistenkte();
+        timer.fortsett();
+    }
+
     // //////////////////////////// TV-SKERM //////////////////////////////////
 
     public void informer(String tekst) {
@@ -1369,13 +1395,8 @@ public class Spill implements ActionListener {
                 valgt.henrett();
                 nominer(valgt, false);
                 if (valgt.equals(dødsdømt)) dødsdømt = null;
-                nyFase(DISKUSJONSFASE);
-                spillere.dødsannonse();
-                tittuler("Hvem er de mistenkte?");
                 rapporter(valgt + " har rømt fra landsbyen");
-                refresh();
-                visMistenkte();
-                timer.fortsett();
+                tilbakeTilDiskusjon();
             } else if (fase(TIEBREAKERFASE))
                 godkjenn(valgt);
             else if (fase(JOKERFASE)) {

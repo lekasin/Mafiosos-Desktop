@@ -1,6 +1,5 @@
 package gui;
 
-import Utils.TvUtil;
 import Utils.VeiledningsUtil;
 import datastruktur.Spillerliste;
 import personer.Spiller;
@@ -19,7 +18,6 @@ public class Innstillinger extends JFrame implements ActionListener {
     Spill spill;
     Spillerliste spillere;
     Vindu vindu;
-    JMenuBar menuBar;
     JPanel innhold;
 
     public Innstillinger(String tittel, Oppstart o, Spillerliste sl) {
@@ -42,7 +40,7 @@ public class Innstillinger extends JFrame implements ActionListener {
 
     private void start() {
         setVisible(true);
-        setMinimumSize(new Dimension(400, 400));
+        setMinimumSize(new Dimension(400, 500));
         setLocationRelativeTo(null);
 
         innhold = new JPanel();
@@ -58,14 +56,11 @@ public class Innstillinger extends JFrame implements ActionListener {
     public void knapper() {
         Knapp veiledning = new Knapp("Vis/skjul veiledning", Knapp.HEL, this);
         innhold.add(veiledning);
-        Knapp fullskjerm = new Knapp("Fullskjerm TV", Knapp.HEL, this);
-        innhold.add(fullskjerm);
         Knapp dagtid = new Knapp("Sett dagtid", Knapp.HEL, this);
         innhold.add(dagtid);
-        Knapp font = new Knapp("Sett skriftstørrelse", Knapp.HEL, this);
-        innhold.add(font);
         Knapp forteller = new Knapp("Fortellerinfo", Knapp.HEL, this);
         innhold.add(forteller);
+
         if (oppstart != null && oppstart.fase == Oppstart.VELGROLLER) {
             Knapp leggTilSpiller = new Knapp("Legg til spiller", Knapp.HEL,
                     this);
@@ -73,6 +68,9 @@ public class Innstillinger extends JFrame implements ActionListener {
         }
         if (spill != null) {
             if (spill.dag) {
+                Knapp endreNavn = new Knapp("Endre spillernavn", Knapp.HEL, this);
+                innhold.add(endreNavn);
+
                 if (spill.vindu.kontroll.isVisible()) {
                     Knapp røm = new Knapp("Røm!", Knapp.HEL, this);
                     innhold.add(røm);
@@ -87,15 +85,19 @@ public class Innstillinger extends JFrame implements ActionListener {
 
     }
 
+    public boolean trykt(ActionEvent e, String tekst) {
+        return ((Knapp)e.getSource()).getText() == tekst;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
-        if (((Knapp) e.getSource()).getText() == "Vis/skjul veiledning") {
+        if (trykt(e, "Vis/skjul veiledning")) {
             VeiledningsUtil.visSkjulVeiledning();
         }
 
-        if (((Knapp) e.getSource()).getText() == "Sett dagtid") {
+        if (trykt(e, "Sett dagtid")) {
             String input = JOptionPane
                     .showInputDialog("Hvor lang skal dagen være? (Minutter)");
             if (input.matches("\\d{1,2}")) {
@@ -107,30 +109,17 @@ public class Innstillinger extends JFrame implements ActionListener {
             }
         }
 
-        if (((Knapp) e.getSource()).getText() == "Sett skriftstørrelse") {
-            String input = JOptionPane
-                    .showInputDialog("Skriv inn skriftstørrelse (Standard: 30)");
-            if (input.matches("\\d{1,2}")) {
-                int størrelse = Integer.parseInt(input);
-                TvUtil.setFont(størrelse);
-            }
-        }
-
-        if (((Knapp) e.getSource()).getText() == "Fortellerinfo") {
+        if (trykt(e, "Fortellerinfo")) {
             String input = JOptionPane
                     .showInputDialog("Fortellers telefonnummer:");
-            if (input.matches("\\d{8}"))
+            if (input != null && input.matches("\\d{8}"))
                 visFortellerInfo(Integer.parseInt(input));
             else
                 JOptionPane.showMessageDialog(this,
                         "Telefonnummer må inneholde 8 siffer!");
         }
 
-        if (((Knapp) e.getSource()).getText() == "Fullskjerm TV") {
-            TvUtil.visSkjulRamme();
-        }
-
-        if (((Knapp) e.getSource()).getText() == "Legg til spiller") {
+        if (trykt(e, "Legg til spiller")) {
             String input = JOptionPane.showInputDialog("Navn på spiller:");
             if (input.length() == 0)
                 return;
@@ -140,12 +129,16 @@ public class Innstillinger extends JFrame implements ActionListener {
                 leggTilSpiller(input);
         }
 
-        if (((Knapp) e.getSource()).getText() == "Røm!") {
+        if (trykt(e, "Røm!")) {
             spill.rømning();
         }
 
-        if (((Knapp) e.getSource()).getText() == "Start/stopp klokka") {
+        if (trykt(e, "Start/stopp klokka")) {
             spill.timer.playPause();
+        }
+
+        if (trykt(e, "Endre spillernavn")) {
+            spill.navnEndring(this);
         }
     }
 
@@ -171,5 +164,10 @@ public class Innstillinger extends JFrame implements ActionListener {
         tlfLab.setFont(new Font("Sans", Font.BOLD, 30));
         tlfInfo.add(tlfLab);
         fortellervindu.add(tlfInfo);
+    }
+
+    public void endreSpillerNavn(Spiller spiller){
+        String input = JOptionPane.showInputDialog("Hva er " + spiller + "s nye navn?");
+        spiller.setNavn(input);
     }
 }

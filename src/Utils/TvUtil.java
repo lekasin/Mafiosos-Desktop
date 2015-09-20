@@ -5,16 +5,18 @@ import gui.TV;
 import personer.Spiller;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by lars-erikkasin on 15.09.15.
  */
 public class TvUtil {
-    private static TV tv;
+    public static TV tv;
     public static String roller;
 
-    public static void init(Spillerliste spillere) {
+    public static void init(Spillerliste spillere, JMenuBar meny) {
         tv = new TV("MafiososInfo", spillere);
+        tv.setJMenuBar(meny);
     }
 
     public static void toFront() {
@@ -62,14 +64,23 @@ public class TvUtil {
             visRoller(roller);
     }
 
-    public static void setFont(int størrelse) {
-        tv.setFont(størrelse);
+    public static void setTvFont(int størrelse) {
+        tv.setTvFont(størrelse);
+    }
+
+    public static void setRollelisteFont(int størrelse){
+        tv.setRollerFont(størrelse);
     }
 
     public static void visSkjulRamme() {
         tv.dispose();
         tv.setUndecorated(!tv.isUndecorated());
-        tv.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        if (tv.isUndecorated())
+            tv.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        else {
+            tv.setExtendedState(JFrame.NORMAL);
+            tv.setSize(TV.TVSIZE);
+        }
         tv.setVisible(true);
     }
 
@@ -95,5 +106,47 @@ public class TvUtil {
 
     public static String hentDrøm(Spiller spiller) {
         return tv.drøm(spiller);
+    }
+
+    public static JMenu skjermMeny(){
+        JMenu skjerm = new JMenu("Display");
+        skjerm.setMnemonic(KeyEvent.VK_S);
+        skjerm.getAccessibleContext().setAccessibleDescription(
+                "Innstillenger for TV-display");
+
+        JMenuItem fullskjerm = new JMenuItem("Fullskjerm");
+        fullskjerm.addActionListener(e -> TvUtil.visSkjulRamme());
+        skjerm.add(fullskjerm);
+
+
+        JMenu tekstMeny = new JMenu("Tekststørrelse");
+        tekstMeny.setMnemonic(KeyEvent.VK_T);
+        tekstMeny.getAccessibleContext().setAccessibleDescription(
+                "Endre tekststørrelsen på displayet");
+        skjerm.add(tekstMeny);
+
+        JMenuItem tekstItem = new JMenuItem("Hoveddisplay");
+        tekstItem.addActionListener(e -> {
+            String input = JOptionPane
+                    .showInputDialog("Skriv inn skriftstørrelse (Standard: 30)");
+            if (input != null && input.matches("\\d{1,2}")) {
+                int størrelse = Integer.parseInt(input);
+                TvUtil.setTvFont(størrelse);
+            }
+        });
+        tekstMeny.add(tekstItem);
+
+        tekstItem = new JMenuItem("Rolleliste");
+        tekstItem.addActionListener(e -> {
+            String input = JOptionPane
+                    .showInputDialog("Skriv inn skriftstørrelse (Standard: 30)");
+            if (input != null && input.matches("\\d{1,2}")) {
+                int størrelse = Integer.parseInt(input);
+                TvUtil.setRollelisteFont(størrelse);
+            }
+        });
+        tekstMeny.add(tekstItem);
+
+        return skjerm;
     }
 }

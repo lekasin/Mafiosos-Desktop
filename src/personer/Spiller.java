@@ -53,7 +53,11 @@ public class Spiller {
 		rolle.drep();
 	}
 
-	public void setLiv(boolean lever) {
+    public void setNavn(String navn) {
+        this.navn = navn;
+    }
+
+    public void setLiv(boolean lever) {
 		this.lever = lever;
 	}
 

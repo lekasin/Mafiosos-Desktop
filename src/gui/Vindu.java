@@ -15,6 +15,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class Vindu extends JFrame {
 
@@ -36,7 +37,7 @@ public class Vindu extends JFrame {
 
         super(tittel);
         this.spillere = spillere;
-        TvUtil.init(spillere);
+        TvUtil.init(spillere, lagMeny());
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -138,7 +139,21 @@ public class Vindu extends JFrame {
         rammeverk.add(header, BorderLayout.NORTH);
         rammeverk.add(rammen, BorderLayout.CENTER);
         revalidate();
+
+        setJMenuBar(lagMeny());
     }
+
+    // Oppretter menyer
+    public JMenuBar lagMeny() {
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(TvUtil.skjermMeny());
+
+        return menuBar;
+    }
+
+
 
     public JPanel innhold() {
         innhold = new JPanel(new WrapLayout());
@@ -192,6 +207,24 @@ public class Vindu extends JFrame {
                     return (Knapp) c;
         }
         return null;
+    }
+
+    public Knapp finnKnappForSpiller(Container panel, Spiller spiller) {
+        for (Component c : panel.getComponents()) {
+            if (c instanceof Knapp)
+                if (((Knapp) c).spiller().equals(spiller))
+                    return (Knapp) c;
+        }
+        return null;
+    }
+
+    public JPanel visAlleKnapper(JPanel panel, ActionListener al){
+        innhold();
+        for (Spiller s : spillere.spillere()) {
+            Knapp k = new Knapp(s.navn(), s, Knapp.HALV, al);
+            innhold.add(k);
+        }
+        return panel;
     }
 
     public JPanel personknapper(JPanel panel, ActionListener al) {

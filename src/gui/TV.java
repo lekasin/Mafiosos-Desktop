@@ -15,6 +15,8 @@ public class TV extends JFrame {
 	Spillerliste spillere;
 	JTextArea tv, rolleListe;
 	String vedlegg = "", roller = "";
+
+	public static Dimension TVSIZE = new Dimension(900, 700);
 	
 	public TV(String tittel, Spillerliste sl){
 		super(tittel);
@@ -24,7 +26,7 @@ public class TV extends JFrame {
         spillere = sl;
 		//TV (Tekstfelt på TV-en)
 		setVisible(true);
-		setMinimumSize(new Dimension(900, 700));
+		setMinimumSize(TVSIZE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		tv = new JTextArea();
@@ -50,7 +52,7 @@ public class TV extends JFrame {
 		rolleListe.setFont(new Font("Sans-Serif", Font.BOLD, 30));
 		rolleListe.setEditable(false);
 		rolleListe.setText(roller);
-		rolleListe.setPreferredSize(new Dimension(250, 400));
+//		rolleListe.setPreferredSize(new Dimension(250, 400));
         rolleListe.setBackground(new Color(54, 64, 67));
         rolleListe.setForeground(new Color(230, 232, 222));
         add(rolleListe, BorderLayout.EAST);
@@ -127,8 +129,12 @@ public class TV extends JFrame {
 		rolleListe.setText(roller);
 	}
 	
-	public void setFont(int størrelse){
+	public void setTvFont(int størrelse){
 		tv.setFont(new Font("Sans-Serif", Font.BOLD, størrelse));
+	}
+
+	public void setRollerFont(int størrelse){
 		rolleListe.setFont(new Font("Sans-Serif", Font.BOLD, størrelse));
 	}
+
 }

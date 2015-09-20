@@ -422,8 +422,8 @@ public class Oppstart implements ActionListener {
                 spillere.leggTil(new Spiller("Sondre"));
                 spillere.leggTil(new Spiller("Lars-Erik"));
                 spillere.leggTil(new Spiller("Ørnulf"));
-                spillere.leggTil(new Spiller("Anette"));
-                spillere.leggTil(new Spiller("Henrik"));
+                spillere.leggTil(new Spiller("Daniel"));
+                spillere.leggTil(new Spiller("Adrian"));
                 //				spillere.leggTil(new Spiller("Kjetil"));
                 //				spillere.leggTil(new Spiller("Jens Emil"));
                 //				spillere.leggTil(new Spiller("Ole-Halvor"));
@@ -446,43 +446,6 @@ public class Oppstart implements ActionListener {
 				spillere.leggTil(new Spiller("Jboy"));
 				spillere.leggTil(new Spiller("DJ Sindre"));
 				*/
-
-
-                /*spillere.leggTil(new Spiller("Sinte Simen"));
-                spillere.leggTil(new Spiller("Ida Nigga Reite"));
-                spillere.leggTil(new Spiller("Swigurd"));
-                spillere.leggTil(new Spiller("Morten"));
-                spillere.leggTil(new Spiller("Shiv"));
-                spillere.leggTil(new Spiller("Stian"));
-                spillere.leggTil(new Spiller("Jboy"));
-                spillere.leggTil(new Spiller("DJ Sindre"));
-
-                spillere.leggTil(new Spiller("Sinte Ssefimen"));
-                spillere.leggTil(new Spiller("Ida Nesigga Reite"));
-                spillere.leggTil(new Spiller("Swseseigursefd"));
-                spillere.leggTil(new Spiller("Mosefrten"));
-                spillere.leggTil(new Spiller("Shsdiv"));
-                spillere.leggTil(new Spiller("Stian"));
-                spillere.leggTil(new Spiller("Jbseoy"));
-                spillere.leggTil(new Spiller("DJsef Sindre"));
-
-                spillere.leggTil(new Spiller("Sinsefsete Simen"));
-                spillere.leggTil(new Spiller("Idasef Nigga Reite"));
-                spillere.leggTil(new Spiller("Swigurd"));
-                spillere.leggTil(new Spiller("Morsdfseten"));
-                spillere.leggTil(new Spiller("Shisv"));
-                spillere.leggTil(new Spiller("Stsvian"));
-                spillere.leggTil(new Spiller("Jbosdy"));
-                spillere.leggTil(new Spiller("DJsdv Sindre"));
-
-                spillere.leggTil(new Spiller("Sinte sdSimen"));
-                spillere.leggTil(new Spiller("Ida Nsigga Reite"));
-                spillere.leggTil(new Spiller("Swigsefurd"));
-                spillere.leggTil(new Spiller("Morseten"));
-                spillere.leggTil(new Spiller("Shiefv"));
-                spillere.leggTil(new Spiller("Stiefan"));
-                spillere.leggTil(new Spiller("Jboysef"));
-                spillere.leggTil(new Spiller("DJ sefSindre"));*/
 
                 informer(spillere.toString());
             }
