@@ -151,32 +151,20 @@ public class VeiledningsUtil {
         JMenu rolleMeny = new JMenu("Roller A-N");
         rolleMeny.getAccessibleContext().setAccessibleDescription("Rolleforklaringer");
         guide.add(rolleMeny);
-
-        JMenuItem rolleItem;
-        for (Rolle rolle : Mafiosos.roller()) {
-            if (Mafiosos.roller().indexOf(rolle) <= 30) {
-                rolleItem = new JMenuItem(rolle.toString());
-                rolleItem.addActionListener(e -> TvUtil.visGuideFor(rolle.pri()));
-                rolleMeny.add(rolleItem);
-            }
-        }
-
         JMenu rolleMeny2 = new JMenu("Roller O-Å");
         rolleMeny2.getAccessibleContext().setAccessibleDescription("Rolleforklaringer");
         guide.add(rolleMeny2);
 
+        JMenuItem rolleItem;
         for (Rolle rolle : Mafiosos.roller()) {
-            if (Mafiosos.roller().indexOf(rolle) > 30) {
-                rolleItem = new JMenuItem(rolle.toString());
-                rolleItem.addActionListener(e -> TvUtil.visGuideFor(rolle.pri()));
+            rolleItem = new JMenuItem(rolle.toString());
+            rolleItem.addActionListener(e -> TvUtil.visGuide(rolle.getGuide()));
+            if (Mafiosos.roller().indexOf(rolle) <= 30)
+                rolleMeny.add(rolleItem);
+            else
                 rolleMeny2.add(rolleItem);
-            }
         }
 
         return guide;
-    }
-
-    public static String hentRolleGuide(int id) {
-        return "Rolleveiledning!";
     }
 }

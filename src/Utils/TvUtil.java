@@ -72,6 +72,10 @@ public class TvUtil {
         tv.setRollerFont(størrelse);
     }
 
+    public static void setGuideFont(int størrelse){
+        tv.setGuideFont(størrelse);
+    }
+
     public static void visSkjulRamme() {
         tv.dispose();
         tv.setUndecorated(!tv.isUndecorated());
@@ -108,8 +112,8 @@ public class TvUtil {
         return tv.drøm(spiller);
     }
 
-    public static void visGuideFor(int id) {
-        tv.visRolleGuide(VeiledningsUtil.hentRolleGuide(id));
+    public static void visGuide(String info) {
+        tv.visRolleGuide(info);
     }
 
     public static void lukkGuide() {
@@ -150,6 +154,17 @@ public class TvUtil {
             if (input != null && input.matches("\\d{1,2}")) {
                 int størrelse = Integer.parseInt(input);
                 TvUtil.setRollelisteFont(størrelse);
+            }
+        });
+        tekstMeny.add(tekstItem);
+
+        tekstItem = new JMenuItem("Guide");
+        tekstItem.addActionListener(e -> {
+            String input = JOptionPane
+                    .showInputDialog("Skriv inn skriftstørrelse (Standard: 20)");
+            if (input != null && input.matches("\\d{1,2}")) {
+                int størrelse = Integer.parseInt(input);
+                TvUtil.setGuideFont(størrelse);
             }
         });
         tekstMeny.add(tekstItem);

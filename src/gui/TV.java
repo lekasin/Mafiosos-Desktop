@@ -51,8 +51,10 @@ public class TV extends JFrame {
 
 
         guide = new JTextArea();
-        guide.setFont(new Font("Sans-Serif", Font.BOLD, 30));
+        guide.setFont(new Font("Sans-Serif", Font.BOLD, 20));
         guide.setEditable(false);
+        guide.setLineWrap(true);
+        guide.setWrapStyleWord(true);
         guide.setBackground(new Color(54, 64, 67));
         guide.setForeground(new Color(230, 232, 222));
         add(guide, BorderLayout.SOUTH);
@@ -139,6 +141,10 @@ public class TV extends JFrame {
         rolleListe.setFont(new Font("Sans-Serif", Font.BOLD, størrelse));
     }
 
+    public void setGuideFont(int størrelse) {
+        guide.setFont(new Font("Sans-Serif", Font.BOLD, størrelse));
+    }
+
     public void setTvFarge(boolean tekst){
         visFargeVelger(tv, tekst);
     }
@@ -164,7 +170,7 @@ public class TV extends JFrame {
 
     }
 
-    public void visRolleGuide(String guideString){
+    public void visRolleGuide(String guideString) {
         guide.setText(guideString);
         guide.setVisible(true);
     }

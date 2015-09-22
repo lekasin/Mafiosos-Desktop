@@ -8,7 +8,7 @@ import personer.roller.Psykolog;
 public abstract class Rolle {
 
 	protected boolean lever = true, blokkert = false, snill = false, informert = false, aktiv = true, funker = true, fortsett = true, skjerm = false, klonet = false;
-	protected String tittel, oppgave, tvOppgave, veiledning;
+	protected String tittel, oppgave, tvOppgave, veiledning, guide;
 	protected Spiller offer, spiller, forbud, forbud2;
 	protected Rolle blokk, informant, forsinkelse;
 	protected int prioritet = 0, side = 1;
@@ -255,6 +255,10 @@ public abstract class Rolle {
 
 	public String getVeiledning(){
 		return veiledning;
+	}
+
+	public String getGuide() {
+		return guide;
 	}
 
 	public boolean lever(){
