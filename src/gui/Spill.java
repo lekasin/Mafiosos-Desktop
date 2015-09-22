@@ -346,6 +346,7 @@ public class Spill implements ActionListener {
     public void forrigeRolle() {
         if (i.hasPrevious()) {
             rapporter("Tilbake");
+
             if (aktiv.id(Rolle.JOKER))
                 refresh();
 
@@ -913,15 +914,17 @@ public class Spill implements ActionListener {
         ut += " har like mange stemmer.\n\nHvem skal dø?";
 
         ArrayList<Spiller> nye = spillere.nyligDøde();
-        for (Spiller s : nye) {
-            if (s.equals(nye.get(0)))
-                ut += s;
-            else if (nye.indexOf(s) < nye.size() - 1)
-                ut += ", " + s;
-            else {
-                ut += " og " + s;
-                ut += " døde nylig, og kan gi en siste stemme.";
+        if (!nye.isEmpty()) {
+            for (Spiller s : nye) {
+                if (s.equals(nye.get(0)))
+                    ut += "\n\n" + s;
+                else if (nye.indexOf(s) < nye.size() - 1)
+                    ut += ", " + s;
+                else {
+                    ut += " og " + s;
+                }
             }
+            ut += " døde nylig, og kan gi en siste stemme.";
         }
 
         informer(ut);

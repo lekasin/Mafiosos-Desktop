@@ -148,7 +148,7 @@ public class Vindu extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(TvUtil.skjermMeny());
-
+        menuBar.add(VeiledningsUtil.guideMeny());
         return menuBar;
     }
 

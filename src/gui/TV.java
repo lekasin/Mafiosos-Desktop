@@ -13,7 +13,7 @@ public class TV extends JFrame {
 
     private static final long serialVersionUID = 1L;
     Spillerliste spillere;
-    JTextArea tv, rolleListe;
+    JTextArea tv, rolleListe, guide;
     String vedlegg = "", roller = "";
 
     public static Dimension TVSIZE = new Dimension(900, 700);
@@ -48,6 +48,15 @@ public class TV extends JFrame {
         rolleListe.setBackground(new Color(54, 64, 67));
         rolleListe.setForeground(new Color(230, 232, 222));
         add(rolleListe, BorderLayout.EAST);
+
+
+        guide = new JTextArea();
+        guide.setFont(new Font("Sans-Serif", Font.BOLD, 30));
+        guide.setEditable(false);
+        guide.setBackground(new Color(54, 64, 67));
+        guide.setForeground(new Color(230, 232, 222));
+        add(guide, BorderLayout.SOUTH);
+
     }
 
     public String vis(String t) {
@@ -153,5 +162,14 @@ public class TV extends JFrame {
         fargevelger.setResizable(false);
         fargevelger.pack();
 
+    }
+
+    public void visRolleGuide(String guideString){
+        guide.setText(guideString);
+        guide.setVisible(true);
+    }
+
+    public void lukkRolleGuide(){
+        guide.setVisible(false);
     }
 }

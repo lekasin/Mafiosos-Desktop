@@ -108,6 +108,14 @@ public class TvUtil {
         return tv.drøm(spiller);
     }
 
+    public static void visGuideFor(int id) {
+        tv.visRolleGuide(VeiledningsUtil.hentRolleGuide(id));
+    }
+
+    public static void lukkGuide() {
+        tv.lukkRolleGuide();
+    }
+
     public static JMenu skjermMeny(){
         JMenu skjerm = new JMenu("Display");
         skjerm.setMnemonic(KeyEvent.VK_S);

@@ -1,6 +1,10 @@
 package Utils;
 
+import datastruktur.Mafiosos;
+import personer.Rolle;
+
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by lars-erikkasin on 17.09.15.
@@ -15,13 +19,13 @@ public class VeiledningsUtil {
         VeiledningsUtil.info = info;
     }
 
-    public static void setTekst(String tekst){
+    public static void setTekst(String tekst) {
         info.setText(tekst);
         if (tekst.isEmpty())
             info.setVisible(false);
     }
 
-    public static void visVeiledning(boolean vis){
+    public static void visVeiledning(boolean vis) {
         info.setVisible(vis);
     }
 
@@ -30,6 +34,7 @@ public class VeiledningsUtil {
     }
 
     public static int FASE_BOMBE = 0, FASE_TILTALE = 1, FASE_RAKETT = 2, FASE_OPPGJØR = 3;
+
     public static void setVeiledningForFase(int fase, int unntak) {
         switch (fase) {
             case ORDFØRERFASE:
@@ -131,5 +136,47 @@ public class VeiledningsUtil {
                 setTekst("Veiledning");
                 break;
         }
+    }
+
+    public static JMenu guideMeny() {
+        JMenu guide = new JMenu("Guide");
+        guide.setMnemonic(KeyEvent.VK_G);
+        guide.getAccessibleContext().setAccessibleDescription(
+                "Rollerforklaringer og øvrig veiledning");
+
+        JMenuItem lukk = new JMenuItem("Lukk");
+        lukk.addActionListener(e -> TvUtil.lukkGuide());
+        guide.add(lukk);
+
+        JMenu rolleMeny = new JMenu("Roller A-N");
+        rolleMeny.getAccessibleContext().setAccessibleDescription("Rolleforklaringer");
+        guide.add(rolleMeny);
+
+        JMenuItem rolleItem;
+        for (Rolle rolle : Mafiosos.roller()) {
+            if (Mafiosos.roller().indexOf(rolle) <= 30) {
+                rolleItem = new JMenuItem(rolle.toString());
+                rolleItem.addActionListener(e -> TvUtil.visGuideFor(rolle.pri()));
+                rolleMeny.add(rolleItem);
+            }
+        }
+
+        JMenu rolleMeny2 = new JMenu("Roller O-Å");
+        rolleMeny2.getAccessibleContext().setAccessibleDescription("Rolleforklaringer");
+        guide.add(rolleMeny2);
+
+        for (Rolle rolle : Mafiosos.roller()) {
+            if (Mafiosos.roller().indexOf(rolle) > 30) {
+                rolleItem = new JMenuItem(rolle.toString());
+                rolleItem.addActionListener(e -> TvUtil.visGuideFor(rolle.pri()));
+                rolleMeny2.add(rolleItem);
+            }
+        }
+
+        return guide;
+    }
+
+    public static String hentRolleGuide(int id) {
+        return "Rolleveiledning!";
     }
 }

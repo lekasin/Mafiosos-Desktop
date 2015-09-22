@@ -78,6 +78,10 @@ public class Oppstart implements ActionListener {
         innhold.add(registrer);
         innhold.add(fjern);
         innhold.add(fortsett);
+        innhold.add(new Knapp("Fjern alle", Knapp.HEL, e ->{
+            spillere.spillere().clear();
+            informer(spillere.toString());
+        }));
         innhold.add(new Knapp("Legg til alle", Knapp.HEL, lytt));
     }
 
