@@ -15,6 +15,9 @@ public class Rex extends Rolle {
                 "Når Rex har valgt, trykker du på vedkommendes navn for å sjekke dem.\n" +
                 "Hvem som har besøkt denne personen i natt, kommer så opp på skjermen.\n" +
                 "For å gå videre, trykker du på fortsett.";
+        guide = "Politihunden Rex snuser rundt i landsbyen, og hver natt velger han en person han vil snuse på. " +
+                "Rex får så beskjed ved hjelp av luktesansen (Får opp på skjermen), hvilke andre personer som har besøkt denne personen samme natt. " +
+                "På den måten kan Rex finne ut noe om hva som har skjedd med denne personen i natt, og muligens også hvem som er hva?";
         side = BORGER;
 		prioritet = REX;
 		fortsett = false;

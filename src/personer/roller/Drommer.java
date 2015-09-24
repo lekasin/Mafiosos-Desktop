@@ -14,6 +14,10 @@ public class Drommer extends Rolle {
 				"Drømmeren våkner opp og får info på skjermen. Han skal bare se infoen, velge noen.\n" +
 				"Infoen består av tre navn, hvor to av dem er på borgernes side, og den siste er mafia.\n" +
 				"For å gå videre til neste rolle, trykker du fortsett.";
+        guide = "Drømmeren har profetiske drømmer, og drømmer om de andre landsbybeboerne hver natt, så lenge det lar seg gjøre. " +
+                "I drømmene vil 3 tilfeldige personer være innvolvert, hvorav én er mafia, og de to andre er uskyldige borgere. " +
+                "Bortsett fra det er navnene helt tilfeldige. Drømmeren vil imidlertid ikke kunne drømme hvis det ikke finnes " +
+                "én mafia og to borgere (utenom drømmeren) å drømme om, eller hvis han blir blokkert. Da får ikke drømmeren sove.";
 		side = BORGER;
 		prioritet = DRØMMER;
 		skjerm = true;

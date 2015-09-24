@@ -16,6 +16,9 @@ public class Belieber extends Rolle {
 				"Du trykker på navnet til den belieberen velger for å koble dem.\n" +
 				"Belieberen får da rollen til vedkommende opp på skjermen (*rolle*lieber), og skal fra da av kun våkne når denne rollen våkner.\n" +
 				"Når den aktuelle rollen våkner, vil vedkommende få beskjed på skjermen om at de har fått en belieber på laget.";
+        guide = "Belieberen våkner første natt og velger en person som skal ble hennes nye Justin Bieber - og får vite vedkommendes rolle. " +
+                "Hun skal fra da av våkne sammen med denne rollen og de to blir et team. Velger hun en mafia, ja da er hun også mafia, og gjør det hun kan for at mafiaen skal vinne." +
+                "Om Belieberens utvalgte dør, ønsker selvsagt ikke Belieberen å leve lenger, og dør derfor også. Men Justin klarer seg fint uten Belieberen.";
 		side = BORGER;
 		prioritet = BELIEBER;
 		fortsett = false;

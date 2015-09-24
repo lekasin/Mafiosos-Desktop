@@ -17,6 +17,10 @@ public class Sherlock extends Rolle {
 				"Når Sherlick har valgt, trykker du på vedkommendes navn for å etterforske dem.\n" +
 				"Hvem denne personen har valgt i natt, kommer så opp på skjermen.\n" +
 				"For å gå videre, trykker du på fortsett.";
+        guide = "Sherlock er en sann etterforsker, og velger hver natt en person han vil spore. " +
+                "Han får så vite hvem den han etterforsker har besøkt denne natten. " +
+                "Velger Sherlock en mafia, får han vite hvem mafiaen har besøkt, " +
+                "og hvis denne personen dør neste morgen, har Sherlock en god sak mot den han sporet.";
 		side = BORGER;
 		prioritet = SHERLOCK;
 		fortsett = false;

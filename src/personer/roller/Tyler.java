@@ -18,6 +18,13 @@ public class Tyler extends Rolle {
                 "Han velger så en person å bruke rollen på.\n" +
 				"Når Tyler har valgt, trykker du på vedkommendes navn for å velge dem.\n" +
 				"Tyler får en tilfeldig valgt rolle hver natt.";
+        guide = "Tyler har Dissosiativ Identitetsforstyrrelse. " +
+                "Han våkner hver natt med en ny personlighet, og får vite hvilken rolle han skal være denne natten. " +
+                "Om Tyler får vite at han er tjukkas, peker han på en som skal blokkes. " +
+                "Er han lege, kan han lege, ravne, kløne osv. " +
+                "Ikke minst kan han drepe om han er mafia. " +
+                "PS: Tyler kan ikke være trompet eller en annen rolle som brukes på dagtid, peker på flere enn én person, " +
+                "eller har evner som foregår over flere netter.";
 		side = BORGER;
 		prioritet = TYLER;
 		skjerm = true;

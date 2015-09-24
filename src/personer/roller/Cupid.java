@@ -16,6 +16,11 @@ public class Cupid extends Rolle {
 				"Cupid peker altså først på en person, og du trykker på vedkommendes navn.\n" +
 				"Så velger han en til, og du trykker på denne personens navn, for å koble de to.\n"+
 				"Trykker du på fortsett, går du rett til neste rolle. Du trenger ikke gjøre det to ganger";
+        guide = "Cupid er hver natt ute med sin bue og Amors piler. " +
+                "Han velger to personer hver natt, som blir forelsket, tilbringer natten sammen, og dermed er sammenkoblet denne natten. " +
+                "Alt som rammer den ene, rammer da også den andre. Altså: Blir den ene drept, dør de begge. " +
+                "Blir den ene leget, er begge beskyttet, osv. " +
+                "Han kan velge seg selv, men kan ikke velge samme par to netter på rad.";
 		side = BORGER;
 		prioritet = CUPID;
 		fortsett = false;

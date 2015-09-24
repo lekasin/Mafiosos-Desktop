@@ -17,6 +17,11 @@ public class CopyCat extends Rolle {
 				"Først velger han en å kopiere, og du trykker på vedkommendes navn for å kopiere rollen.\n" +
 				"Så velger copycaten en gang til, og du trykker på den personens navn for å utføre den kopierte rollen.\n" +
 				"Trykker du på fortsett, går du rett til neste rolle. Du trenger ikke gjøre det to ganger";
+        guide = "Copycaten er en liten hermegås, og våkner hver natt og peker på en annen, levende person. " +
+                "Han kopierer da rollen til den utvalgte personen, uten å vite hva den er, og peker deretter videre på en annen. " +
+                "Copycaten bruker da rollen til den første personen, på den andre. " +
+                "Om copycaten for eksempel peker først på Legen, og så på seg selv, blir han selv leget. " +
+                "Om copycaten peker på en inforolle, en rolle som ikke våkner på natten eller en annen rolle som velger to personer, har han ingen effekt.";
 		side = BORGER;
 		prioritet = COPYCAT;
 		fortsett = false;

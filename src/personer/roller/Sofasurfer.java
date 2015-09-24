@@ -17,7 +17,10 @@ public class Sofasurfer extends Rolle {
                 "Den valgte personens rolle kommer da opp på skjermen, og sofasurferen skal fra da av våkne med denne rollen.\n" +
                 "Når den valgte rollen våkner, vil vedkommende få beskjed på skjermen om at de har fått besøk på sofaen.\n" +
                 "Sofasurferen kan så ikke velge en ny person før den han sover hos dør.";
-
+        guide = "SofaSurferen velger en person å sove hos, og flytter så inn hos vedkommende. " +
+                "Han får da vite den valgte personens rolle, og våkner så sammen med denne rollen fra da av. " +
+                "Hvis den valgte personen drepes samme natt, dør også sofasurferen. " +
+                "Ellers kan sofasurferen velge en ny person når den forrige eventuelt dør.";
         side = BORGER;
 		prioritet = SOFA;
 		fortsett = false;

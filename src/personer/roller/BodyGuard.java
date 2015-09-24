@@ -21,6 +21,12 @@ public class BodyGuard extends Rolle {
 				"For å la bodyguarden beskytte noen, trykker du på navnet til den bodyguarden velger.\n" +
                 "For å bytte mellom drap og beskyttelse, trykker du på Drep/Beskytt.\n" +
                 "Hvis bodyguarden vil drepe, peker han med pistolhånd, og du peker på den han velger.";
+        guide = "Bodyguarden er hovedsakelig en beskyttende rolle. Han kan velge en person hver natt som han beskytter, men kan ikke velge seg selv. " +
+                "Men bodyguarden er også en badass som kan drepe folk, men han trenger litt info for å få det til. " +
+                "Bodyguarden kan derfor kun drepe personer han har møtt på før. " +
+                "Dvs personer som besøkte den siste personen han beskyttet den natten han beskyttet dem. " +
+                "Han vet ikke hvem han kan drepe og ikke, og får heller noen tilbakemelding på om han lykkes eller ikke når han prøver, " +
+                "utover at denne personen muligens våkner opp død.";
         side = BORGER;
 		prioritet = BODYGUARD;
 	}

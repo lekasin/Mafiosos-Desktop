@@ -18,7 +18,10 @@ public class Filosof extends Rolle {
 				"Når filosofen har valgt, trykker du på personens navn, og vedkommendes rolle kommer da opp på skjermen.\n" +
 				"Filosofen kommer da ikke til å våkne på nytt, før den valgte personen dør. " +
                 "Når det skjer, kan filosofen velge en ny person.\n";
-
+        guide = "Filosofen undrer seg over stort og smått, og er god på analysere oppførsel. " +
+                "Han våkner en natt, og peker på en person han vil fundere over. " +
+                "Han finner da ut hvilken rolle denne personen har, og kan bruke dette til å tolke personens videre oppførsel. " +
+                "Filosofen er imidlertid trofast i sin studie, og velger ikke en ny person før den første eventuelt dør.";
 		side = BORGER;
 		prioritet = FILOSOF;
 		fortsett = false;
@@ -31,7 +34,6 @@ public class Filosof extends Rolle {
 	
 	@Override
 	public String oppgave() {
-		// TODO Auto-generated method stub
 		System.out.println("Aktiv oppgave: " + aktiv);
 
 		return super.oppgave();
@@ -61,7 +63,6 @@ public class Filosof extends Rolle {
 	
 	@Override
 	public void jul() {
-		// TODO Auto-generated method stub
 		aktiver(true);
 		super.jul();
 	}

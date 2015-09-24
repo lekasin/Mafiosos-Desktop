@@ -14,7 +14,10 @@ public class Boddel extends Rolle {
                 "For å halshugge en person, trykker du på vedkommendes navn, og vedkommende blir da drept umiddelbart.\n" +
                 "Bøddel signaliserer hvem han vil halshugge ved å løfte armene " +
                 "(eller eventuelt bøddelvåpenet, hvis noe sånt er tilgjengelig) over hodet, og hugge mot den han vil drepe.";
-
+        guide = "Bøddelen kan når som helst på dagtid finne fram øksen sin og drepe en annen borger. " +
+                "Dette synes imidlertid landsbyen er forkastelig, og bøddelen blir umiddelbart bortvist fra landsbyen (Han er da ute av spillet). " +
+                "Bøddelen må da nøye vurdere når han vil bruke evnen sin, og blir han drept på natten, er løpet kjørt. " +
+                "Bøddelen kan senest gripe øksen FØR den avgjørende avstemning starter.";
         side = BORGER;
 		prioritet = BØDDEL;
 		aktiver(false);
@@ -22,7 +25,6 @@ public class Boddel extends Rolle {
 	
 	@Override
 	public String oppgave() {
-        // TODO Auto-generated method stub
         if(spiller.nyligKlonet())
             return super.oppgave();
 		return TvUtil.vis(oppgave);
@@ -40,7 +42,6 @@ public class Boddel extends Rolle {
 	
 	@Override
 	public void jul() {
-		// TODO Auto-generated method stub
 		super.jul();
 		spiller.beskytt(this);
 	}

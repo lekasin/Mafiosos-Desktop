@@ -161,7 +161,7 @@ public class TvUtil {
         tekstItem = new JMenuItem("Guide");
         tekstItem.addActionListener(e -> {
             String input = JOptionPane
-                    .showInputDialog("Skriv inn skriftstørrelse (Standard: 20)");
+                    .showInputDialog("Skriv inn skriftstørrelse (Standard: 25)");
             if (input != null && input.matches("\\d{1,2}")) {
                 int størrelse = Integer.parseInt(input);
                 TvUtil.setGuideFont(størrelse);

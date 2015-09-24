@@ -17,6 +17,13 @@ public class Specialguy extends Rolle {
                 "Hvis han er drept, kan han velge en ny person som drepes i hans sted.\n" +
                 "Når Special Guy har valgt, trykker du på vedkommendes navn for å drepe dem.\n" +
                 "Når han har drept noen, våkner ikke Special Guy lenger på natten.";
+        guide = "Special Guy er en spesiell fyr, med spesielle evner. " +
+                "Han våkner hver natt, og får beskjed om hvorvidt han er drept eller ikke denne natten. " +
+                "Hvis han ikke er drept, legger han seg til å sove igjen, men om han skulle vært død, kan han velge en annen person til å dø i hans sted. " +
+                "Dermed overlever Special Guy, mens hans offer, muligens en mafia, blir drept. " +
+                "Dette kan bare gjøres én gang, og ingen andre får beskjed om at Special Guy har drept. " +
+                "Etter at han har brukt evnen sin, blir Special Guy en vanlig borger." +
+                " Dør han på dagen, får han ikke brukt evnen sin.";
         side = BORGER;
 		prioritet = SPECIAL;
 		skjerm = true;
@@ -26,7 +33,6 @@ public class Specialguy extends Rolle {
 	public String oppgave() {
 		if(spiller.nyligKlonet())
 			return super.oppgave();
-		// TODO Auto-generated method stub
 		if(brukt)
 			TvUtil.vis("Special Guy har brukt opp kraften sin.");
 		else

@@ -19,6 +19,10 @@ public class Hammer extends Rolle {
 				"Første natt Hammer undersøker en person, kommer det opp at han ikke har gjort nok research. " +
                 "For å få et resultat, må hammer undersøke samme person to netter på rad. Da vises vedkommendes rolle på skjermen.\n" +
 				"Personen Hammer undersøker for øyeblikket vil ha navn i grønt, neste natt.";
+        guide = "Hammer er Telens eminente redaktør og gravene journalist. Han peker hver natt ut en mistenkt han ønsker å undersøke nærmere. " +
+                "Neste natt kan han velge å konkludere rundt personen han har valgt (ved å peke på samme person igjen), og dermed få vite om denne personen er mafia eller ikke. " +
+                "Eventuelt kan han velge en ny person, men da må han igjen vente til neste natt med å konkludere. " +
+                "Altså får hammer først info etter å ha pekt på samme person to netter på rad.";
 		side = BORGER;
 		prioritet = HAMMER;
 		fortsett = false;

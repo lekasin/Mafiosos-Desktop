@@ -15,6 +15,11 @@ public class Kirsten extends Rolle {
 				"Kirsten peker altså først på en person, og du trykker på vedkommendes navn.\n" +
 				"Så velger hun en til, og du trykker på denne personens navn, for å matche de to.\n"+
 				"Er de to på samme side, er de en match, og begge blir beskyttet. Er de en crash, dør borgeren.";
+        guide = "Kirsten er alltid ute etter å spleise de andre landsbybeboerne, og velger to personer hver natt, som spleises. " +
+                "Er disse to på samme side (Landsby/Mafia) er de en match, blir forelsket og får begge kjærlighetens beskyttelse(kan ikke drepes). " +
+                "Er de derimot på ulik side, blir borgeren overmannet og drept av mafiaen. " +
+                "Kirsten kan altså bruke rollen sin til å beskytte borgere, eller finne mafiaer, på andres bekostning! " +
+                "Hun kan velge seg selv, men kan ikke velge samme par to netter på rad.";
 		side = BORGER;
 		prioritet = KIRSTEN;
 		fortsett = false;

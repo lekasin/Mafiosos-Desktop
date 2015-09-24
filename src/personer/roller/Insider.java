@@ -9,6 +9,10 @@ public class Insider extends Rolle {
 	
 	public Insider(Politi politi){
 		super("Insider");
+        oppgave = "Insideren våkner";
+        guide = "En insider er mafiaens utgave av undercoveren, og er altså mafiaens inside man hos politiet. " +
+                "Altså våkner han sammen med politiet og gir seg ut for å være en av dem, men spiller hele tiden på mafiaens lag. " +
+                "Hans mål blir å få politiet til å arrestere feil personer, for å vinne sammen med mafiaen.";
 		side = FAKEBORGER;
 		prioritet = INSIDER;
 		aktiver(false);

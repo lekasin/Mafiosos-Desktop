@@ -16,6 +16,11 @@ public class Marius extends Rolle {
 				"Når Marius har valgt, trykker du på vedkommendes navn for å trykke opp flyers.\n" +
 				"Personen som trykkes opp vil vises på flyers dagen etter, " +
                 "og er automatisk nominert med to stemmer.";
+        guide = "Marius velger en person på natta, og skynder seg så til Nilz&Otto Grafisk AS. " +
+                "Der trykker han opp flyers, som påstår at personen han valgte er mafia. Når landsbyen våkner, får de se flyerne og hvem de handler om. " +
+                "Dette gjør automatisk vedkommende til en mistenkt neste dag, og personen har allerede 2 anonymer stemmer fra Marius ved avstemning. " +
+                "Hvis ikke landsbyen vil bestemme noe, dør den mistenkte. " +
+                "Landsbyen får så klart ikke vite hvem Marius er, og han kan si og stemme som han vil på dagen.";
 		side = BORGER;
 		prioritet = MARIUS;
 	}

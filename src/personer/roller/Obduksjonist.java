@@ -16,6 +16,11 @@ public class Obduksjonist extends Rolle {
 				"Når minst 3 personer er døde, kan obduksjonisten velge en død person å undersøke.\n" +
 				"Når obduksjonisten har valgt, trykker du på vedkommendes navn for å undersøke dem.\n" +
                 "Neste dag, vises obduksjonsrapporten på skjermen, og alle får se hvilken rolle den døde hadde.";
+        guide = "Obduksjonisten velger en død person på natten, og undersøker vedkommendes identitet. " +
+                "Obduksjonensrapporten blir så publisert for landsbyen neste dag, og alle får vite hvilke rolle den døde hadde. " +
+                "Hele landsbyen vet dermed at denne rollen er ute av spillet. " +
+                "Men obduksjonisten er lat, og gidder ikke foreta obduskjoner før obduksjonssalen er full. " +
+                "Den har plass til 3 døde, og obduksjonisten våkner dermed ikke før minst tre personer er døde.";
 		side = BORGER;
 		prioritet = OBDUK;
 		aktiver(false);

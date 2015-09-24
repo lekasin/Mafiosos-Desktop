@@ -19,7 +19,12 @@ public class Smith extends Rolle {
                 "og fra nå av er en Smith.\n" +
 				"Nye Smither skal fra da av våkne når Smith våkner. " +
                 "Så lenge én Smith lever, kan Smith fortsette å klone.";
-		side = NØYTRAL;
+		guide = "Agent Smith velger en person hver natt, som han vil prøve å klone til en Smith, også kalt smithe. " +
+                "Hvis han lykkes, mister vedkommende rollen sin, og får neste natt vite at han nå er en smith, og våkner fra da av sammen med Smith. " +
+                "Smith kan blokkeres, og klarer ikke å smithe personer som er beskyttet av lege eller lignende (ikke snåsa eller HMS). " +
+                "Siden Mafiaen passer på hverandre, klarer heller ikke Smith å klone Mafiaer. " +
+                "Smiths oppgave er å holde spillet i gang lenge nok til at han får klonet alle borgerne, for så å drepe(stemme ut) alle gjenværende mafiaer.";
+        side = NØYTRAL;
 		prioritet = SMITH;
 	}
 

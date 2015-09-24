@@ -15,6 +15,10 @@ public class Ravn extends Rolle {
                 "Ravn velger hver natt en person som sendes på Den blå fisk for å spise fiskesuppe neste dag.\n" +
                 "Når Ravn har valgt, trykker du på vedkommendes navn for å sende dem på fiskesuppa.\n" +
                 "Personen som spiser suppe, kan ikke snakke eller stemme neste dag.";
+        guide = "Hver natt velger Ravn en person som dagen etter skal være med ham på Den Blå Fisk og spise kona Friduns fiskesuppe. " +
+                "Koselig er det, men når den utvalgte da er på restaurant hele dagen, " +
+                "får ikke vedkommende deltatt i hverken diskusjon eller avstemminger som de holder på med hjemme i landsbyen. " +
+                "Altså vil personer som spiser fiskesuppe ikke kunne prate eller stemme neste dag.";
 		side = BORGER;
 		prioritet = RAVN;
 	}

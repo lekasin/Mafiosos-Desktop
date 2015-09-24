@@ -19,7 +19,13 @@ public class Carlsen extends Rolle {
                 "For å bytte mellom angrep og forsvar, trykker du på Angrep/Forsvar.\n" +
                 "Carlsen signalisere hvordan han vil spille ved å vise en pistolhånd for angrep, og \"stopp\"-hånd for forsvar.\n" +
                 "Når Calsen har valgt, trykker du på vedkommendes navn for å angripe/forsvare dem.\n";
-
+        guide = "Magnus våkner hver natt og peker på den personen han tror får flest stemmer ved første avstemning neste dag, og om han vil spille offensivt eller defensivt.\n" +
+                "Spiller han offensivt og…\n" +
+                "- har rett, vil personen han valgte bli henrettet på slutten av dagen, uansett hvem som blir stemt ut.\n" +
+                "- tar feil, er det han selv som henrettet, hvis han mistenkes i løpet av dagen.\n" +
+                "Spiller han defensivt og…\n" +
+                "- har rett, blir personen han valgte forsvart neste dag (snåset).\n" +
+                "- tar feil, mister han stemmeretten sin resten av dagen.";
         side = BORGER;
         prioritet = CARLSEN;
     }

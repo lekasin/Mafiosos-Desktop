@@ -15,6 +15,11 @@ public class Politi extends Rolle {
 				"Politiet velger hver natt en person å arrestere.\n" +
 				"Når politiet har valgt, trykker du på vedkommendes navn for å arrestere dem.\n" +
                 "Hvis den arrestert har en drapsrolle, får ikke vedkommende drept noen denne natten.";
+        guide = "Politiets jobb er å finne mafiaen og stoppe dem fra å drepe borgerne. " +
+                "Politiet kan være alene, eller beste av flere personer, og peker hver natt ut en person de tror er mafia. " +
+                "Denne personen blir da satt i varetekt, og kan ikke drepe noen den natten. " +
+                "Politiet fungerer altså kun på drapsroller (Mafia, Morder, Heisenberg, osv), men har ett unntak: " +
+                "Hvis den arresterte peker på politiet samme natt som han arresteres, dør politiet likevel, ettersom både han og den mistenkte oppholder seg i fengselet.";
 		side = BORGER;
 		prioritet = POLITI;
 	}

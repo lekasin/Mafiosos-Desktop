@@ -51,7 +51,7 @@ public class TV extends JFrame {
 
 
         guide = new JTextArea();
-        guide.setFont(new Font("Sans-Serif", Font.BOLD, 20));
+        guide.setFont(new Font("Sans-Serif", Font.BOLD, 25));
         guide.setEditable(false);
         guide.setLineWrap(true);
         guide.setWrapStyleWord(true);

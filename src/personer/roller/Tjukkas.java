@@ -12,7 +12,11 @@ public class Tjukkas extends Rolle {
 				"Tjukkasen velger hver natt en person å blokkere.\n"+
 				"Når Tjukkasen har valgt, trykker du på vedkommendes navn for å blokkere dem.\n" +
 				"Personen som er blokkert, blir forhindret fra å utføre rollen sin den natten.";
-		side = BORGER;
+        guide = "Tjukkasen er en person med mye makt. " +
+                "Han våkner hver natt (legger seg egentlig bare veldig seint), og velger en person han vil sove hos. " +
+                "Han legger seg så til å sove enten oppå personen, eller foran vedkommendes dør. " +
+                "Dermed blir personen blokkert, og kan ikke utføre sin rolle denne natten. " +
+                "Tjukkasen kan ikke blokkere samme person to netter på rad.";
 		prioritet = TJUKKAS;
 	}
 

@@ -15,6 +15,10 @@ public class UlfOmar extends Rolle {
 				"Ulf Omar velger hver natt en person å besøke.\n" +
 				"Når Ulf Omar har valgt, trykker du på vedkommendes navn for å velge dem.\n" +
 				"Ulf Omar vil da få den valgte personens rolle brukt på seg selv.";
+        guide = "Ulfie-O, som er Ulf Omars kallenavn, våkner opp hver natt og vil gamble med livet sitt. " +
+                "Han peker på en person, og lar dermed personens egenskaper ramme han selv. " +
+                "Peker Ulfie-O på en lege, har UO vært heldig og uvitende gitt seg selv beskyttelse. " +
+                "Men har han pekt på en mafia, ja, da er mest sannsynlig livet til storgambler Ulf over og ut.";
 		side = BORGER;
 		prioritet = ULF;
 	}
