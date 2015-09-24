@@ -1,9 +1,11 @@
 package datastruktur;
 
+import Utils.MenyUtil;
 import gui.Vindu;
 import personer.Rolle;
 import personer.roller.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Mafiosos {
@@ -13,6 +15,7 @@ public class Mafiosos {
 	public static void main(String[] args){
         Mafiosos.opprettRolleliste();
         Spillerliste spillere = new Spillerliste();
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
 		Vindu v = new Vindu("Mafiosos", spillere);
 		v.startopp();
 	}

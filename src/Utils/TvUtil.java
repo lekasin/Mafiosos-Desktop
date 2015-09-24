@@ -5,7 +5,6 @@ import gui.TV;
 import personer.Spiller;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
 
 /**
  * Created by lars-erikkasin on 15.09.15.
@@ -14,9 +13,8 @@ public class TvUtil {
     public static TV tv;
     public static String roller;
 
-    public static void init(Spillerliste spillere, JMenuBar meny) {
+    public static void init(Spillerliste spillere) {
         tv = new TV("MafiososInfo", spillere);
-        tv.setJMenuBar(meny);
     }
 
     public static void toFront() {
@@ -76,6 +74,18 @@ public class TvUtil {
         tv.setGuideFont(størrelse);
     }
 
+    public static void setTvFarge(boolean tekst) {
+        tv.setTvFarge(tekst);
+    }
+
+    public static void setRollelisteFarge(boolean tekst){
+        tv.setRollerFarge(tekst);
+    }
+
+    public static void setGuideFarge(boolean tekst) {
+        tv.setGuideFarge(tekst);
+    }
+
     public static void visSkjulRamme() {
         tv.dispose();
         tv.setUndecorated(!tv.isUndecorated());
@@ -118,80 +128,5 @@ public class TvUtil {
 
     public static void lukkGuide() {
         tv.lukkRolleGuide();
-    }
-
-    public static JMenu skjermMeny(){
-        JMenu skjerm = new JMenu("Display");
-        skjerm.setMnemonic(KeyEvent.VK_S);
-        skjerm.getAccessibleContext().setAccessibleDescription(
-                "Innstillenger for TV-display");
-
-        JMenuItem fullskjerm = new JMenuItem("Fullskjerm");
-        fullskjerm.addActionListener(e -> TvUtil.visSkjulRamme());
-        skjerm.add(fullskjerm);
-
-        JMenu tekstMeny = new JMenu("Tekststørrelse");
-        tekstMeny.setMnemonic(KeyEvent.VK_T);
-        tekstMeny.getAccessibleContext().setAccessibleDescription(
-                "Endre tekststørrelsen på displayet");
-        skjerm.add(tekstMeny);
-
-        JMenuItem tekstItem = new JMenuItem("Hoveddisplay");
-        tekstItem.addActionListener(e -> {
-            String input = JOptionPane
-                    .showInputDialog("Skriv inn skriftstørrelse (Standard: 30)");
-            if (input != null && input.matches("\\d{1,2}")) {
-                int størrelse = Integer.parseInt(input);
-                TvUtil.setTvFont(størrelse);
-            }
-        });
-        tekstMeny.add(tekstItem);
-
-        tekstItem = new JMenuItem("Rolleliste");
-        tekstItem.addActionListener(e -> {
-            String input = JOptionPane
-                    .showInputDialog("Skriv inn skriftstørrelse (Standard: 30)");
-            if (input != null && input.matches("\\d{1,2}")) {
-                int størrelse = Integer.parseInt(input);
-                TvUtil.setRollelisteFont(størrelse);
-            }
-        });
-        tekstMeny.add(tekstItem);
-
-        tekstItem = new JMenuItem("Guide");
-        tekstItem.addActionListener(e -> {
-            String input = JOptionPane
-                    .showInputDialog("Skriv inn skriftstørrelse (Standard: 25)");
-            if (input != null && input.matches("\\d{1,2}")) {
-                int størrelse = Integer.parseInt(input);
-                TvUtil.setGuideFont(størrelse);
-            }
-        });
-        tekstMeny.add(tekstItem);
-
-        JMenu fargeMeny = new JMenu("Farger");
-        fargeMeny.setMnemonic(KeyEvent.VK_T);
-        fargeMeny.getAccessibleContext().setAccessibleDescription(
-                "Endre fargene på displayet");
-        skjerm.add(fargeMeny);
-
-        JMenuItem fargeitem = new JMenuItem("Hoveddisplay");
-        fargeitem.addActionListener(e -> tv.setTvFarge(false));
-        fargeMeny.add(fargeitem);
-
-        fargeitem = new JMenuItem("Hoveddisplaytekst");
-        fargeitem.addActionListener(e -> tv.setTvFarge(true));
-        fargeMeny.add(fargeitem);
-
-        fargeitem = new JMenuItem("Rolleliste");
-        fargeitem.addActionListener(e -> tv.setRollerfarge(false));
-        fargeMeny.add(fargeitem);
-
-        fargeitem = new JMenuItem("Rollelistetekst");
-        fargeitem.addActionListener(e -> tv.setRollerfarge(true));
-        fargeMeny.add(fargeitem);
-
-
-        return skjerm;
     }
 }

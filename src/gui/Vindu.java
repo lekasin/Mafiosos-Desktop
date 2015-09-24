@@ -4,6 +4,7 @@ import Utils.ImgUtil;
 import Utils.SkjermUtil;
 import Utils.TvUtil;
 import Utils.VeiledningsUtil;
+import Utils.MenyUtil;
 import datastruktur.Spillerliste;
 import personer.Rolle;
 import personer.Spiller;
@@ -36,7 +37,7 @@ public class Vindu extends JFrame {
 
         super(tittel);
         this.spillere = spillere;
-        TvUtil.init(spillere, lagMeny());
+        TvUtil.init(spillere);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -52,6 +53,8 @@ public class Vindu extends JFrame {
         setMinimumSize(totalSize);
         setLocationRelativeTo(null);
         setResizable(true);
+
+        setJMenuBar(MenyUtil.lagMenyer());
     }
 
     public void setSpill(Spill s) {
@@ -138,20 +141,7 @@ public class Vindu extends JFrame {
         rammeverk.add(header, BorderLayout.NORTH);
         rammeverk.add(rammen, BorderLayout.CENTER);
         revalidate();
-
-        setJMenuBar(lagMeny());
     }
-
-    // Oppretter menyer
-    public JMenuBar lagMeny() {
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-
-        JMenuBar menuBar = new JMenuBar();
-        menuBar.add(TvUtil.skjermMeny());
-        menuBar.add(VeiledningsUtil.guideMeny());
-        return menuBar;
-    }
-
 
 
     public JPanel innhold() {
@@ -217,7 +207,7 @@ public class Vindu extends JFrame {
         return null;
     }
 
-    public JPanel visAlleKnapper(JPanel panel, ActionListener al){
+    public JPanel visAlleKnapper(JPanel panel, ActionListener al) {
         innhold();
         for (Spiller s : spillere.spillere()) {
             Knapp k = new Knapp(s.navn(), s, Knapp.HALV, al);
@@ -296,8 +286,7 @@ public class Vindu extends JFrame {
         } else if (r.id(Rolle.JOKER)) {
             jokerKnapper((Joker) r);
             return;
-        }
-        else
+        } else
             for (Component c : knapper) {
                 if (c instanceof Knapp) {
                     Knapp k = (Knapp) c;

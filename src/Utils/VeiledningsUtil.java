@@ -137,34 +137,4 @@ public class VeiledningsUtil {
                 break;
         }
     }
-
-    public static JMenu guideMeny() {
-        JMenu guide = new JMenu("Guide");
-        guide.setMnemonic(KeyEvent.VK_G);
-        guide.getAccessibleContext().setAccessibleDescription(
-                "Rollerforklaringer og øvrig veiledning");
-
-        JMenuItem lukk = new JMenuItem("Lukk");
-        lukk.addActionListener(e -> TvUtil.lukkGuide());
-        guide.add(lukk);
-
-        JMenu rolleMeny = new JMenu("Roller A-N");
-        rolleMeny.getAccessibleContext().setAccessibleDescription("Rolleforklaringer");
-        guide.add(rolleMeny);
-        JMenu rolleMeny2 = new JMenu("Roller O-Å");
-        rolleMeny2.getAccessibleContext().setAccessibleDescription("Rolleforklaringer");
-        guide.add(rolleMeny2);
-
-        JMenuItem rolleItem;
-        for (Rolle rolle : Mafiosos.roller()) {
-            rolleItem = new JMenuItem(rolle.toString());
-            rolleItem.addActionListener(e -> TvUtil.visGuide(rolle.getGuide()));
-            if (Mafiosos.roller().indexOf(rolle) <= 30)
-                rolleMeny.add(rolleItem);
-            else
-                rolleMeny2.add(rolleItem);
-        }
-
-        return guide;
-    }
 }

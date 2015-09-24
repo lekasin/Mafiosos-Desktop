@@ -1,5 +1,6 @@
 package gui;
 
+import Utils.MenyUtil;
 import datastruktur.Spillerliste;
 import personer.Rolle;
 import personer.Spiller;
@@ -57,8 +58,10 @@ public class TV extends JFrame {
         guide.setWrapStyleWord(true);
         guide.setBackground(new Color(54, 64, 67));
         guide.setForeground(new Color(230, 232, 222));
+        guide.setVisible(false);
         add(guide, BorderLayout.SOUTH);
 
+        setJMenuBar(MenyUtil.lagMenyer());
     }
 
     public String vis(String t) {
@@ -149,8 +152,12 @@ public class TV extends JFrame {
         visFargeVelger(tv, tekst);
     }
 
-    public void setRollerfarge(boolean tekst){
+    public void setRollerFarge(boolean tekst){
         visFargeVelger(rolleListe, tekst);
+    }
+
+    public void setGuideFarge(boolean tekst){
+        visFargeVelger(guide, tekst);
     }
 
     public void visFargeVelger(JTextArea display, boolean tekst) {
@@ -167,7 +174,6 @@ public class TV extends JFrame {
         fargevelger.setVisible(true);
         fargevelger.setResizable(false);
         fargevelger.pack();
-
     }
 
     public void visRolleGuide(String guideString) {
