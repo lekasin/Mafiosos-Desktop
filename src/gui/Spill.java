@@ -3,6 +3,8 @@ package gui;
 import Utils.SkjermUtil;
 import Utils.TvUtil;
 import Utils.VeiledningsUtil;
+import Utils.MenyUtil;
+import Utils.InnstillingsUtil;
 import datastruktur.Countdown;
 import datastruktur.Spillerliste;
 import personer.Rolle;
@@ -14,15 +16,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Spill implements ActionListener {
 
     public static final int ORDFØRERFASE = 0, DISKUSJONSFASE = 1, AVSTEMNINGSFASE = 2,
-            TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 99;
+            TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 7;
     public Vindu vindu;
     JPanel innhold;
-    Countdown timer;
+    public Countdown timer;
 
     public static Spillerliste spillere;
     ArrayList<Spiller> døde;
@@ -36,6 +41,7 @@ public class Spill implements ActionListener {
     int fase, døgn, antallDøde, tid, taler;
     boolean dag, seier, rakett, tiltale, bombe, joker;
     boolean sniper = false, flukt = false, sabotage = false, forfalskning = false;
+    public static Spill instans;
 
     public Spill(Vindu v, Rolle[] r, int t) {
         vindu = v;
@@ -66,6 +72,7 @@ public class Spill implements ActionListener {
             sabotage = true;
         if (spillere.mafiaRolleLever(Mafia.FORFALSKER))
             forfalskning = true;
+        instans = this;
     }
 
     public void setTid(int t) {
@@ -813,6 +820,7 @@ public class Spill implements ActionListener {
         fase = nyFase;
 //        System.out.println("Fra " + temp + " til " + nyFase);
         setVeiledning();
+        MenyUtil.visSpillMeny(vindu, fase);
         return temp;
     }
 
@@ -839,6 +847,10 @@ public class Spill implements ActionListener {
 
     public boolean aktivTimer() {
         return timer.getAktiv();
+    }
+
+    public boolean aktivKontroll() {
+        return vindu.kontroll.isVisible();
     }
 
     public void sprengTrompet(Spiller s) {
@@ -1200,7 +1212,7 @@ public class Spill implements ActionListener {
         rapporter("Hvem vil rømme??");
     }
 
-    public void navnEndring(Innstillinger innstillinger) {
+    public void navnEndring() {
         timer.stop();
         proklamer("Hvem skal omdøpes?");
         rapporter("Hvem skal omdøpes?");
@@ -1211,7 +1223,7 @@ public class Spill implements ActionListener {
         vindu.visAlleKnapper(innhold, e -> {
             Spiller s = ((Knapp) e.getSource()).spiller();
             String navn = s.navn();
-            innstillinger.endreSpillerNavn(s);
+            InnstillingsUtil.endreSpillerNavn(s);
             rapporter(navn + " endret navn til " + s);
             tilbakeTilDiskusjon();
         });

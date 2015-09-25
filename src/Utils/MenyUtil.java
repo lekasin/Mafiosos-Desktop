@@ -1,21 +1,23 @@
 package Utils;
 
 import datastruktur.Mafiosos;
+import gui.Oppstart;
+import gui.Spill;
 import personer.Rolle;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 /**
  * Created by lars-erikkasin on 24.09.15.
  */
 public class MenyUtil {
-    public static JMenuBar getMeny() {
-        return lagMenyer();
-    }
+    private static JMenu spillMeny;
 
     public static JMenuBar lagMenyer() {
         JMenuBar m = new JMenuBar();
+        m.add(innstillingsMeny());
         m.add(skjermMeny());
         m.add(guideMeny());
         return m;
@@ -131,5 +133,94 @@ public class MenyUtil {
         }
 
         return guide;
+    }
+
+    public static JMenu innstillingsMeny() {
+        JMenu innstillinger = new JMenu("Innstillinger");
+        innstillinger.setMnemonic(KeyEvent.VK_I);
+        innstillinger.getAccessibleContext().setAccessibleDescription(
+                "Diverse innstillinger");
+
+        JMenuItem veiledning = new JMenuItem("Vis/Skjul fortellerveiledning");
+        veiledning.addActionListener(e -> VeiledningsUtil.visSkjulVeiledning());
+        innstillinger.add(veiledning);
+
+        JMenuItem dagtid = new JMenuItem("Sett dagtid");
+        dagtid.addActionListener(e -> TvUtil.lukkGuide());
+        innstillinger.add(dagtid);
+
+        JMenuItem fortellerinfo = new JMenuItem("Vis fortellerinfo");
+        fortellerinfo.addActionListener(e -> InnstillingsUtil.promptFortellerInfo());
+        innstillinger.add(fortellerinfo);
+
+        return innstillinger;
+    }
+
+    public static JMenu dagsMeny(int fase, JMenu spill) {
+        if (spill == null) {
+            spill = new JMenu("Spill");
+            spill.setMnemonic(KeyEvent.VK_S);
+            spill.getAccessibleContext().setAccessibleDescription(
+                    "Funksjoner i spillet");
+        } else {
+            spill.removeAll();
+            TvUtil.tv.removeAll();
+        }
+
+        if (fase == Oppstart.VELGROLLER) {
+            JMenuItem nySpiller = new JMenuItem("Legg til spiller");
+            nySpiller.addActionListener(e -> TvUtil.lukkGuide());
+            spill.add(nySpiller);
+        } else if (fase < 10) {
+            JMenuItem navnEndring = new JMenuItem("Endre spillernavn");
+            navnEndring.addActionListener(e -> Spill.instans.navnEndring());
+            spill.add(navnEndring);
+
+            if (Spill.instans.aktivKontroll()) {
+                JMenuItem røm = new JMenuItem("Røm!");
+                røm.addActionListener(e -> Spill.instans.rømning());
+                spill.add(røm);
+
+            }
+        } else {
+            return null;
+        }
+
+        spillMeny = spill;
+        return spill;
+    }
+
+    public static void visSpillMeny(JFrame vindu, int fase) {
+        if (vindu != TvUtil.tv)
+            visSpillMeny(TvUtil.tv, fase);
+
+        JMenu spill;
+
+        spill = dagsMeny(fase, spillMeny);
+
+        if (spill != null) {
+            vindu.getJMenuBar().add(spill);
+        } else
+            skjulSpillMeny(vindu);
+    }
+
+    public static void skjulSpillMeny(JFrame vindu) {
+        if (Arrays.asList(vindu.getJMenuBar().getComponents()).contains(spillMeny)) {
+            vindu.getJMenuBar().remove(spillMeny);
+            spillMeny = null;
+        }
+    }
+
+    public static void visKlokkeKontroll() {
+        if (spillMeny != null) {
+            JMenuItem klokke = new JMenuItem("Start/stopp klokka");
+            klokke.addActionListener(e -> Spill.instans.timer.playPause());
+            spillMeny.add(klokke, 0);
+        }
+    }
+
+    public static void skjulKlokkeKontroll(){
+        if(spillMeny != null)
+            spillMeny.remove(0);
     }
 }

@@ -1,5 +1,6 @@
 package datastruktur;
 
+import Utils.MenyUtil;
 import gui.Spill;
 
 import javax.swing.*;
@@ -45,6 +46,7 @@ public class Countdown {
 		pause();
 		klokke.setVisible(false);
 		aktiv = false;
+        MenyUtil.skjulKlokkeKontroll();
 	}
 	
 	public void playPause(){
@@ -85,6 +87,7 @@ public class Countdown {
 		tid = t;
 		fortsett();
 		klokke.setVisible(true);
+        MenyUtil.visKlokkeKontroll();
 	}
 	
 	public String format(int i) {

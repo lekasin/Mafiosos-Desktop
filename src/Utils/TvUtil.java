@@ -4,7 +4,8 @@ import datastruktur.Spillerliste;
 import gui.TV;
 import personer.Spiller;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+
 
 /**
  * Created by lars-erikkasin on 15.09.15.

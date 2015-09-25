@@ -1,5 +1,6 @@
 package gui;
 
+import Utils.MenyUtil;
 import Utils.SkjermUtil;
 import Utils.TvUtil;
 import Utils.VeiledningsUtil;
@@ -304,6 +305,7 @@ public class Oppstart implements ActionListener {
                 startSpill();
                 break;
         }
+        MenyUtil.visSpillMeny(vindu, f);
     }
 
     public void nesteRolle() {
