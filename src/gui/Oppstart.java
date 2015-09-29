@@ -25,12 +25,13 @@ public class Oppstart implements ActionListener {
     Vindu vindu;
     Spillerliste spillere;
 
-    public Rolle[] roller;
+    public static Rolle[] roller;
     ArrayList<String> gjenstander;
     Knapp fortsett, sniper, sjåfør, sabotør, forfalsker;
 
     public int antallspillere = 0;
-    int fase = 100, indeks = 0, mafiaer = -1, politi = -1, venner = -1, backup, tid = 6;
+    int fase = 100, mafiaer = -1, politi = -1, venner = -1, backup, tid = 6;
+    static int indeks = 0;
     boolean mafiaroller, fjerning, snipe, flukt, saboter, forfalsk;
 
     public static final int TITTEL = 50, VELGSPILLERE = 100, VELGROLLER = 101, VELGGJENSTANDER = -1, HVEMERHVA = 102, STARTSPILL = 103;
@@ -47,7 +48,7 @@ public class Oppstart implements ActionListener {
         InnstillingsUtil.setOppstart(this);
     }
 
-    public Spillerliste getSpillere(){
+    public Spillerliste getSpillere() {
         return spillere;
     }
 
@@ -70,13 +71,13 @@ public class Oppstart implements ActionListener {
         fortsett.setPreferredSize(Knapp.HEL);
         fortsett.setVisible(true);
         Knapp fjern = new Knapp("Fjern", Knapp.HEL, e -> {
-                String n = navnefelt.getText();
-                if (spillere.finnSpillerMedNavn(n) != null)
-                    antallspillere--;
-                spillere.fjern(n);
-                informer(spillere.toString());
-                navnefelt.setText("");
-                navnefelt.requestFocusInWindow();
+            String n = navnefelt.getText();
+            if (spillere.finnSpillerMedNavn(n) != null)
+                antallspillere--;
+            spillere.fjern(n);
+            informer(spillere.toString());
+            navnefelt.setText("");
+            navnefelt.requestFocusInWindow();
         });
 
         informer(spillere.toString());
@@ -86,7 +87,7 @@ public class Oppstart implements ActionListener {
         innhold.add(registrer);
         innhold.add(fjern);
         innhold.add(fortsett);
-        innhold.add(new Knapp("Fjern alle", Knapp.HEL, e ->{
+        innhold.add(new Knapp("Fjern alle", Knapp.HEL, e -> {
             spillere.spillere().clear();
             informer(spillere.toString());
         }));
@@ -193,14 +194,14 @@ public class Oppstart implements ActionListener {
 
         innhold.add(new Knapp("Zombie", new Zombie(), Knapp.KVART, this));
 
-        if( roller == null) {
+        if (roller == null) {
             antallspillere = spillere.length();
             roller = new Rolle[100];
             roller[Rolle.MAFIA] = mafia;
             informer(spillere.rolleString(roller, --antallspillere));
         } else {
             informer(spillere.rolleString(roller, antallspillere));
-            for (Component c : innhold.getComponents()){
+            for (Component c : innhold.getComponents()) {
                 if (c instanceof Knapp)
                     c.setEnabled(false);
             }
@@ -365,6 +366,16 @@ public class Oppstart implements ActionListener {
             nyfase(++fase);
     }
 
+    public static Rolle hentRolle(){
+        try {
+            return roller[indeks];
+        } catch (ArrayIndexOutOfBoundsException e){
+            return null;
+        } catch (NullPointerException e){
+            return null;
+        }
+    }
+
     public void setAntall(int a) {
         antallspillere = a;
     }
@@ -382,7 +393,7 @@ public class Oppstart implements ActionListener {
         TvUtil.visRoller(rollerListe);
     }
 
-    public void inverserKnapper(){
+    public void inverserKnapper() {
         fjerning = !fjerning;
         oppdaterKnapper();
     }
@@ -410,8 +421,8 @@ public class Oppstart implements ActionListener {
         }
     }
 
-    private boolean harRolle(Rolle rolle){
-        for (Rolle r : roller){
+    private boolean harRolle(Rolle rolle) {
+        for (Rolle r : roller) {
             if (r != null && r.pri() == rolle.pri())
                 return true;
         }
@@ -426,6 +437,7 @@ public class Oppstart implements ActionListener {
             if (e.getSource() == fortsett) {
                 if (fase == STARTSPILL) {
                     Spill spill = new Spill(vindu, roller, tid);
+                    indeks = -1;
                     spill.natt();
                 } else if (spillere.length() < 5)
                     informer("Ikke nok spillere!");

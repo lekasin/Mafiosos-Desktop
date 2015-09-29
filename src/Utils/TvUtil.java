@@ -1,12 +1,12 @@
 package Utils;
 
 import datastruktur.Spillerliste;
+import gui.Oppstart;
 import gui.Spill;
 import gui.TV;
 import personer.Spiller;
 
 import javax.swing.JFrame;
-import java.util.logging.Handler;
 
 
 /**
@@ -134,10 +134,12 @@ public class TvUtil {
     }
 
     public static void toggleGuide(){
-        if (tv.guideErSynlig())
-            lukkGuide();
+        if (Oppstart.hentRolle() != null)
+            visGuide(Oppstart.hentRolle().getGuide());
         else if (Spill.hentAktiv() != null)
             visGuide(Spill.hentAktiv().getGuide());
+        else if (tv.guideErSynlig())
+            lukkGuide();
         else
             visGuide("Ingen aktiv rolle");
     }

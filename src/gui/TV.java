@@ -181,8 +181,12 @@ public class TV extends JFrame {
     }
 
     public void visRolleGuide(String guideString) {
-        guide.setText(guideString);
-        guide.setVisible(true);
+        if(guide.isVisible() && guide.getText().equals(guideString))
+            lukkRolleGuide();
+        else {
+            guide.setText(guideString);
+            guide.setVisible(true);
+        }
     }
 
     public void lukkRolleGuide(){
