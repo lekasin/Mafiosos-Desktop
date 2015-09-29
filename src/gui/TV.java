@@ -176,6 +176,10 @@ public class TV extends JFrame {
         fargevelger.pack();
     }
 
+    public boolean guideErSynlig(){
+        return guide.isVisible();
+    }
+
     public void visRolleGuide(String guideString) {
         guide.setText(guideString);
         guide.setVisible(true);

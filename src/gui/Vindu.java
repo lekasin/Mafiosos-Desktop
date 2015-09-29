@@ -16,6 +16,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Vindu extends JFrame {
 
@@ -73,9 +75,19 @@ public class Vindu extends JFrame {
         header.setPreferredSize(toppSize);
         header.setBorder(ramme);
 
-        JButton innstillinger = new JButton(ImgUtil.getScaledIcon("settings.png", 80, 80));
-        innstillinger.addActionListener(e -> {
+        JLabel innstillinger = new JLabel(ImgUtil.getScaledIcon("help.png", 80, 80));
+        innstillinger.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+        innstillinger.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                innstillinger.setEnabled(false);
+            }
 
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                innstillinger.setEnabled(true);
+                TvUtil.toggleGuide();
+            }
         });
 
         JLabel overskrift = new JLabel();

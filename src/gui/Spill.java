@@ -36,7 +36,7 @@ public class Spill implements ActionListener {
     ListIterator<Rolle> i;
 
     Spiller sisteDød, forsvarende, ordfører, dødsdømt;
-    Rolle aktiv;
+    static Rolle aktiv;
     String annonse;
     int fase, døgn, antallDøde, tid, taler;
     boolean dag, seier, rakett, tiltale, bombe, joker;
@@ -807,6 +807,10 @@ public class Spill implements ActionListener {
 
     public boolean aktiv(int rolle) {
         return aktiv != null && aktiv.id(rolle);
+    }
+
+    public static Rolle hentAktiv(){
+        return aktiv;
     }
 
     public int forrigefase() {
