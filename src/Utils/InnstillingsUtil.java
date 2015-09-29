@@ -1,6 +1,7 @@
 package Utils;
 
 import datastruktur.Spillerliste;
+import gui.Oppstart;
 import gui.Spill;
 import personer.Spiller;
 
@@ -11,6 +12,11 @@ import java.awt.*;
  * Created by lars-erikkasin on 25.09.15.
  */
 public class InnstillingsUtil {
+    private static Oppstart oppstart;
+
+    public static void setOppstart(Oppstart o) {
+        oppstart = o;
+    }
 
     public static void endreSpillerNavn(Spiller spiller){
         String input = JOptionPane.showInputDialog("Hva er " + spiller + "s nye navn?");
@@ -42,37 +48,35 @@ public class InnstillingsUtil {
     }
 
 
-//    public static void setDagtid(){
-//        String input = JOptionPane
-//                .showInputDialog("Hvor lang skal dagen være? (Minutter)");
-//        if (input.matches("\\d{1,2}")) {
-//            int min = Integer.parseInt(input);
-//            if (spill == null)
-//                oppstart.setTid(min);
-//            else
-//                spill.setTid(min);
-//        }
-//    }
-//
-//    public static void promptLeggTilSpillers(){
-//        String input = JOptionPane.showInputDialog("Navn på spiller:");
-//        if (input.length() == 0)
-//            return;
-//        if (spillere.finnSpillerMedNavn(input) != null)
-//            JOptionPane.showMessageDialog(null, "Finnes allerede!");
-//        else
-//            leggTilSpiller(input);
-//    }
-//
-//    // KNAPPEFUNKSJONER
-//    public static void leggTilSpiller(String navn) {
-//        Spillerliste spillere = Spill.spillere;
-//        if (spillere.finnSpillerMedNavn(navn) == null) {
-//            spillere.leggTil(new Spiller(navn));
-//            oppstart.antallspillere++;
-//            oppstart.informer(spillere.rolleString(oppstart.roller,
-//                    oppstart.antallspillere));
-//            oppstart.oppdaterKnapper();
-//        }
-//    }
+    public static void setDagtid(){
+        String input = JOptionPane
+                .showInputDialog("Hvor lang skal dagen være? (Minutter)");
+        if (input.matches("\\d{1,2}")) {
+            int min = Integer.parseInt(input);
+            if (Spill.instans == null)
+                oppstart.setTid(min);
+            else
+                Spill.instans.setTid(min);
+        }
+    }
+
+    public static void promptLeggTilSpiller(){
+        String input = JOptionPane.showInputDialog("Navn på spiller:");
+        if (input.length() == 0)
+            return;
+        if (oppstart.getSpillere().finnSpillerMedNavn(input) != null)
+            JOptionPane.showMessageDialog(null, "Finnes allerede!");
+        else
+            leggTilSpiller(input);
+    }
+
+    public static void leggTilSpiller(String navn) {
+        Spillerliste spillere = oppstart.getSpillere();
+        if (spillere.finnSpillerMedNavn(navn) == null) {
+            spillere.leggTil(new Spiller(navn));
+            oppstart.antallspillere++;
+            oppstart.informer(spillere.rolleString(oppstart.roller, oppstart.antallspillere));
+            oppstart.oppdaterKnapper();
+        }
+    }
 }

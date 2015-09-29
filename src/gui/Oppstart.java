@@ -1,9 +1,10 @@
 package gui;
 
-import Utils.MenyUtil;
 import Utils.SkjermUtil;
-import Utils.TvUtil;
+import Utils.InnstillingsUtil;
 import Utils.VeiledningsUtil;
+import Utils.MenyUtil;
+import Utils.TvUtil;
 import datastruktur.Spillerliste;
 import personer.Rolle;
 import personer.Spiller;
@@ -24,11 +25,12 @@ public class Oppstart implements ActionListener {
     Vindu vindu;
     Spillerliste spillere;
 
-    Rolle[] roller;
+    public Rolle[] roller;
     ArrayList<String> gjenstander;
     Knapp fortsett, sniper, sjåfør, sabotør, forfalsker;
 
-    int fase = 100, antallspillere = 0, indeks = 0, mafiaer = -1, politi = -1, venner = -1, backup, tid = 6;
+    public int antallspillere = 0;
+    int fase = 100, indeks = 0, mafiaer = -1, politi = -1, venner = -1, backup, tid = 6;
     boolean mafiaroller, fjerning, snipe, flukt, saboter, forfalsk;
 
     public static final int TITTEL = 50, VELGSPILLERE = 100, VELGROLLER = 101, VELGGJENSTANDER = -1, HVEMERHVA = 102, STARTSPILL = 103;
@@ -42,6 +44,11 @@ public class Oppstart implements ActionListener {
         vindu.kontroll(new Lytter(), -1);
 
         velgSpillere();
+        InnstillingsUtil.setOppstart(this);
+    }
+
+    public Spillerliste getSpillere(){
+        return spillere;
     }
 
     private void velgSpillere() {

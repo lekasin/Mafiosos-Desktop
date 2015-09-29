@@ -354,7 +354,7 @@ public class Spill implements ActionListener {
         if (i.hasPrevious()) {
             rapporter("Tilbake");
 
-            if (aktiv.id(Rolle.JOKER))
+            if (aktiv != null && aktiv.id(Rolle.JOKER))
                 refresh();
 
             if (dag) {
@@ -843,10 +843,6 @@ public class Spill implements ActionListener {
     public boolean skalHaTimer() {
         return !(aktiv(Rolle.BØDDEL) || aktiv(Rolle.TROMPET)
                 || aktiv(Rolle.BOMBER) || rakett || forrigefase() == TIEBREAKERFASE);
-    }
-
-    public boolean aktivTimer() {
-        return timer.getAktiv();
     }
 
     public boolean aktivKontroll() {

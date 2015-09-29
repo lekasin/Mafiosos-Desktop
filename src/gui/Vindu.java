@@ -75,10 +75,7 @@ public class Vindu extends JFrame {
 
         JButton innstillinger = new JButton(ImgUtil.getScaledIcon("settings.png", 80, 80));
         innstillinger.addActionListener(e -> {
-            if (spill == null)
-                new Innstillinger("Innstillinger", oppstart, spillere);
-            else
-                new Innstillinger("Innstillinger", spill, spillere);
+
         });
 
         JLabel overskrift = new JLabel();

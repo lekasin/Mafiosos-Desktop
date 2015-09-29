@@ -1,9 +1,10 @@
 package datastruktur;
 
-import Utils.MenyUtil;
 import gui.Spill;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,16 +20,28 @@ public class Countdown {
 
 	public Countdown(JLabel l, Spill s) {
 		klokke = l;
+        setKlokkeLytter();
 		spill = s;
 		this.tid = tid*60;
 
 		timer = new Timer();
 		start = new Start();
 	}
-	
+
+    private void setKlokkeLytter(){
+        klokke.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                playPause();
+            }
+        });
+    }
+
 	public boolean getAktiv(){
 		return aktiv;
 	}
+
 	public int getTid() {
 		return tid;
 	}
@@ -46,7 +59,6 @@ public class Countdown {
 		pause();
 		klokke.setVisible(false);
 		aktiv = false;
-        MenyUtil.skjulKlokkeKontroll();
 	}
 	
 	public void playPause(){
@@ -87,7 +99,6 @@ public class Countdown {
 		tid = t;
 		fortsett();
 		klokke.setVisible(true);
-        MenyUtil.visKlokkeKontroll();
 	}
 	
 	public String format(int i) {

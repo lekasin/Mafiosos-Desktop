@@ -13,7 +13,7 @@ import java.util.Arrays;
  * Created by lars-erikkasin on 24.09.15.
  */
 public class MenyUtil {
-    private static JMenu spillMeny;
+    private static JMenu spillMeny, tvSpillMeny;
 
     public static JMenuBar lagMenyer() {
         JMenuBar m = new JMenuBar();
@@ -146,7 +146,7 @@ public class MenyUtil {
         innstillinger.add(veiledning);
 
         JMenuItem dagtid = new JMenuItem("Sett dagtid");
-        dagtid.addActionListener(e -> TvUtil.lukkGuide());
+        dagtid.addActionListener(e -> InnstillingsUtil.setDagtid());
         innstillinger.add(dagtid);
 
         JMenuItem fortellerinfo = new JMenuItem("Vis fortellerinfo");
@@ -162,14 +162,12 @@ public class MenyUtil {
             spill.setMnemonic(KeyEvent.VK_S);
             spill.getAccessibleContext().setAccessibleDescription(
                     "Funksjoner i spillet");
-        } else {
+        } else
             spill.removeAll();
-            TvUtil.tv.removeAll();
-        }
 
         if (fase == Oppstart.VELGROLLER) {
             JMenuItem nySpiller = new JMenuItem("Legg til spiller");
-            nySpiller.addActionListener(e -> TvUtil.lukkGuide());
+            nySpiller.addActionListener(e -> InnstillingsUtil.promptLeggTilSpiller());
             spill.add(nySpiller);
         } else if (fase < 10) {
             JMenuItem navnEndring = new JMenuItem("Endre spillernavn");
@@ -180,26 +178,24 @@ public class MenyUtil {
                 JMenuItem røm = new JMenuItem("Røm!");
                 røm.addActionListener(e -> Spill.instans.rømning());
                 spill.add(røm);
-
             }
-        } else {
+        } else
             return null;
-        }
 
-        spillMeny = spill;
         return spill;
     }
 
+
     public static void visSpillMeny(JFrame vindu, int fase) {
-        if (vindu != TvUtil.tv)
-            visSpillMeny(TvUtil.tv, fase);
-
-        JMenu spill;
-
+        JMenu spill, tvSpill;
         spill = dagsMeny(fase, spillMeny);
+        tvSpill = dagsMeny(fase, tvSpillMeny);
 
         if (spill != null) {
             vindu.getJMenuBar().add(spill);
+            TvUtil.tv.getJMenuBar().add(tvSpill);
+            spillMeny = spill;
+            tvSpillMeny = tvSpill;
         } else
             skjulSpillMeny(vindu);
     }
@@ -207,20 +203,9 @@ public class MenyUtil {
     public static void skjulSpillMeny(JFrame vindu) {
         if (Arrays.asList(vindu.getJMenuBar().getComponents()).contains(spillMeny)) {
             vindu.getJMenuBar().remove(spillMeny);
+            TvUtil.tv.getJMenuBar().remove(tvSpillMeny);
             spillMeny = null;
+            tvSpillMeny = null;
         }
-    }
-
-    public static void visKlokkeKontroll() {
-        if (spillMeny != null) {
-            JMenuItem klokke = new JMenuItem("Start/stopp klokka");
-            klokke.addActionListener(e -> Spill.instans.timer.playPause());
-            spillMeny.add(klokke, 0);
-        }
-    }
-
-    public static void skjulKlokkeKontroll(){
-        if(spillMeny != null)
-            spillMeny.remove(0);
     }
 }
