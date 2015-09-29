@@ -174,7 +174,7 @@ public class MenyUtil {
             navnEndring.addActionListener(e -> Spill.instans.navnEndring());
             spill.add(navnEndring);
 
-            if (Spill.instans.aktivKontroll()) {
+            if (fase == Spill.DISKUSJONSFASE) {
                 JMenuItem røm = new JMenuItem("Røm!");
                 røm.addActionListener(e -> Spill.instans.rømning());
                 spill.add(røm);
