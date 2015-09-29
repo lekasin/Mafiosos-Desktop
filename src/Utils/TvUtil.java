@@ -135,9 +135,9 @@ public class TvUtil {
 
     public static void toggleGuide(){
         if (Oppstart.hentRolle() != null)
-            visGuide(Oppstart.hentRolle().getGuide());
+            tv.toggleRolleGuide(Oppstart.hentRolle().getGuide());
         else if (Spill.hentAktiv() != null)
-            visGuide(Spill.hentAktiv().getGuide());
+            tv.toggleRolleGuide(Spill.hentAktiv().getGuide());
         else if (tv.guideErSynlig())
             lukkGuide();
         else

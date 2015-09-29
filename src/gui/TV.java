@@ -148,15 +148,15 @@ public class TV extends JFrame {
         guide.setFont(new Font("Sans-Serif", Font.BOLD, størrelse));
     }
 
-    public void setTvFarge(boolean tekst){
+    public void setTvFarge(boolean tekst) {
         visFargeVelger(tv, tekst);
     }
 
-    public void setRollerFarge(boolean tekst){
+    public void setRollerFarge(boolean tekst) {
         visFargeVelger(rolleListe, tekst);
     }
 
-    public void setGuideFarge(boolean tekst){
+    public void setGuideFarge(boolean tekst) {
         visFargeVelger(guide, tekst);
     }
 
@@ -176,20 +176,24 @@ public class TV extends JFrame {
         fargevelger.pack();
     }
 
-    public boolean guideErSynlig(){
+    public boolean guideErSynlig() {
         return guide.isVisible();
     }
 
     public void visRolleGuide(String guideString) {
-        if(guide.isVisible() && guide.getText().equals(guideString))
-            lukkRolleGuide();
-        else {
-            guide.setText(guideString);
-            guide.setVisible(true);
-        }
+        guide.setText(guideString);
+        guide.setVisible(true);
+
     }
 
-    public void lukkRolleGuide(){
+    public void toggleRolleGuide(String guideString) {
+        if(guide.isVisible() && guide.getText().equals(guideString))
+            lukkRolleGuide();
+        else
+            visRolleGuide(guideString);
+    }
+
+    public void lukkRolleGuide() {
         guide.setVisible(false);
     }
 }

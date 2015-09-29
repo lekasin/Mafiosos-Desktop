@@ -107,6 +107,7 @@ public class Spill implements ActionListener {
         innhold.add(new Knapp("Landsbyen våkner", Knapp.SUPER, e -> dag()));
         innhold.revalidate();
         innhold.repaint();
+        TvUtil.lukkGuide();
     }
 
     public void dag() {
@@ -320,8 +321,11 @@ public class Spill implements ActionListener {
 
     public void pek(Rolle r) {
         aktiv = r;
-        if (aktiv != null)
+        if (aktiv != null) {
             VeiledningsUtil.setTekst(aktiv.getVeiledning());
+            if (TvUtil.tv.guideErSynlig())
+                TvUtil.visGuide(aktiv.getGuide());
+        }
         refresh(r);
 
         // TvUtil.leggTil(spillere.valg(r));

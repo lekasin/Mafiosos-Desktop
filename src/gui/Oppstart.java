@@ -357,11 +357,14 @@ public class Oppstart implements ActionListener {
             }
         }
 
-        if (indeks == roller.length - 1 && roller[roller.length - 1] == null && fase == HVEMERHVA)
+        if (indeks == roller.length - 1 && roller[roller.length - 1] == null && fase == HVEMERHVA) {
             nyfase(++fase);
-        else if (indeks < roller.length) {
+            TvUtil.lukkGuide();
+        } else if (indeks < roller.length) {
             tekst.setText(roller[indeks].tittel());
             innhold.revalidate();
+            if (TvUtil.tv.guideErSynlig())
+                TvUtil.visGuide(roller[indeks].getGuide());
         } else
             nyfase(++fase);
     }
