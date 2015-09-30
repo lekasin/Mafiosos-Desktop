@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 public class VeiledningsUtil {
     private static JTextArea info;
     public static final int ORDFØRERFASE = 0, DISKUSJONSFASE = 1, AVSTEMNINGSFASE = 2,
-            TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 99;
+            TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 7;
 
 
     public static void init(JTextArea info) {

@@ -44,6 +44,8 @@ public class Oppstart implements ActionListener {
         vindu.setOppstart(this);
         vindu.kontroll(new Lytter(), -1);
 
+        indeks = 0;
+        roller = null;
         velgSpillere();
         InnstillingsUtil.setOppstart(this);
     }

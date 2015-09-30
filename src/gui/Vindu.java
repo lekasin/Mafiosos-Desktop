@@ -217,10 +217,10 @@ public class Vindu extends JFrame {
     }
 
     public JPanel visAlleKnapper(JPanel panel, ActionListener al) {
-        innhold();
+        panel.removeAll();
         for (Spiller s : spillere.spillere()) {
             Knapp k = new Knapp(s.navn(), s, Knapp.HALV, al);
-            innhold.add(k);
+            panel.add(k);
         }
         return panel;
     }

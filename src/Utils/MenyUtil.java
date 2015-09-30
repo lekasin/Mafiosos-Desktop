@@ -174,8 +174,8 @@ public class MenyUtil {
             navnEndring.addActionListener(e -> Spill.instans.navnEndring());
             spill.add(navnEndring);
 
-            if (fase == Spill.DISKUSJONSFASE) {
-                JMenuItem røm = new JMenuItem("Røm!");
+            if (fase == Spill.DISKUSJONSFASE || fase == Spill.NATTFASE) {
+                JMenuItem røm = new JMenuItem("Fjern spiller");
                 røm.addActionListener(e -> Spill.instans.rømning());
                 spill.add(røm);
             }

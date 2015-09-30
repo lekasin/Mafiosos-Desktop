@@ -30,14 +30,7 @@ public class Filosof extends Rolle {
 	public Spiller getValgt(){
 		return valgt;
 	}
-	
-	
-	@Override
-	public String oppgave() {
-		System.out.println("Aktiv oppgave: " + aktiv);
 
-		return super.oppgave();
-	}
 	@Override
 	public boolean evne(Spiller spiller) {
 		TvUtil.toFront();

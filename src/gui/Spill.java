@@ -24,7 +24,7 @@ import java.util.ListIterator;
 public class Spill implements ActionListener {
 
     public static final int ORDFØRERFASE = 0, DISKUSJONSFASE = 1, AVSTEMNINGSFASE = 2,
-            TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 7;
+            TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 7, NATTFASE = 8;
     public Vindu vindu;
     JPanel innhold;
     public Countdown timer;
@@ -83,6 +83,7 @@ public class Spill implements ActionListener {
         rapporter("\nNY NATT");
         TvUtil.rensVedlegg();
         dag = false;
+        nyFase(NATTFASE);
         taler = 0;
         spillere.sov();
         spillere.nullstillAvstemming();
@@ -655,22 +656,20 @@ public class Spill implements ActionListener {
         rapporter("Med Jokeren: " + medJokeren.size() + "\n" +
                 "Mot Jokeren: " + (spillere.levendeOgFri().size() - medJokeren.size() - 1) + "\n");
 
-        if (medJokeren.size() == 0){
+        if (medJokeren.size() == 0) {
             godkjenn(joker.spiller());
             informer("Landsbyen seiret!\nJokeren, " + joker.spiller() + ", er død!");
             rapporter("Landsbyen seiret!\nJokeren, " + joker.spiller() + ", er død!");
-        }
-        else if (medJokeren.size() == spillere.levendeOgFri().size() - 1) {
-            for (Spiller s: medJokeren)
+        } else if (medJokeren.size() == spillere.levendeOgFri().size() - 1) {
+            for (Spiller s : medJokeren)
                 s.henrett();
             dagensResultat();
             tittuler("Jokeren vant!");
             informer("Jokeren, " + joker.spiller() + " seiret, og vi har en vinner!");
             rapporter("Jokeren, " + joker.spiller() + " seiret, og vi har en vinner!");
-        }
-        else{
+        } else {
             String ut = "Landsbyen seiret!\nMen noen gikk i Jokerens felle og døde:\n";
-            for (Spiller s: medJokeren) {
+            for (Spiller s : medJokeren) {
                 ut = jokerHenrett(s, ut);
             }
 
@@ -684,7 +683,6 @@ public class Spill implements ActionListener {
 
     public String jokerHenrett(Spiller s, String ut) {
         s.henrett();
-        System.out.println("Joker - " + s);
 
         int side = s.side();
         ut += "\n" + s;
@@ -718,7 +716,7 @@ public class Spill implements ActionListener {
         }
 
         //Sjekk om den døde er illusjonistens gjemmested
-        if (sjekkRolle(Rolle.ILLUSJONIST) && finnOffer(Rolle.ILLUSJONIST) == s){
+        if (sjekkRolle(Rolle.ILLUSJONIST) && finnOffer(Rolle.ILLUSJONIST) == s) {
             ut = jokerHenrett(finnSpiller(Rolle.ILLUSJONIST), ut);
             finnSpiller(Rolle.ILLUSJONIST).snipe(finnRolle(Rolle.JOKER));
         }
@@ -781,7 +779,6 @@ public class Spill implements ActionListener {
     }
 
 
-
     // //////////////////////////////////// SMÅ METODER
     // ///////////////////////////////////
 
@@ -813,7 +810,7 @@ public class Spill implements ActionListener {
         return aktiv != null && aktiv.id(rolle);
     }
 
-    public static Rolle hentAktiv(){
+    public static Rolle hentAktiv() {
         return aktiv;
     }
 
@@ -867,10 +864,9 @@ public class Spill implements ActionListener {
     public void nominer(Spiller s, boolean leggTil) {
         if (leggTil) {
             spillere.nominer(s);
-            if (s.id(Rolle.CARLSEN) && ((Carlsen)finnRolle(Rolle.CARLSEN)).erDømt())
+            if (s.id(Rolle.CARLSEN) && ((Carlsen) finnRolle(Rolle.CARLSEN)).erDømt())
                 dødsdømt = s;
-        }
-        else
+        } else
             spillere.avnominer(s);
         visMistenkte();
     }
@@ -1214,6 +1210,7 @@ public class Spill implements ActionListener {
         timer.stop();
         proklamer("Hvem vil rømme??");
         rapporter("Hvem vil rømme??");
+        vindu.visAlleKnapper(innhold, this);
     }
 
     public void navnEndring() {
@@ -1233,7 +1230,7 @@ public class Spill implements ActionListener {
         });
     }
 
-    public void tilbakeTilDiskusjon(){
+    public void tilbakeTilDiskusjon() {
         nyFase(DISKUSJONSFASE);
         spillere.dødsannonse();
         tittuler("Hvem er de mistenkte?");
@@ -1415,11 +1412,11 @@ public class Spill implements ActionListener {
             } else if (fase(AVSTEMNINGSFASE)) {
                 knapp(e).setEnabled(false);
                 spillere.stem(valgt, forsvarende);
-            } else if (dag && fase(RØMNINGSFASE)) {
+            } else if (fase(RØMNINGSFASE)) {
+                rapporter(valgt + " har rømt fra landsbyen");
                 valgt.henrett();
                 nominer(valgt, false);
                 if (valgt.equals(dødsdømt)) dødsdømt = null;
-                rapporter(valgt + " har rømt fra landsbyen");
                 tilbakeTilDiskusjon();
             } else if (fase(TIEBREAKERFASE))
                 godkjenn(valgt);
@@ -1433,6 +1430,14 @@ public class Spill implements ActionListener {
 
         // VELGER PÅ NATTEN
         else {
+            if (fase(RØMNINGSFASE)) {
+                nyFase(NATTFASE);
+                rapporter(valgt + " har rømt fra landsbyen");
+                valgt.snipe(null);
+                pek(aktiv);
+                return;
+            }
+
             if (aktiv.funker() || (aktiv.id(Rolle.SPECIAL) && aktiv.aktiv())) {
                 spillere.lagrePek(aktiv.pri(), valgt);
                 aktiv.pek(valgt);
