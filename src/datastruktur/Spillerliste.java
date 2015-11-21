@@ -53,7 +53,6 @@ public class Spillerliste {
     public void sov() {
         for (Spiller s : spillere) {
             s.setOffer(null);
-            if (s.lever() || s.id(Rolle.ZOMBIE))
                 s.sov();
         }
     }

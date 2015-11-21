@@ -1,5 +1,6 @@
 package personer.roller;
 
+import Utils.SkjermUtil;
 import Utils.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 public class Psykolog extends Rolle {
 
     Spiller pasient;
-    int bonusStemmer = 0, pasientNr;
+    int bonusStemmer = 0;
     ArrayList<Spiller> pasienter = new ArrayList<>();
 
     public Psykolog() {
@@ -33,7 +34,7 @@ public class Psykolog extends Rolle {
     }
 
     public void bestillTime(Spiller s) {
-        if (!s.equals(spiller()))
+        if (!s.equals(spiller()) && funker)
             pasienter.add(s);
     }
 
@@ -42,22 +43,18 @@ public class Psykolog extends Rolle {
         if (!funker)
             return;
 
-        spiller().setStemmer(spiller().getStemmer() - bonusStemmer);
+        if (!pasienter.isEmpty()) {
+            pasient = pasienter.get(0);
+            pasienter.remove(0);
+        }
 
-        if (pasient != null)
-            pasient.setStemmer(pasient.getStemmer() + bonusStemmer);
-
-        if (pasienter.size() > pasientNr)
-            pasient = pasienter.get(pasientNr++);
-        else
-            pasient = null;
-
-        bonusStemmer = 0;
-
-        if (pasient != null)
+        if (pasient != null) {
+            SkjermUtil.logg("Psykologens pasient er " + pasient);
             tvOppgave = "Dagens pasient er " + pasient + ".\n" +
                     "Hvem vil psykologen vende " + pasient + " mot?";
+        }
         else {
+            SkjermUtil.logg("Psykologen har ingen pasienter");
             tvOppgave = "Psykologen har ingen pasienter i dag.";
             return;
         }
@@ -78,5 +75,22 @@ public class Psykolog extends Rolle {
         if (spiller.equals(spiller()))
             spiller.setStemmer(spiller.getStemmer() + bonusStemmer);
         return true;
+    }
+
+    private void nullstill(){
+        if (pasient != null) {
+            pasient.setStemmer(pasient.getStemmer() + bonusStemmer);
+            spiller().setStemmer(spiller().getStemmer() - bonusStemmer);
+            pasient = null;
+        }
+        tvOppgave = "Psykologen har ingen pasienter i dag.";
+        bonusStemmer = 0;
+        offer = null;
+    }
+
+    @Override
+    public void sov() {
+        super.sov();
+        nullstill();
     }
 }
