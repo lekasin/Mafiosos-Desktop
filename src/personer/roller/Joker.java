@@ -62,4 +62,10 @@ public class Joker extends Rolle {
         if (Spill.spillere.levende().size() < 6 && !ferdig && lever())
             aktiver(true);
     }
+
+    @Override
+    public void klonRolle() {
+        super.klonRolle();
+        ferdig = true;
+    }
 }

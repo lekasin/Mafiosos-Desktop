@@ -115,10 +115,10 @@ public class MenyUtil {
         lukk.addActionListener(e -> TvUtil.lukkGuide());
         guide.add(lukk);
 
-        JMenu rolleMeny = new JMenu("Roller A-N");
+        JMenu rolleMeny = new JMenu("Roller A-J");
         rolleMeny.getAccessibleContext().setAccessibleDescription("Rolleforklaringer");
         guide.add(rolleMeny);
-        JMenu rolleMeny2 = new JMenu("Roller O-Å");
+        JMenu rolleMeny2 = new JMenu("Roller K-Å");
         rolleMeny2.getAccessibleContext().setAccessibleDescription("Rolleforklaringer");
         guide.add(rolleMeny2);
 

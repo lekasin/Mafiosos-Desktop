@@ -614,7 +614,7 @@ public class Spill implements ActionListener {
 
     public void aktiverDagsRoller() {
         if (joker)
-            anarki();
+            startDilemma();
         else if (rakett)
             rakettoppskytning();
         else if (bombe)
@@ -623,7 +623,7 @@ public class Spill implements ActionListener {
             tiltale();
     }
 
-    public void anarki() {
+    public void startDilemma() {
         nyFase(JOKERFASE);
         timer.setText(annonse + "\n\nJokerens dilemma!!!\nHva blir landsbyen enige om?");
         timer.nyStartMin(2);
@@ -1422,7 +1422,7 @@ public class Spill implements ActionListener {
             } else if (fase(AVSTEMNINGSFASE)) {
                 knapp(e).setEnabled(false);
                 spillere.stem(valgt, forsvarende);
-                timer.nyStartSek(timer.getTid()+3);
+                timer.nyStartSek(timer.getTid() + 3);
             } else if (fase(RØMNINGSFASE)) {
                 rapporter(valgt + " har rømt fra landsbyen");
                 valgt.sov();
