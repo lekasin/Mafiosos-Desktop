@@ -774,6 +774,7 @@ public class Spill implements ActionListener {
             return;
         }
 
+        spillere.nullstillAvstemming();
         spillere.nominer(tiltalt);
         startForsvarstale(tiltalt);
         informer(annonse.substring(1) + "\n\n" + tiltalt + " står på TILTALEBENKEN!");
