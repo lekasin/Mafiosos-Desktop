@@ -457,7 +457,7 @@ public class Spill implements ActionListener {
     public void avstemming(Spiller s) {
         tittuler("Hvem stemmer på " + s.navn() + "?");
         timer.setText("\nHvem stemmer på " + s.navn() + "?\n" + hentMistenkte());
-        timer.nyStartSek(20);
+        timer.nyStartSek(15);
 
         if (s.lever() && s.harFlyers() && !(rakett || bombe || tiltale)) {
             Spiller marius = new Spiller("Grafiske Marius");
@@ -1422,7 +1422,7 @@ public class Spill implements ActionListener {
             } else if (fase(AVSTEMNINGSFASE)) {
                 knapp(e).setEnabled(false);
                 spillere.stem(valgt, forsvarende);
-                timer.setTid(timer.getTid()+5);
+                timer.nyStartSek(timer.getTid()+3);
             } else if (fase(RØMNINGSFASE)) {
                 rapporter(valgt + " har rømt fra landsbyen");
                 valgt.henrett();
