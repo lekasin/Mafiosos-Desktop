@@ -459,7 +459,7 @@ public class Spill implements ActionListener {
         timer.setText("\nHvem stemmer på " + s.navn() + "?\n" + hentMistenkte());
         timer.nyStartSek(20);
 
-        if (s.lever() && s.harFlyers()) {
+        if (s.lever() && s.harFlyers() && !(rakett || bombe || tiltale)) {
             Spiller marius = new Spiller("Grafiske Marius");
             marius.setStemmer(2);
             spillere.stem(marius, s);
@@ -911,6 +911,14 @@ public class Spill implements ActionListener {
 
     // ////////////////////////////////// KVELDEN ///////////////////////////////////////
     public void uavgjort(ArrayList<Spiller> utstemte) {
+        if (rakett) {
+            Spiller astroStemme = spillere.hentSisteStemmeFra(finnSpiller(Rolle.ASTRONAUT));
+            if (utstemte.contains(astroStemme)) {
+                godkjenn(astroStemme);
+                return;
+            }
+        }
+
         nyFase(TIEBREAKERFASE);
         timer.stop();
 
@@ -1413,6 +1421,7 @@ public class Spill implements ActionListener {
             } else if (fase(AVSTEMNINGSFASE)) {
                 knapp(e).setEnabled(false);
                 spillere.stem(valgt, forsvarende);
+                timer.setTid(timer.getTid()+5);
             } else if (fase(RØMNINGSFASE)) {
                 rapporter(valgt + " har rømt fra landsbyen");
                 valgt.henrett();
