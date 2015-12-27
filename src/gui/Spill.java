@@ -750,6 +750,7 @@ public class Spill implements ActionListener {
         finnSpiller(Rolle.ASTRONAUT).minkStemmer();
         restartMedTimer(null, tid - 2);
         aktiverDagsRoller();
+        sjekkVinner();
     }
 
     public void plantetBombe() {
