@@ -1425,6 +1425,7 @@ public class Spill implements ActionListener {
                 timer.nyStartSek(timer.getTid()+3);
             } else if (fase(RØMNINGSFASE)) {
                 rapporter(valgt + " har rømt fra landsbyen");
+                valgt.sov();
                 valgt.henrett();
                 nominer(valgt, false);
                 if (valgt.equals(dødsdømt)) dødsdømt = null;
