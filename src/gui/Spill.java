@@ -1146,6 +1146,7 @@ public class Spill implements ActionListener {
     public String detonerBombe(Spiller bombet, Spiller utstemt) {
         bombe = false;
         String ut;
+        boolean mafiadød = false;
 
         // Utstemt
         if (utstemt.forsvart()) {
@@ -1155,9 +1156,10 @@ public class Spill implements ActionListener {
                 ut = utstemt + " VAR Bomberen, og bomben er desarmert!";
                 return ut;
             } else {
-                if (utstemt.side() < 0)
+                if (utstemt.side() < 0) {
                     ut = utstemt + " var IKKE Bomberen, men var Mafia!";
-                else if (utstemt.id(Rolle.TROMPET))
+                    mafiadød = true;
+                } else if (utstemt.id(Rolle.TROMPET))
                     ut = utstemt
                             + " var IKKE Bomberen, men var TROMPET!!!" +
                             "\nHvem vil trompeten sprenge?";
@@ -1177,9 +1179,10 @@ public class Spill implements ActionListener {
                     + " ble forsøkt sprengt,\nmen er beskyttet, og er derfor ikke død!";
         } else {
             bombet.henrett();
-            if (bombet.side() < Rolle.NØYTRAL)
+            if (bombet.side() < Rolle.NØYTRAL) {
                 ut += bombet + " ble sprengt, og VAR Mafia!";
-            else
+                mafiadød = true;
+            } else
                 ut += bombet + " ble sprengt, og var IKKE Mafia!";
         }
 
@@ -1192,7 +1195,19 @@ public class Spill implements ActionListener {
                             + (spiller.side() < Rolle.NØYTRAL ? "VAR Mafia!"
                             : "var IKKE Mafia!");
                     spiller.henrett();
+                    if (spiller.side() < Rolle.NØYTRAL)
+                        mafiadød = true;
                 }
+
+        if (mafiadød && sjekkRolle(Rolle.VARA)) {
+            ut += "\n\nOg dermed trer VaraMafiaen inn!";
+            Spiller vara = finnSpiller(Rolle.VARA);
+            if (vara.lever()) {
+                vara.setRolle(finnRolle(Rolle.MAFIA));
+                ((Mafia) vara.rolle()).fler();
+            }
+        }
+
         return ut;
     }
 
