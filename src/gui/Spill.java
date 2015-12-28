@@ -1,10 +1,6 @@
 package gui;
 
-import Utils.SkjermUtil;
-import Utils.TvUtil;
-import Utils.VeiledningsUtil;
-import Utils.MenyUtil;
-import Utils.InnstillingsUtil;
+import Utils.*;
 import datastruktur.Countdown;
 import datastruktur.Spillerliste;
 import personer.Rolle;
@@ -18,8 +14,6 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.ListIterator;
 
 public class Spill implements ActionListener {
 
@@ -32,8 +26,7 @@ public class Spill implements ActionListener {
     public static Spillerliste spillere;
     ArrayList<Spiller> døde;
     ArrayList<Integer> faseHistorikk = new ArrayList<>();
-    LinkedList<Rolle> roller = new LinkedList<>();
-    ListIterator<Rolle> i;
+    ArrayList<Rolle> roller = new ArrayList<>();
 
     Spiller sisteDød, forsvarende, ordfører, dødsdømt;
     static Rolle aktiv;
@@ -88,7 +81,6 @@ public class Spill implements ActionListener {
         spillere.sov();
         spillere.nullstillAvstemming();
         refresh();
-        i = roller.listIterator();
         bombe = tiltale = rakett = false;
         dødsdømt = null;
         annonse = "";
@@ -333,13 +325,14 @@ public class Spill implements ActionListener {
     }
 
     public void nesteRolle() {
-        if (i.hasNext()) {
-            Rolle r = i.next();
+        int index = roller.indexOf(aktiv) + 1;
+        if (index < roller.size()) {
+            Rolle r = roller.get(index);
 
             while (!r.aktiv() || r == aktiv) {
                 r.autoEvne();
-                if (i.hasNext())
-                    r = i.next();
+                if (++index < roller.size())
+                    r = roller.get(index);
                 else
                     break;
             }
@@ -356,7 +349,8 @@ public class Spill implements ActionListener {
     }
 
     public void forrigeRolle() {
-        if (i.hasPrevious()) {
+        int index = roller.indexOf(aktiv) - 1;
+        if (index >= 0) {
             rapporter("Tilbake");
 
             if (aktiv != null && aktiv.id(Rolle.JOKER))
@@ -366,10 +360,10 @@ public class Spill implements ActionListener {
                 dag = false;
                 pek(aktiv);
             } else {
-                Rolle r = i.previous();
+                Rolle r = roller.get(index);
                 while (!r.aktiv() || r == aktiv) {
-                    if (i.hasPrevious())
-                        r = i.previous();
+                    if (--index >= 0)
+                        r = roller.get(index);
                     else
                         break;
                 }
