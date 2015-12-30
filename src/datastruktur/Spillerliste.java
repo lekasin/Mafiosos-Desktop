@@ -65,8 +65,6 @@ public class Spillerliste {
                 s.stopp();
             if (s.id(Rolle.BELIEBER)) s.rolle().lever();
             if (s.id(Rolle.SOFA)) s.rolle().lever();
-            if (s.skalKlones())
-                s.klon();
         }
     }
 

@@ -122,7 +122,9 @@ public class Spiller {
         flyers = false;
         grafiker = null;
 		rolle.sov();
-	}
+        if (skalKlones())
+            klon();
+    }
 
 	public void rens(Rolle r){
 		if(beskytter == r){
