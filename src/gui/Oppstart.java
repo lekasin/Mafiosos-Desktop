@@ -313,6 +313,7 @@ public class Oppstart implements ActionListener {
         vindu.kontroll.remove(1);
         fortsett.setVisible(true);
         fortsett.setText("Start spill!");
+        fortsett.setPreferredSize(Knapp.SUPER);
         innhold.add(fortsett);
         SkjermUtil.fullLogg("");
         SkjermUtil.tittuler("Klar til å begynne spillet?");
@@ -517,6 +518,7 @@ public class Oppstart implements ActionListener {
 
                     personIndeks = -1;
                     fortsett.setText("Fortsett");
+                    fortsett.setPreferredSize(Knapp.HEL);
                 }
             }
             //////////////////////LEGG TIL ALLE//////////////////////
