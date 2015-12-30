@@ -19,8 +19,9 @@ public class Bestevenn extends Rolle {
 		side = BORGER;
 		prioritet = BESTEVENN;
 	}
-	
-	public int antall(){
+
+    @Override
+    public int antall(){
 		return antall;
 	}
 	

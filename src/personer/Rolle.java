@@ -386,6 +386,10 @@ public abstract class Rolle {
 		return false;
 	}
 
+    public int antall() {
+        return 1;
+    }
+
 
 	//Evner/Arv
 	public abstract boolean evne(Spiller spiller);

@@ -92,7 +92,6 @@ public class Vindu extends JFrame {
 
         JLabel overskrift = new JLabel();
         overskrift.setFont(new Font("Arial", Font.BOLD, Oppstart.TITTEL));
-        overskrift.setText("Velkommen til Oslo Mafiosos!");
         overskrift.setHorizontalAlignment(SwingConstants.CENTER);
 
         klokke = new JLabel();
@@ -188,6 +187,8 @@ public class Vindu extends JFrame {
 
         if (fase == Oppstart.VELGROLLER) {
             kontroll.add(new Knapp("Fjern", Knapp.HEL, e -> oppstart.inverserKnapper()));
+        } else if (fase == Oppstart.HVEMERHVA) {
+            kontroll.add(new Knapp("Auto", Knapp.HEL, e -> startRolleGjennomgang()));
         } else {
             fortsett = new Knapp("Fortsett", Knapp.HEL, al);
             kontroll.add(fortsett);
@@ -196,6 +197,12 @@ public class Vindu extends JFrame {
         kontroll.revalidate();
         kontroll.repaint();
         kontroll.setVisible(true);
+    }
+
+    private void startRolleGjennomgang() {
+        oppstart.autoFordelRoller();
+        kontroll.remove(1);
+        kontroll.add(fortsett);
     }
 
     public Knapp finnKnappForRolle(Container panel, int rolle) {

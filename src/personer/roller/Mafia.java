@@ -28,6 +28,7 @@ public class Mafia extends Rolle {
         prioritet = MAFIA;
     }
 
+    @Override
     public int antall() {
         return antall;
     }

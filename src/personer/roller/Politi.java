@@ -23,7 +23,8 @@ public class Politi extends Rolle {
 		side = BORGER;
 		prioritet = POLITI;
 	}
-	
+
+    @Override
 	public int antall(){
 		return antall;
 	}

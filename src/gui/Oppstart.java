@@ -240,7 +240,7 @@ public class Oppstart implements ActionListener {
 
         innhold = vindu.innhold();
         SkjermUtil.tittuler("Hvem er hva?");
-        vindu.kontroll(new Lytter(), -1);
+        vindu.kontroll(new Lytter(), HVEMERHVA);
         fortsett = vindu.getFortsett();
         fortsett.setVisible(false);
 
@@ -259,6 +259,24 @@ public class Oppstart implements ActionListener {
         vindu.personknapper(innhold, this);
         vindu.oppdaterRamme(p);
         if (indeks == Rolle.MAFIA) mafiaRoller();
+    }
+
+    public void autoFordelRoller() {
+        spillere.fordelRoller(roller);
+        innhold = vindu.innhold();
+        innhold.removeAll();
+        fortsett.setVisible(true);
+
+        SkjermUtil.tittuler("Hvem er hva?");
+
+        tekst = new JLabel();
+        tekst.setFont(new Font("Arial", Font.BOLD, Oppstart.TITTEL));
+        tekst.setHorizontalAlignment(SwingConstants.CENTER);
+        tekst.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        innhold.add(tekst);
+        vindu.oppdaterRamme(innhold);
+
+        nestePerson();
     }
 
     public void mafiaRoller() {
@@ -323,7 +341,7 @@ public class Oppstart implements ActionListener {
 
         if (indeks == Rolle.BESTEVENN && roller[indeks] != null) {
             if (venner == -1)
-                venner = ((Bestevenn) roller[indeks]).antall() - 1;
+                venner = roller[indeks].antall() - 1;
             else if (venner > 0)
                 venner--;
             else {
@@ -334,7 +352,7 @@ public class Oppstart implements ActionListener {
         }
         if (indeks == Rolle.MAFIA && roller[indeks] != null) {
             if (mafiaer == -1)
-                mafiaer = ((Mafia) roller[indeks]).antall() - 1;
+                mafiaer = roller[indeks].antall() - 1;
             else if (mafiaer > 0)
                 mafiaer--;
             else {
@@ -345,7 +363,7 @@ public class Oppstart implements ActionListener {
         }
         if (indeks == Rolle.POLITI && roller[indeks] != null) {
             if (politi == -1)
-                politi = ((Politi) roller[indeks]).antall() - 1;
+                politi = roller[indeks].antall() - 1;
             else if (politi > 0)
                 politi--;
             else {
@@ -371,12 +389,24 @@ public class Oppstart implements ActionListener {
             nyfase(++fase);
     }
 
-    public static Rolle hentRolle(){
+    int personIndeks = 0;
+    public void nestePerson() {
+        if (personIndeks == spillere.spillere().size()) {
+            nyfase(++fase);
+            return;
+        }
+
+        Spiller spiller = spillere.spillere().get(personIndeks++);
+        tekst.setText(spiller.navn() + " våkner");
+        informer(spiller.navn() + " er " + spiller.rolle().tittel());
+    }
+
+    public static Rolle hentRolle() {
         try {
             return roller[indeks];
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             return null;
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return null;
         }
     }
@@ -444,6 +474,8 @@ public class Oppstart implements ActionListener {
                     Spill spill = new Spill(vindu, roller, tid);
                     indeks = -1;
                     spill.natt();
+                } else if (fase == HVEMERHVA) {
+                    nestePerson();
                 } else if (spillere.length() < 5)
                     informer("Ikke nok spillere!");
                 else

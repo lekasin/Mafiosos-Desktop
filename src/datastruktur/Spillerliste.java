@@ -37,6 +37,26 @@ public class Spillerliste {
         spillere.remove(finnSpillerMedNavn(s));
     }
 
+    public void fordelRoller(Rolle[] roller) {
+        ArrayList<Rolle> aktiveRoller = new ArrayList();
+        for (Rolle rolle : roller) {
+            if (rolle != null) {
+                if (rolle.flere())
+                    for (int i = 0; i < rolle.antall(); i++)
+                        aktiveRoller.add(rolle);
+                else
+                    aktiveRoller.add(rolle);
+            }
+        }
+
+        Collections.shuffle(aktiveRoller);
+        for (int i = 0; i < spillere.size(); i++) {
+            spillere.get(i).setRolle(aktiveRoller.get(i));
+        }
+
+
+    }
+
     public void våknOpp() {
         if (!fanger.isEmpty())
             kidnappFanger();
@@ -817,5 +837,4 @@ public class Spillerliste {
             if (s.rolle() != null) ut += s + " er " + s.rolle() + "\n";
         return ut;
     }
-
 }
