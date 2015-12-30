@@ -165,7 +165,7 @@ public abstract class Rolle {
 			blokkert = false;
 			if(offer != null)
 				evne(offer());
-		} else if (informant == r) {
+		} else if (informant == r && !informant.id(Rolle.BELIEBER)) {
 			informant = null;
 			informert = false;
 			info = "";
