@@ -26,13 +26,12 @@ public class Arving extends Rolle {
 
 	public boolean arv(){
 		if(lever() && riking != null && !riking.lever()){
-				spiller.setRolle(riking.rolle());
-				spiller.rolle().vekk();
-				spiller.rolle().setSpiller(spiller);
-				return true;
-		}
-		else
-			return false;
+            spiller.setRolle(riking.rolle());
+            spiller.rolle().vekk();
+            spiller.rolle().setSpiller(spiller);
+            return true;
+        } else
+            return false;
 	}
 	
 
@@ -44,7 +43,7 @@ public class Arving extends Rolle {
 	public void autoEvne() {
 		if (arvet)
 			aktiver(false);
-		else if(arv() && lever() && arvet == false) {
+		else if(arv() && lever() && !arvet) {
 			aktiver(true);
 			tvOppgave = "Arvingen har nå arvet rollen " + riking.rolle() + "!";
 			TvUtil.toFront();

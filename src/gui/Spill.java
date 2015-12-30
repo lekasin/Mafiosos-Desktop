@@ -331,11 +331,17 @@ public class Spill implements ActionListener {
 
             while (!r.aktiv() || r == aktiv) {
                 r.autoEvne();
+                if (r.aktiv()) {
+                    pek(r);
+                    return;
+                }
+
                 if (++index < roller.size())
                     r = roller.get(index);
                 else
                     break;
             }
+
             if (r.aktiv()) {
                 r.autoEvne();
                 if (r.aktiv())
