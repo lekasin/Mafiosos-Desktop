@@ -55,6 +55,7 @@ public class Oppstart implements ActionListener {
     }
 
     private void velgSpillere() {
+        fase = VELGSPILLERE;
         vindu.kontroll.setVisible(false);
         VeiledningsUtil.setTekst("Spillerregistrering:\n" +
                 "Skriv inn navnet på nye spillere og trykk enter, eller klikk på registrer for å registrere dem." +
@@ -97,6 +98,7 @@ public class Oppstart implements ActionListener {
     }
 
     public void velgRoller() {
+        fase = VELGROLLER;
         vindu.kontroll.setVisible(true);
         VeiledningsUtil.setTekst("Rollevalg:\n" +
                 "Velg hvilke roller som skal være med i spill ved å klikke på rollens navn.\n" +
@@ -212,6 +214,7 @@ public class Oppstart implements ActionListener {
     }
 
     public void velgGjenstander() {
+        fase = VELGGJENSTANDER;
         gjenstander = new ArrayList<>();
         innhold = vindu.innhold();
         SkjermUtil.tittuler("Hvilke gjenstander skal være med?");
@@ -232,6 +235,7 @@ public class Oppstart implements ActionListener {
     }
 
     public void hvemErHva() {
+        fase = HVEMERHVA;
         VeiledningsUtil.setTekst("Rollefordeling:\n" +
                 "Her skal rollene fordeles på spillerne ved å vekke rollen som vises til høyre, " +
                 "og trykke på navnene til personene som våkner.\n" +
@@ -304,7 +308,9 @@ public class Oppstart implements ActionListener {
     }
 
     public void startSpill() {
+        fase = STARTSPILL;
         innhold = vindu.innhold();
+        vindu.kontroll.remove(1);
         fortsett.setVisible(true);
         fortsett.setText("Start spill!");
         innhold.add(fortsett);
@@ -389,14 +395,14 @@ public class Oppstart implements ActionListener {
             nyfase(++fase);
     }
 
-    int personIndeks = 0;
+    int personIndeks = -1;
     public void nestePerson() {
-        if (personIndeks == spillere.spillere().size()) {
+        if (++personIndeks == spillere.spillere().size()) {
             nyfase(++fase);
             return;
         }
 
-        Spiller spiller = spillere.spillere().get(personIndeks++);
+        Spiller spiller = spillere.spillere().get(personIndeks);
         tekst.setText(spiller.navn() + " våkner");
         informer(spiller.navn() + " er " + spiller.rolle().tittel());
     }
@@ -497,16 +503,20 @@ public class Oppstart implements ActionListener {
                     } else
                         nyfase(--fase);
                 } else if (fase == HVEMERHVA || fase == STARTSPILL) {
+                    //Nullstill indeks for fordeling av roller
                     int i = indeks;
                     politi = -1;
                     mafiaer = -1;
                     venner = -1;
                     for (indeks = 0; roller[indeks] == null; indeks++) ;
 
-                    if (i != indeks) {
+                    if (i != indeks || personIndeks >= 0)
                         nyfase(HVEMERHVA);
-                    } else
+                    else
                         nyfase(--fase);
+
+                    personIndeks = -1;
+                    fortsett.setText("Fortsett");
                 }
             }
             //////////////////////LEGG TIL ALLE//////////////////////
@@ -546,7 +556,6 @@ public class Oppstart implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if (fase == VELGSPILLERE) {
             if (navnefelt.getText().matches("[0-9]|[0-9][0-9]")) {
                 tid = Integer.parseInt(navnefelt.getText());
@@ -615,7 +624,6 @@ public class Oppstart implements ActionListener {
             }
             return;
         } else if (fase == HVEMERHVA) {
-
             if (e.getSource() == sniper) {
                 snipe = true;
                 return;
@@ -646,7 +654,6 @@ public class Oppstart implements ActionListener {
                     k.spiller.setMafiarolle(Mafia.FORFALSKER);
                     forfalsk = false;
                 }
-
 
                 if (indeks != Rolle.POLITI && indeks != Rolle.MAFIA && indeks != Rolle.BESTEVENN)
                     indeks++;
