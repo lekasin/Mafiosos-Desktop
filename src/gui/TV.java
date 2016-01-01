@@ -41,8 +41,9 @@ public class TV extends JFrame {
         tv.setWrapStyleWord(true);
         tv.setFont(new Font("Sans-Serif", Font.BOLD, 30));
         tv.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        tv.setBackground(new Color(50, 60, 63));
-        tv.setForeground(new Color(182, 78, 73));
+//        tv.setBackground(new Color(50, 60, 63));
+        tv.setBackground(Color.black);
+        tv.setForeground(new Color(180, 10, 20));
         ((DefaultCaret) tv.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         add(tv);
@@ -51,7 +52,8 @@ public class TV extends JFrame {
         rolleListe.setFont(new Font("Sans-Serif", Font.BOLD, 30));
         rolleListe.setEditable(false);
         rolleListe.setText(roller);
-        rolleListe.setBackground(new Color(54, 64, 67));
+//        rolleListe.setBackground(new Color(54, 64, 67));
+        rolleListe.setBackground(Color.black);
         rolleListe.setForeground(new Color(230, 232, 222));
         add(rolleListe, BorderLayout.EAST);
 
@@ -61,7 +63,8 @@ public class TV extends JFrame {
         guide.setEditable(false);
         guide.setLineWrap(true);
         guide.setWrapStyleWord(true);
-        guide.setBackground(new Color(54, 64, 67));
+//        guide.setBackground(new Color(54, 64, 67));
+        guide.setBackground(Color.black);
         guide.setForeground(new Color(230, 232, 222));
         guide.setVisible(false);
         add(guide, BorderLayout.SOUTH);

@@ -23,7 +23,7 @@ public class Oppstart implements ActionListener {
     JTextField navnefelt;
     JLabel tekst;
     Vindu vindu;
-    Spillerliste spillere;
+    private static Spillerliste spillere;
 
     public static Rolle[] roller;
     ArrayList<String> gjenstander;
@@ -396,22 +396,26 @@ public class Oppstart implements ActionListener {
             nyfase(++fase);
     }
 
-    int personIndeks = -1;
+    private static int personIndeks = -1;
     public void nestePerson() {
         if (++personIndeks == spillere.spillere().size()) {
             nyfase(++fase);
             TvUtil.skjulRolleBilde();
+            TvUtil.lukkGuide();
             return;
         }
-
         Spiller spiller = spillere.spillere().get(personIndeks);
         tekst.setText(spiller.navn() + " våkner");
         SkjermUtil.fullLogg(spiller.navn() + " er " + spiller.rolle().tittel());
         TvUtil.visRolleBilde(spiller.rolle());
+        if (TvUtil.tv.guideErSynlig())
+            TvUtil.visGuide(spiller.rolle().getGuide());
     }
 
     public static Rolle hentRolle() {
         try {
+            if (personIndeks >= 0 && personIndeks < spillere.spillere().size())
+                return spillere.spillere().get(personIndeks).rolle();
             return roller[indeks];
         } catch (ArrayIndexOutOfBoundsException e) {
             return null;
