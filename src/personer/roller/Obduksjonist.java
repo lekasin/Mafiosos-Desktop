@@ -11,6 +11,7 @@ public class Obduksjonist extends Rolle {
 
 	public Obduksjonist(){
 		super("Obduksjonist");
+        bilde = "obduksjonist";
 		oppgave = "Hvem vil Obduksjonisten undersøke?";
 		veiledning = "Obduksjonist:\n" +
 				"Når minst 3 personer er døde, kan obduksjonisten velge en død person å undersøke.\n" +

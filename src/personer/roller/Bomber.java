@@ -7,6 +7,7 @@ public class Bomber extends Rolle {
 		
 	public Bomber(){
 		super("Bomber");
+        bilde = "bomber";
 		oppgave = "Hvem vil Bomberen bombe?";
 		veiledning = "Bomber:\n" +
 				"Bomberen kan kun bruke rollen sin én gang, og må derfor velge med omhu.\n" +

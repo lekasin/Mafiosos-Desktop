@@ -10,7 +10,8 @@ public class Snylter extends Rolle {
 	
 	public Snylter() {
 		super("Snylter");
-		oppgave = "Hvem vil Snylteren snylte på?";
+        bilde = "snylter";
+        oppgave = "Hvem vil Snylteren snylte på?";
 		veiledning = "Snylter:\n" +
 				"Snylteren velger hver natt en person å snylte på.\n" +
 				"Når snylteren har valgt, trykker du på vedkommendes navn for å snylte på dem.\n" +

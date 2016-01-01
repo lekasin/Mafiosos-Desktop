@@ -12,6 +12,7 @@ public class Filosof extends Rolle {
 	
 	public Filosof(){
 		super("Filosofen");
+        bilde = "filosof";
 		oppgave = "Hvem vil Filosofen studere?";
 		veiledning = "Filosofen:\n" +
 				"Filosofen våkner første natt, og velger en person han vil filosofere rundt.\n" +

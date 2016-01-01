@@ -8,6 +8,7 @@ public class Bedrager extends Rolle {
 	
 	public Bedrager(){
 		super("Bedrageren");
+        bilde = "bedrager";
 		oppgave = "Bedrageren gjør seg kjent med mafiaen";
 		veiledning = "Bedrageren:\n" +
 				"Bedrageren våkner bare første natt, og får da opp mafiaenes navn på skjermen.\n" +

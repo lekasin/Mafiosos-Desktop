@@ -9,6 +9,7 @@ public class Zombie extends Rolle{
 	
 	public Zombie(){
 		super("Zombie");
+        bilde = "zombie";
 		oppgave = "Hvem vil Zombien drepe?";
         veiledning = "Zombien:\n" +
                 "Når zombien er drept, holder han seg våken og velger hver natt en person å drepe.\n" +

@@ -1,14 +1,17 @@
 package personer;
 
+import Utils.ImgUtil;
 import Utils.SkjermUtil;
 import Utils.TvUtil;
 import gui.Spill;
 import personer.roller.Psykolog;
 
+import javax.swing.*;
+
 public abstract class Rolle {
 
 	protected boolean lever = true, blokkert = false, snill = false, informert = false, aktiv = true, funker = true, fortsett = true, skjerm = false, klonet = false;
-	protected String tittel, oppgave, tvOppgave, veiledning, guide;
+	protected String tittel, bilde, oppgave, tvOppgave, veiledning, guide;
 	protected Spiller offer, spiller, forbud, forbud2;
 	protected Rolle blokk, informant, forsinkelse;
 	protected int prioritet = 0, side = 1;
@@ -95,6 +98,14 @@ public abstract class Rolle {
                 "Trykk på navnet til den som pekes på for å utføre rollens oppgave på vedkommende.\n" +
                 "For å gå videre uten å velge noen, trykker du på fortsett.";
 	}
+
+    public boolean harBilde(){
+        return bilde != null && !bilde.isEmpty();
+    }
+    public ImageIcon getBilde(){
+        String bildePath = "roller/"+bilde+".jpg";
+        return ImgUtil.getIcon(bildePath);
+    }
 
 	//Endringer
 	public void drep(){

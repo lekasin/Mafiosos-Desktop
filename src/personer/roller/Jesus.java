@@ -11,6 +11,7 @@ public class Jesus extends Rolle {
 	
 	public Jesus(){
 		super("Jesus");
+        bilde = "jesus";
 		oppgave = "Hvem vil Jesus frelse?";
 		veiledning = "Jesus:\n" +
 				"Første natt våkner Jesus, og velger en person han vil frelse. Etter dette våkner han ikke på natten\n" +

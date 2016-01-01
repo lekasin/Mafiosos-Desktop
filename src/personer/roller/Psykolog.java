@@ -15,6 +15,7 @@ public class Psykolog extends Rolle {
 
     public Psykolog() {
         super("Psykolog");
+        bilde = "psykolog";
         oppgave = "Hvem vil psykologen henvise til?";
         veiledning = "Psykolog:\n" +
                 "Psykologen våkner hver natt, og får vite hvem som er pasienten hennes denne natten.\n" +

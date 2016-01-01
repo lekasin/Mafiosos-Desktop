@@ -9,6 +9,7 @@ public class Insider extends Rolle {
 	
 	public Insider(Politi politi){
 		super("Insider");
+        bilde = "insider";
         oppgave = "Insideren våkner";
         guide = "En insider er mafiaens utgave av undercoveren, og er altså mafiaens inside man hos politiet. " +
                 "Altså våkner han sammen med politiet og gir seg ut for å være en av dem, men spiller hele tiden på mafiaens lag. " +

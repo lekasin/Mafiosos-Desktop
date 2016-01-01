@@ -8,6 +8,7 @@ public class Informant extends Rolle {
 
 	public Informant(){
 		super("Informant");
+        bilde = "informant";
 		oppgave = "Hvem vil Informanten informere?";
 		veiledning = "Informant:\n" +
 				"Informanten velger hver natt en person å informere.\n" +

@@ -9,6 +9,7 @@ public class Drommer extends Rolle {
 	String ut = "";
 	public Drommer(){
 		super("Drømmer");
+        bilde = "drommer";
 		oppgave = "Drømmeren drømmer!";
 		veiledning = "Drømmer:\n" +
 				"Drømmeren våkner opp og får info på skjermen. Han skal bare se infoen, velge noen.\n" +

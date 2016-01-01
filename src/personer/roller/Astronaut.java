@@ -9,6 +9,7 @@ public class Astronaut extends Rolle {
 	
 	public Astronaut(){
 		super("Astronaut");
+        bilde = "astronaut";
 		oppgave = "Er Astronauten ferdig med raketten?";
 		veiledning = "Astronaut\n" +
 				"Astronaut kan bruke rollen sin én gang i spillet, og signaliserer derfor kun om raketten er ferdig eller ikke, på natten.\n" +

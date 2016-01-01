@@ -8,6 +8,7 @@ public class Boddel extends Rolle {
 
 	public Boddel(){
 		super("Bøddel");
+        bilde = "boddel";
 		oppgave = "Hvem vil Bøddelen halshugge?";
         veiledning = "Halshugging:\n" +
                 "Bøddelen har nå bestemt seg for å ta saken i egne hender, og kan nå velge en person å halshugge!\n" +

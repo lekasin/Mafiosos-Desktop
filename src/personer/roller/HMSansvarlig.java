@@ -7,6 +7,7 @@ public class HMSansvarlig extends Rolle {
 
 	public HMSansvarlig(){
 		super("HMS-Ansvarlig");
+        bilde = "hms";
 		oppgave = "Hvem vil HMS-Ansvarlig redde?";
         veiledning = "HMS-Ansvarlig:\n" +
                 "HMS-ansvarlig velger hver natt en person å redde.\n" +

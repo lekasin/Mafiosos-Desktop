@@ -7,7 +7,8 @@ public class Tjukkas extends Rolle {
 
 	public Tjukkas(){
 		super("Tjukkas");
-		oppgave = "Hvem vil Tjukkasen blokkere?";
+        bilde = "tjukkas";
+        oppgave = "Hvem vil Tjukkasen blokkere?";
 		veiledning = "Tjukkas:\n" +
 				"Tjukkasen velger hver natt en person å blokkere.\n"+
 				"Når Tjukkasen har valgt, trykker du på vedkommendes navn for å blokkere dem.\n" +

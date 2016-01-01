@@ -8,6 +8,7 @@ public class Aktor extends Rolle {
 	public Aktor(){
 		super("Aktor");
 		oppgave = "Hvem vil Aktor tiltale?";
+        bilde = "aktor";
 		veiledning = "Aktor:\n" +
                 "Aktor kan kun bruke rollen sin én gang, og må derfor velge med omhu.\n" +
                 "Om aktor vil vente og ikke tiltale noen i natt, trykker du fortsett.\n" +

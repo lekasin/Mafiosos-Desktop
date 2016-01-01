@@ -7,7 +7,8 @@ public class Trompet extends Rolle {
 
 	public Trompet(){
 		super("Trompet");
-		oppgave = "Hvem vil Trompeten sprenge?";
+        bilde = "trompet";
+        oppgave = "Hvem vil Trompeten sprenge?";
 		veiledning = "Trompet:\n" +
 				"Trompeten er i ferd med å sprenges, og kan nå velge en person å ta med seg i eksplosjonen!\n" +
 				"For å sprenge en person, trykker du på vedkommendes navn, og vedkommende blir da drept umiddelbart.\n" +

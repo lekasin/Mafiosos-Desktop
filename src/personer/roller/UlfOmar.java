@@ -10,7 +10,8 @@ public class UlfOmar extends Rolle {
 	
 	public UlfOmar() {
 		super("Ulf Omar");
-		oppgave = "Hvem vil Ulfie-O besøke?";
+        bilde = "ulfomar";
+        oppgave = "Hvem vil Ulfie-O besøke?";
 		veiledning = "Ulf Omar:\n" +
 				"Ulf Omar velger hver natt en person å besøke.\n" +
 				"Når Ulf Omar har valgt, trykker du på vedkommendes navn for å velge dem.\n" +

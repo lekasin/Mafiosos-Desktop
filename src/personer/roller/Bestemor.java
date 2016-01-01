@@ -11,6 +11,7 @@ public class Bestemor extends Rolle {
 	boolean flereBesøk = false;
 	public Bestemor(){
 		super("Bestemor");
+        bilde = "bestemor";
 		side = BORGER;
 		oppgave = "Bestemor våkner";
         guide = "Bestemor våkner aldri på natten, men personer som besøker Bestemor, blir holdt igjen for dessert. " +

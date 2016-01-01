@@ -11,6 +11,7 @@ public class Joker extends Rolle {
 
 	public Joker(){
 		super("Joker");
+        bilde = "joker";
 		oppgave = "Hva vil Jokeren velge?";
 		veiledning = "Jokeren:\n" +
 				"Jokeren våkner én gang i løpet av spillet, og innfører litt anarki!\n" +

@@ -7,6 +7,7 @@ public class Didrik extends Rolle {
 
 	public Didrik(){
 		super("Distré Didrik");
+        bilde = "didrik";
 		oppgave = "Hvem vil Didrik assistere?";
 		veiledning = "Distré Didrik:\n" +
 				"Didrik velger hver natt en person å assistere.\n" +

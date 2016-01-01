@@ -8,6 +8,7 @@ public class Jorgen extends Rolle {
 
 	public Jorgen(){
 		super("Jørgen");
+        bilde = "jorgen";
 		oppgave = "Jørgen ser på de døde";
 		veiledning = "Jørgen fra begravelsesbyrået:\n" +
 				"Jørgen våkner hver natt for å se undersøke de døde. Han velger ingen på natten, men får info på skjermen.\n" +

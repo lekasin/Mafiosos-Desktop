@@ -7,6 +7,7 @@ public class Logner extends Rolle {
 
 	public Logner(){
 		super("Løgner");
+        bilde = "logner";
         oppgave = "Hvem vil Løgneren forfalske?";
         veiledning = "Løgner:\n" +
                 "Løgneren velger hver natt en person å forfalske identiteten til.\n" +

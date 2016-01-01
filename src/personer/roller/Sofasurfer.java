@@ -11,6 +11,7 @@ public class Sofasurfer extends Rolle {
 	
 	public Sofasurfer(){
 		super("SofaSurfer");
+        bilde = "sofasurfer";
         oppgave = "Hvem vil SofaSurferen bo hos?";
         veiledning = "SofaSurferen våkner første natt, og velger en person han vil sove hos.\n" +
                 "Når sofaSurferen har valgt, trykker du på personens navn, for la surferen flytte inn.\n" +

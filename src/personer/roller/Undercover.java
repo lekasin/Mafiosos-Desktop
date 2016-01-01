@@ -9,6 +9,7 @@ public class Undercover extends Rolle {
 	
 	public Undercover(Mafia mafia){
 		super("Undercover");
+        bilde = "undercover";
         oppgave = "Undercoveren våkner";
         guide = "Undercoveren er en politimann som er på Undercover-oppdrag, og har infiltrert mafiaen. " +
                 "Han våkner hver natt sammen med mafiaen, men er altså egentlig en borger, og prøver derfor å få de andre mafiaene drept. " +

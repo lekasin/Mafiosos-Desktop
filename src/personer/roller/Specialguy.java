@@ -10,7 +10,8 @@ public class Specialguy extends Rolle {
 
 	public Specialguy(){
 		super("Special Guy");
-		oppgave = "Hvem vil Special Guy drepe?";
+        bilde = "specialguy";
+        oppgave = "Hvem vil Special Guy drepe?";
 		veiledning = "Special Guy:\n" +
 				"Special Guy våkner hver natt, og får vite om han er drept eller ikke.\n" +
 				"Hvis Special Guy ikke er drept, legger han seg til å sove igjen, og du trykker fortsett for å gå videre.\n" +

@@ -7,6 +7,7 @@ public class Havfrue extends Rolle {
 	
 	public Havfrue(){
 		super("Havfrue");
+        bilde = "havfrue";
 		oppgave = "Hvem vil Havfruen forføre?";
 		veiledning = "Havfrue:\n" +
 				"Havfruen dreper personer når hun møter blikket deres.\n" +

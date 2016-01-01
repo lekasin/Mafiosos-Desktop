@@ -12,6 +12,7 @@ public class Heisenberg extends Rolle {
 
 	public Heisenberg(){
 		super("Heisenberg");
+        bilde = "heisenberg";
 		oppgave = "Hvem vil Heisenberg forgifte?";
 		veiledning = "Heisenberg:\n" +
 				"Heisenberg kan hver natt velge å drepe eller ikke drepe.\n" +

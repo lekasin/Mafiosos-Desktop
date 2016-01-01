@@ -12,6 +12,7 @@ public class Carlsen extends Rolle {
 
     public Carlsen() {
         super("Magnus Carlsen");
+        bilde = "carlsen";
         oppgave = "Hvem vil Carlsen forsvare?";
         veiledning = "Magnus Carlsen:\n" +
                 "Carlsen våkner hver natt og prøver å lese spillet. Han velger først om han vil spille angrep eller forsvar," +

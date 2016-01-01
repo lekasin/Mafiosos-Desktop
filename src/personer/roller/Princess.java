@@ -10,6 +10,7 @@ public class Princess extends Rolle {
 
     public Princess() {
         super("Princess98");
+        bilde = "princess";
         oppgave = "Hvem vil Jonatan kidnappe?";
         veiledning = "Princess98:\n" +
                 "Jonatan velger hver natt en person å kidnappe.\n" +

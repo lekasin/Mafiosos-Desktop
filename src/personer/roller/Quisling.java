@@ -10,6 +10,7 @@ public class Quisling extends Rolle {
 
     public Quisling() {
         super("Quisling");
+        bilde = "quisling";
         oppgave = "Hvordan går det med Quisling?";
         veiledning = "Quisling:\n" +
                 "Quisling våkner hver natt og får vite om han er drept eller ikke.\n" +

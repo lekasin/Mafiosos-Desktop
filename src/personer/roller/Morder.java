@@ -7,6 +7,7 @@ public class Morder extends Rolle {
 	
 	public Morder(){
 		super("Morder");
+        bilde = "morder";
 		oppgave = "Hvem vil Morderen myrde?";
         veiledning = "Morder:\n" +
                 "Morderen velger hver natt en person å drepe.\n" +

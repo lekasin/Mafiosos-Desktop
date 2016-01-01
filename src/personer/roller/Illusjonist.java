@@ -7,6 +7,7 @@ public class Illusjonist extends Rolle {
 
 	public Illusjonist(){
 		super("Illusjonist");
+        bilde = "illusjonist";
 		oppgave = "Hvor vil Illusjonisten gjemme seg?";
 		veiledning = "Illusjonist:\n" +
 				"Illusjonisten velger hver natt en person å gjemme seg hos.\n" +

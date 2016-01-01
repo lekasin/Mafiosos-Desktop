@@ -7,7 +7,8 @@ public class Skytsengel extends Rolle {
 
 	public Skytsengel(){
 		super("Skytsengel");
-		oppgave = "Hvem vil Skytsengelen beskytte?";
+        bilde = "skytsengel";
+        oppgave = "Hvem vil Skytsengelen beskytte?";
 		veiledning = "Skytsengel:\n" +
 				"Skytsengelen velger hver natt en person å beskytte.\n" +
 				"Når skytsengelen har valgt, trykker du på vedkommendes navn for å beskytte dem.\n" +

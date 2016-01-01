@@ -9,6 +9,7 @@ public class Kirsten extends Rolle {
 
 	public Kirsten(){
 		super("Kirsten Giftekniv");
+        bilde = "kirsten";
 		oppgave = "Hvem vil Kirsten spleise?";
 		veiledning = "Kirsten Giftekniv:\n" +
 				"Kirsten velger to personer hver natt. Disse to blir enten en match, eller en crash.\n" +

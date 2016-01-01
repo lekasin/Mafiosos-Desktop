@@ -9,6 +9,7 @@ public class Rex extends Rolle {
 	String ut = "";
 	public Rex(){
 		super("Rex");
+        bilde = "rex";
         oppgave = "Hvem vil Rex snuse på?";
         veiledning = "Rex:\n" +
                 "Rex velger hver natt en person å snuse på.\n" +

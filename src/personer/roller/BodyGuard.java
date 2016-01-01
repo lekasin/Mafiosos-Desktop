@@ -15,6 +15,7 @@ public class BodyGuard extends Rolle {
 	
 	public BodyGuard(){
 		super("Bodyguard");
+        bilde = "bodyguard";
 		oppgave = "Hvem vil Bodyguarden beskytte?";
 		veiledning = "Bodyguard:\n" +
 				"Bodyguarden velger hver natt en person å beskytte eller drepe, men kan kun drepe etter å ha beskyttet noen først.\n" +

@@ -7,6 +7,7 @@ public class Vara extends Rolle {
 
 	public Vara(){
 		super("VaraMafia");
+        bilde = "vara";
         oppgave = "Varamafiaen våkner";
         guide = "VaraMafiaen er, som navnet tilsier, en person som erstatter mafiaen om noe skulle skje. " +
                 "I praksis betyr det at varaen ikke våkner før vi finner ut at en mafia dør (blir drept ved avstemming). " +

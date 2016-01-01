@@ -9,7 +9,8 @@ public class Youtuber extends Rolle {
 
 	public Youtuber(){
 		super("Youtuber");
-		oppgave = "Hvem vil Youtuberen filme?";
+        bilde = "youtuber";
+        oppgave = "Hvem vil Youtuberen filme?";
 		veiledning = "Youtuber:\n" +
 				"Youtuberen velger hver natt en person å filme.\n" +
 				"Når youtuberen har valgt, trykker du på vedkommendes navn for å filme dem.\n" +

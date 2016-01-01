@@ -7,6 +7,7 @@ public class Erik extends Rolle {
 
 	public Erik(){
 		super("Barnslige Erik");
+        bilde = "erik";
 		oppgave = "Hvem vil Erik ha som barnevakt?";
 		veiledning = "Barnslige Erik:\n" +
 				"Erik velger hver natt en barnevakt som blir forhindret fra å peke lenger enn sine nærmeste naboer.\n" +

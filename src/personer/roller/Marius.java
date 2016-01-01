@@ -10,6 +10,7 @@ public class Marius extends Rolle {
 	
 	public Marius(){
 		super("Marius");
+        bilde = "marius";
 		oppgave = "Hvem vil Marius trykke opp?";
 		veiledning = "Marius:\n" +
 				"Marius velger hver natt en person å trykke opp flyers om.\n" +

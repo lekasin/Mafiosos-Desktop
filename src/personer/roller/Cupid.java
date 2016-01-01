@@ -10,6 +10,7 @@ public class Cupid extends Rolle {
 
 	public Cupid(){
 		super("Cupid");
+        bilde = "cupid";
 		oppgave = "Hvem vil Cupid spleise?";
 		veiledning = "Cupid:\n" +
 				"Cupid velger to personer hver natt. Disse blir koblet sammen, og blir påvirket av de samme effektene.\n" +

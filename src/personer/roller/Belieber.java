@@ -10,6 +10,7 @@ public class Belieber extends Rolle {
 
 	public Belieber(){
 		super("Belieber");
+        bilde = "belieber";
 		oppgave = "Hvem er Belieberens nye Justin?";
 		veiledning = "Belieber:\n" +
 				"Belieberen våkner kun alene første natt, og velger seg ut en ny Justin.\n" +

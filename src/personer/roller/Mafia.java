@@ -15,6 +15,7 @@ public class Mafia extends Rolle {
 
     public Mafia() {
         super("Mafia");
+        bilde = "mafia";
         oppgave = "Hvem vil Mafiaen drepe?";
         veiledning = "Mafia:\n" +
                 "Mafiaen velger hver natt en person å drepe.\n" +

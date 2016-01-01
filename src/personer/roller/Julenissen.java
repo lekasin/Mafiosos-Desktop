@@ -7,6 +7,7 @@ public class Julenissen extends Rolle {
 
 	public Julenissen(){
 		super("Julenissen");
+        bilde = "julenisse";
 		oppgave = "Hvem vil Nissen gi gave til?";
 		veiledning = "Julenissen:\n" +
 				"Julenissen velger hver natt en person å gi gave til.\n" +

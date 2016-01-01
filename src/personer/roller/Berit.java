@@ -7,6 +7,7 @@ public class Berit extends Rolle {
 
 	public Berit(){
 		super("Gærne Berit");
+        bilde = "berit";
 		oppgave = "Hvem vil Berit forsinke?";
         veiledning = "Gærne Berit:\n" +
                 "Berit velger hver natt en person å forsinke.\n" +

@@ -11,6 +11,7 @@ public class CopyCat extends Rolle {
 
 	public CopyCat(){
 		super("CopyCat");
+        bilde = "copycat";
 		oppgave = "Hvem vil Copycaten kopiere?";
 		veiledning = "CopyCat:\n" +
 				"Copycat velger to personer. En å kopiere, og en å bruke den kopierte rollen på.\n" +

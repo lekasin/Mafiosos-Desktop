@@ -11,6 +11,7 @@ public class Arving extends Rolle {
 	
 	public Arving(){
 		super("Arving");
+        bilde = "arving";
 		oppgave = "Hvem skal arvingen adopteres bort til?";
 		veiledning = "Arving:\n" +
                 "Arvingen velger første natt hvem han vil adopteres bort til. Du trykker da på den han har valgt.\n" +

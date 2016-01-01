@@ -8,6 +8,7 @@ public class Tyster extends Rolle {
 
     public Tyster() {
         super("Tyster");
+        bilde = "tyster";
         oppgave = "Tysteren våkner";
         veiledning = "Tyster:\n" +
                 "Hvis personen våknet før informanten på natten, får de ingen info.";

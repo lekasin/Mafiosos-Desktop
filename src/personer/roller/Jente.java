@@ -7,6 +7,7 @@ public class Jente extends Rolle {
 
 	public Jente(){
 		super("Liten Jente");
+        bilde = "litenjente";
 		oppgave = "Liten jente våkner";
         guide = "Den lille jenta er nysgjerrig, og klarer ikke å holde øynene lukket på natten. " +
                 "Hun kan dermed smugtitte når mafiaen peker ut sitt offer, og kan med det se hvem som er mafia! Men hun må passe seg! " +

@@ -7,6 +7,7 @@ public class Lege extends Rolle {
 	
 	public Lege(){
 		super("Lege");
+        bilde = "lege";
 		oppgave = "Hvem vil Legen lege?";
 		veiledning = "Legen:\n" +
 				"Legen velger hver natt en person å lege.\n" +

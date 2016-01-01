@@ -7,6 +7,7 @@ public class Klona extends Rolle {
 
 	public Klona(){
 		super("Kløna");
+        bilde = "klona";
 		oppgave = "Hvem vil Kløna sikte på?";
 		veiledning = "Kløna:\n" +
 				"Kløna velger hver natt en person å sikte på.\n" +

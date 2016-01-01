@@ -12,6 +12,7 @@ public class Hammer extends Rolle {
 	
 	public Hammer() {
 		super("Hammer");
+        bilde = "hammer";
 		oppgave = "Hvem vil Hammer undersøke?";
 		veiledning = "Hammer:\n" +
 				"Hammer undersøker personer for å finne ut hvilken rolle de har, men han får ikke svar før etter to netter med undersøkelser.\n" +
