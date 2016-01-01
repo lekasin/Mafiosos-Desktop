@@ -30,7 +30,7 @@ public class TV extends JFrame {
         //TV (Tekstfelt på TV-en)
         setVisible(true);
         setMinimumSize(TVSIZE);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         bildepanel.setBackground(Color.black);
         bildepanel.add(bildeHolder);

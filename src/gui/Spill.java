@@ -427,7 +427,7 @@ public class Spill implements ActionListener {
         timer.stop();
         vindu.kontroll.setVisible(false);
         innhold = vindu.innhold();
-
+        forsvarende = null;
         rapporter("\nAVSTEMNING:");
         tittuler("Avstemning!");
         TvUtil.avstemning();
