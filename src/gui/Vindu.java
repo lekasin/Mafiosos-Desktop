@@ -188,7 +188,7 @@ public class Vindu extends JFrame {
         if (fase == Oppstart.VELGROLLER) {
             kontroll.add(new Knapp("Fjern", Knapp.HEL, e -> oppstart.inverserKnapper()));
         } else if (fase == Oppstart.HVEMERHVA) {
-            kontroll.add(new Knapp("Auto", Knapp.HEL, e -> startRolleGjennomgang()));
+            kontroll.add(new Knapp("Fordel roller automatisk", Knapp.HEL, e -> startRolleGjennomgang()));
         } else {
             fortsett = new Knapp("Fortsett", Knapp.HEL, al);
             kontroll.add(fortsett);
@@ -200,9 +200,15 @@ public class Vindu extends JFrame {
     }
 
     private void startRolleGjennomgang() {
-        oppstart.autoFordelRoller();
-        kontroll.remove(1);
-        kontroll.add(fortsett);
+        int svar = JOptionPane.showConfirmDialog(this,
+                "Pass på at landsbyen sover, ellers avsløres første rolle",
+                "Sover alle?", JOptionPane.DEFAULT_OPTION);
+
+        if (svar == JOptionPane.OK_OPTION) {
+            oppstart.autoFordelRoller();
+            kontroll.remove(1);
+            kontroll.add(fortsett);
+        }
     }
 
     public Knapp finnKnappForRolle(Container panel, int rolle) {
