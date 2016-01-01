@@ -15,6 +15,8 @@ public class TV extends JFrame {
     private static final long serialVersionUID = 1L;
     Spillerliste spillere;
     JTextArea tv, rolleListe, guide;
+    JPanel bildepanel = new JPanel(new BorderLayout());
+    JLabel bildeHolder = new JLabel();
     String vedlegg = "", roller = "";
 
     public static Dimension TVSIZE = new Dimension(900, 700);
@@ -29,6 +31,9 @@ public class TV extends JFrame {
         setVisible(true);
         setMinimumSize(TVSIZE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        bildepanel.setBackground(Color.black);
+        bildepanel.add(bildeHolder);
 
         tv = new JTextArea();
         tv.setEditable(false);
@@ -195,5 +200,20 @@ public class TV extends JFrame {
 
     public void lukkRolleGuide() {
         guide.setVisible(false);
+    }
+
+    public void visBilde(StretchIcon bilde){
+        remove(tv);
+        bildeHolder.setIcon(bilde);
+        add(bildepanel);
+        revalidate();
+        repaint();
+    }
+
+    public void skjulBilde(){
+        remove(bildepanel);
+        add(tv);
+        revalidate();
+        repaint();
     }
 }

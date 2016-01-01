@@ -400,12 +400,14 @@ public class Oppstart implements ActionListener {
     public void nestePerson() {
         if (++personIndeks == spillere.spillere().size()) {
             nyfase(++fase);
+            TvUtil.skjulRolleBilde();
             return;
         }
 
         Spiller spiller = spillere.spillere().get(personIndeks);
         tekst.setText(spiller.navn() + " våkner");
-        informer(spiller.navn() + " er " + spiller.rolle().tittel());
+        SkjermUtil.fullLogg(spiller.navn() + " er " + spiller.rolle().tittel());
+        TvUtil.visRolleBilde(spiller.rolle());
     }
 
     public static Rolle hentRolle() {
@@ -519,6 +521,7 @@ public class Oppstart implements ActionListener {
                     personIndeks = -1;
                     fortsett.setText("Fortsett");
                     fortsett.setPreferredSize(Knapp.HEL);
+                    TvUtil.skjulRolleBilde();
                 }
             }
             //////////////////////LEGG TIL ALLE//////////////////////

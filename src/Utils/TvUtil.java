@@ -4,9 +4,10 @@ import datastruktur.Spillerliste;
 import gui.Oppstart;
 import gui.Spill;
 import gui.TV;
+import personer.Rolle;
 import personer.Spiller;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 
 /**
@@ -143,4 +144,13 @@ public class TvUtil {
         else
             visGuide("Ingen aktiv rolle");
     }
+
+    public static void visRolleBilde(Rolle rolle) {
+        tv.visBilde(rolle.getBilde());
+    }
+
+    public static void skjulRolleBilde() {
+        tv.skjulBilde();
+    }
+
 }

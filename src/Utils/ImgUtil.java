@@ -1,5 +1,6 @@
 package Utils;
 
+import gui.StretchIcon;
 import sun.applet.Main;
 
 import javax.swing.*;
@@ -21,9 +22,7 @@ public class ImgUtil {
     public static ImageIcon getIcon(String imgName) {
         String imgPath = IMG_PATH + imgName;
         URL url = Main.class.getResource(imgPath);
-        Image image = Toolkit.getDefaultToolkit().createImage(url);
-        ImageIcon icon = new ImageIcon(image);
-        return icon;
+        return new ImageIcon(url);
     }
 
     public static ImageIcon scaleIcon(ImageIcon icon, int width, int height) {
@@ -34,5 +33,11 @@ public class ImgUtil {
 
     public static ImageIcon getScaledIcon(String img, int w, int h) {
         return scaleIcon(getIcon(img), w, h);
+    }
+
+    public static StretchIcon getStretchIcon(String imgName) {
+        String imgPath = IMG_PATH + imgName;
+        URL url = Main.class.getResource(imgPath);
+        return new StretchIcon(url);
     }
 }

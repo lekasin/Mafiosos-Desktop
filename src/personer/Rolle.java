@@ -4,9 +4,8 @@ import Utils.ImgUtil;
 import Utils.SkjermUtil;
 import Utils.TvUtil;
 import gui.Spill;
+import gui.StretchIcon;
 import personer.roller.Psykolog;
-
-import javax.swing.*;
 
 public abstract class Rolle {
 
@@ -99,12 +98,9 @@ public abstract class Rolle {
                 "For å gå videre uten å velge noen, trykker du på fortsett.";
 	}
 
-    public boolean harBilde(){
-        return bilde != null && !bilde.isEmpty();
-    }
-    public ImageIcon getBilde(){
+    public StretchIcon getBilde(){
         String bildePath = "roller/"+bilde+".jpg";
-        return ImgUtil.getIcon(bildePath);
+        return ImgUtil.getStretchIcon(bildePath);
     }
 
 	//Endringer
