@@ -89,6 +89,7 @@ public class Spill implements ActionListener {
             nesteRolle();
             døgn++;
             spillere.nyPekeHistorikk();
+            spillere.utførDelayFunksjoner();
         }
     }
 
@@ -109,9 +110,8 @@ public class Spill implements ActionListener {
         rapporter("\nNY DAG");
         nyFase(DISKUSJONSFASE);
 
-        if (sjekkOffer(Rolle.YOUTUBER) && finnSpiller(Rolle.YOUTUBER).funker())
-            TvUtil.leggVed(spillere.youtube(finnOffer(Rolle.YOUTUBER),
-                    finnSpiller(Rolle.YOUTUBER).skjult()));
+        if (sjekkOffer(Rolle.YOUTUBER) && finnSpiller(Rolle.YOUTUBER).funker() && !finnRolle(Rolle.YOUTUBER).blokkert())
+            TvUtil.leggVed(spillere.youtube(finnOffer(Rolle.YOUTUBER), finnSpiller(Rolle.YOUTUBER).skjult()));
         if (sjekkOffer(Rolle.CUPID))
             spillere.cupider((Cupid) finnRolle(Rolle.CUPID));
         if (sjekkOffer(Rolle.SNYLTER))
@@ -1194,7 +1194,7 @@ public class Spill implements ActionListener {
 
         if (bombet == utstemt)
             for (Spiller spiller : spillere.besøk(bombet, null))
-                if (spiller != finnSpiller(Rolle.BOMBER)) {
+                if (spiller != finnSpiller(Rolle.BOMBER) && !spiller.beskyttet()) {
                     ut += "\n\n"
                             + spiller.navn()
                             + " døde i eksplosjonen,\nog "
@@ -1361,8 +1361,6 @@ public class Spill implements ActionListener {
                         tidenErUte();
                     }
                 else {
-                    if (aktiv(Rolle.HEISENBERG))
-                        rapporter(((Heisenberg) aktiv).getRapport());
                     if (aktiv != null && aktiv.offer() == null && aktiv.funker())
                         rapporter(aktiv.rapport());
                     nesteRolle();

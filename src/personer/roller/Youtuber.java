@@ -26,11 +26,6 @@ public class Youtuber extends Rolle {
 
 	@Override
 	public boolean evne(Spiller spiller) {
-		if(blokkert) {
-			pek(null);
-			return false;
-		}
-		
-		return true;
-	}
+        return !blokkert;
+    }
 }

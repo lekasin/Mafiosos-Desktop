@@ -1,7 +1,7 @@
 package personer;
 
+import Utils.SkjermUtil;
 import Utils.TvUtil;
-import personer.roller.Berit;
 import gui.Spill;
 import personer.roller.Psykolog;
 
@@ -152,7 +152,7 @@ public abstract class Rolle {
 	public void blokker(Rolle blokk){
 		if(!snill) {
 			if(forsinkelse != null)
-				((Berit)forsinkelse).setOffer(null);
+				Spill.spillere.fjernDelay(forsinkelse.offer, forsinkelse);
 			this.blokk = blokk;
 			blokkert = true;
 		}
@@ -229,7 +229,7 @@ public abstract class Rolle {
         this.spiller.setOffer(spiller);
 
 		if(this.spiller.forsinket && blokk == this.spiller.forsinkelse)
-			((Berit)this.spiller.forsinkelse).setOffer(spiller);
+			Spill.spillere.leggInnDelay(spiller, this);
 
 		if(spiller == null) return false;
 
@@ -395,4 +395,15 @@ public abstract class Rolle {
 	public abstract boolean evne(Spiller spiller);
 
     public void autoEvne(){}
+
+    public void delay(Spiller offer){
+        System.out.println("Vanlig delay: " + this + " velger " + offer);
+        Spiller f1 = forbud;
+        Spiller f2 = forbud2;
+        pek(offer);
+        SkjermUtil.logg("Forsinkelse: " + rapport());
+        sov();
+        forbud = f1;
+        forbud2 = f2;
+    }
 }

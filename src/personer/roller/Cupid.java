@@ -76,4 +76,10 @@ public class Cupid extends Rolle {
 		}
 		return true;
 	}
+
+    @Override
+    public void delay(Spiller offer) {
+        nullstill();
+        super.delay(offer);
+    }
 }

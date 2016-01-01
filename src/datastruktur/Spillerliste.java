@@ -3,6 +3,7 @@ package datastruktur;
 import personer.Rolle;
 import personer.Spiller;
 import personer.roller.*;
+import sun.security.provider.ConfigFile;
 
 import java.util.*;
 
@@ -12,12 +13,11 @@ public class Spillerliste {
     ArrayList<Spiller> nye = new ArrayList<>();
     ArrayList<Spiller> fanger = new ArrayList<>();
     ArrayList<Spiller> nominerte = new ArrayList<>();
+    HashMap<Spiller, Rolle> delays = new HashMap<>();
     HashMap<Spiller, Integer> stemmer = new HashMap<>();
     HashMap<Spiller, Boolean> dilemma = new HashMap<>();
     ArrayList<HashMap<Integer, Spiller>> pekeHistorikk = new ArrayList<>();
     ArrayList<HashMap<Spiller, Spiller>> stemmeHistorikk = new ArrayList<>();
-
-    Spiller forsinkelse, forsinket;
 
     public Spillerliste() {
         spillere = new ArrayList<>();
@@ -760,8 +760,28 @@ public class Spillerliste {
         return antall;
     }
 
+    public void utførDelayFunksjoner(){
+        for (Spiller offer : delays.keySet()) {
+            delays.get(offer).delay(offer);
+            System.out.println("Delay: " + delays.get(offer) + " utføres på " + offer);
+        }
+        nullstillDelays();
+    }
+
+    public void leggInnDelay(Spiller offer, Rolle rolle){
+        delays.put(offer, rolle);
+    }
+
+    public void fjernDelay(Spiller offer, Rolle rolle){
+        delays.remove(offer, rolle);
+    }
+
+    public void nullstillDelays(){
+        delays.clear();
+    }
+
     public String drøm(Spiller drømmer) {
-        String ut = (drømmer.forsinket()) ? "Drømmeren drømte om disse forrige natt:" : "Drømmeren ser disse i drømmen sin:";
+        String ut = drømmer.forsinket() ?  "Drømmeren ser disse forrige natt:" : "Drømmeren drømte om disse i drømmen sin:";
         Boolean mafia = false;
         int teller = 0;
 
@@ -797,10 +817,10 @@ public class Spillerliste {
 
     public String rolleString(Rolle[] roller, int antall) {
         String rolleString = spillere.size() + " Spillere\n\n" +
-                "Gjenstående roller: " + antall + "\nMafia x" + ((Mafia) roller[Rolle.MAFIA]).antall();
-        if (roller[Rolle.POLITI] != null) rolleString += "\nPoliti x" + ((Politi) roller[Rolle.POLITI]).antall();
+                "Gjenstående roller: " + antall + "\nMafia x" + roller[Rolle.MAFIA].antall();
+        if (roller[Rolle.POLITI] != null) rolleString += "\nPoliti x" + roller[Rolle.POLITI].antall();
         if (roller[Rolle.BESTEVENN] != null)
-            rolleString += "\nBestevenn x" + ((Bestevenn) roller[Rolle.BESTEVENN]).antall();
+            rolleString += "\nBestevenn x" + roller[Rolle.BESTEVENN].antall();
 
         for (Rolle r : roller) {
             if (r != null && !(r instanceof Mafia || r instanceof Politi || r instanceof Bestevenn))
@@ -810,10 +830,10 @@ public class Spillerliste {
     }
 
     public String visRoller(Rolle[] roller) {
-        String rolleString = "Roller: \nMafia x" + ((Mafia) roller[Rolle.MAFIA]).antall();
-        if (roller[Rolle.POLITI] != null) rolleString += "\nPoliti x" + ((Politi) roller[Rolle.POLITI]).antall();
+        String rolleString = "Roller: \nMafia x" + roller[Rolle.MAFIA].antall();
+        if (roller[Rolle.POLITI] != null) rolleString += "\nPoliti x" + roller[Rolle.POLITI].antall();
         if (roller[Rolle.BESTEVENN] != null)
-            rolleString += "\nBestevenn x" + ((Bestevenn) roller[Rolle.BESTEVENN]).antall();
+            rolleString += "\nBestevenn x" + roller[Rolle.BESTEVENN].antall();
 
         for (Rolle r : roller) {
             if (r != null && !(r instanceof Mafia || r instanceof Politi || r instanceof Bestevenn))

@@ -1,12 +1,14 @@
 package personer.roller;
 
+import Utils.SkjermUtil;
+import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 
 public class Heisenberg extends Rolle {
 	
-	Spiller offer = null;
 	String giftRapport = "";
+    Spiller forgiftet;
 
 	public Heisenberg(){
 		super("Heisenberg");
@@ -24,39 +26,35 @@ public class Heisenberg extends Rolle {
 		side = BORGER;
 		prioritet = HEISENBERG;
 	}
-	
-	@Override
-	public String oppgave() {
-		giftRapport = "";
-		if(offer != null){
-			if(snill)
-				offer.snipe(this);
-			else
-				offer.drep(this);
-			giftRapport = "Heisenbergs gift svekker " + offer + "(" + offer.rolle() + ")\n";
-		}
-		offer = null;
-		return super.oppgave();
-	}
-	
+
 	@Override
 	public boolean evne(Spiller spiller) {
 		forby(spiller);
 		if(blokkert)
 			return false;
 		
-		if(!spiller.beskyttet() || snill)
-			offer = spiller;
+		if(!spiller.beskyttet() || snill) {
+            Spill.spillere.leggInnDelay(spiller, this);
+            forgiftet = spiller;
+        }
 		return true;
 	}
-	
-	@Override
-	public String rapport() {
-		String ut = giftRapport + super.rapport();
-		return ut;
-	}
-	
-	public String getRapport(){
-		return giftRapport;
-	}
+
+    @Override
+    public void delay(Spiller offer) {
+        System.out.println("Heisenberg delay: " + this + " velger " + offer + "(" + forgiftet + ")");
+        if (offer != forgiftet) {
+            super.delay(offer);
+            return;
+        }
+        giftRapport = "";
+        if(offer != null){
+            if(snill)
+                offer.snipe(this);
+            else
+                offer.drep(this);
+            giftRapport = "Heisenbergs gift svekker " + offer + "(" + offer.rolle() + ")";
+        }
+        SkjermUtil.logg(giftRapport);
+    }
 }

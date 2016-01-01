@@ -253,13 +253,15 @@ public class Spiller {
 		kløne = r;
 		kløna = true;
 	}
-	
+
 	public void forsink(Rolle r) {
 		if(id(Rolle.BESTEMOR) || id(Rolle.ILLUSJONIST)) return;
 		blokker(r);
 		forsinkelse = r;
 		rolle.forsinkelse = r;
 		forsinket = true;
+        if (offer != null)
+            Spill.spillere.leggInnDelay(offer, rolle);
 	}
 
     public void setNyligKlonet(boolean klonet){
@@ -402,11 +404,11 @@ public class Spiller {
 	public boolean kidnappet() {
 		return kidnappet;
 	}
-	
+
 	public boolean forsinket() {
 		return forsinket;
 	}
-	
+
 	public Spiller offer(){
 		return offer;
 	}
@@ -438,11 +440,11 @@ public class Spiller {
 	public Rolle kløne() {
 		return kløne;
 	}
-	
+
 	public Rolle forsinkelse() {
 		return forsinkelse;
 	}
-	
+
 	public Rolle drapsmann() {
 		return drapsmann;
 	}
