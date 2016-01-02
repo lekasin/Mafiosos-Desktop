@@ -387,14 +387,18 @@ public class Oppstart implements ActionListener {
 
         if (indeks == roller.length - 1 && roller[roller.length - 1] == null && fase == HVEMERHVA) {
             nyfase(++fase);
+            TvUtil.skjulBilde();
             TvUtil.lukkGuide();
         } else if (indeks < roller.length) {
-            tekst.setText(roller[indeks].tittel());
+            tekst.setText(roller[indeks].tittel() + " våkner");
+            TvUtil.visRolleBilde(roller[indeks]);
             innhold.revalidate();
             if (TvUtil.tv.guideErSynlig())
                 TvUtil.visGuide(roller[indeks].getGuide());
-        } else
+        } else {
             nyfase(++fase);
+            TvUtil.skjulBilde();
+        }
     }
 
     private static int personIndeks = -1;
@@ -520,13 +524,14 @@ public class Oppstart implements ActionListener {
 
                     if (i != indeks || personIndeks >= 0)
                         nyfase(HVEMERHVA);
-                    else
+                    else {
                         nyfase(--fase);
+                        TvUtil.skjulBilde();
+                    }
 
                     personIndeks = -1;
                     fortsett.setText("Fortsett");
                     fortsett.setPreferredSize(Knapp.HEL);
-                    TvUtil.skjulBilde();
                 }
             }
             //////////////////////LEGG TIL ALLE//////////////////////
