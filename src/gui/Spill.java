@@ -217,6 +217,7 @@ public class Spill implements ActionListener {
     public void dagensResultat() {
         innhold = vindu.innhold();
         vindu.kontroll.setVisible(false);
+        aktiv = null;
 
         if (sjekkRolle(Rolle.OBDUK))
             finnRolle(Rolle.OBDUK).aktiver(spillere.lik().size() > 2);

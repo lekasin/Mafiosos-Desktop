@@ -156,16 +156,22 @@ public class TvUtil {
     public static void visResultatBilde(int resultat) {
         switch (resultat) {
             case Spill.HENRETTETMAFIA:
-                tv.visBilde(ImgUtil.getStretchIcon("guilty.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("skyldig.jpg"));
                 break;
             case Spill.HENRETTETBORGER:
-                tv.visBilde(ImgUtil.getStretchIcon("innocent.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("uskyldig.jpg"));
                 break;
             case Spill.HENRETTETBESKYTTET:
+                tv.visBilde(ImgUtil.getStretchIcon("beskyttet.jpg"));
+                break;
             case Spill.HENRETTETTROMPET:
+                tv.visBilde(ImgUtil.getStretchIcon("trompet.jpg"));
+                break;
             case Spill.HENRETTETBOMBER:
+                tv.visBilde(ImgUtil.getStretchIcon("desarmert.jpg"));
+                break;
             default:
-                tv.visBilde(ImgUtil.getStretchIcon("innocent.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("uskyldig.jpg"));
         }
     }
 
