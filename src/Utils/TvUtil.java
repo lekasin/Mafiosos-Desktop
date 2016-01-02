@@ -149,8 +149,24 @@ public class TvUtil {
         tv.visBilde(rolle.getBilde());
     }
 
-    public static void skjulRolleBilde() {
+    public static void skjulBilde() {
         tv.skjulBilde();
+    }
+
+    public static void visResultatBilde(int resultat) {
+        switch (resultat) {
+            case Spill.HENRETTETMAFIA:
+                tv.visBilde(ImgUtil.getStretchIcon("guilty.jpg"));
+                break;
+            case Spill.HENRETTETBORGER:
+                tv.visBilde(ImgUtil.getStretchIcon("innocent.jpg"));
+                break;
+            case Spill.HENRETTETBESKYTTET:
+            case Spill.HENRETTETTROMPET:
+            case Spill.HENRETTETBOMBER:
+            default:
+                tv.visBilde(ImgUtil.getStretchIcon("innocent.jpg"));
+        }
     }
 
 }

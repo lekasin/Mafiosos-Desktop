@@ -19,6 +19,7 @@ public class Spill implements ActionListener {
 
     public static final int ORDFØRERFASE = 0, DISKUSJONSFASE = 1, AVSTEMNINGSFASE = 2,
             TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 7, NATTFASE = 8;
+    public static final int HENRETTETMAFIA = 0, HENRETTETBORGER = 1, HENRETTETBESKYTTET = 2, HENRETTETTROMPET = 3, HENRETTETBOMBER = 4;
     public Vindu vindu;
     JPanel innhold;
     public Countdown timer;
@@ -31,7 +32,7 @@ public class Spill implements ActionListener {
     Spiller sisteDød, forsvarende, ordfører, dødsdømt;
     static Rolle aktiv;
     String annonse;
-    int fase, døgn, antallDøde, tid, taler;
+    int fase, døgn, antallDøde, tid, taler, resultat;
     boolean dag, seier, rakett, tiltale, bombe, joker;
     boolean sniper = false, flukt = false, sabotage = false, forfalskning = false;
     public static Spill instans;
@@ -1049,6 +1050,7 @@ public class Spill implements ActionListener {
                 && !((aktiv(Rolle.TROMPET) || aktiv(Rolle.BØDDEL)) && aktiv.snill())
                 && !bombe) {
             ut += " er beskyttet, og er derfor ikke død!";
+            resultat = HENRETTETBESKYTTET;
         } else {
             ut = rapporterSide(s, side, ut);
             if (sjekkRolle(Rolle.BELIEBER) && finnRolle(Rolle.BELIEBER).funker())
@@ -1094,6 +1096,20 @@ public class Spill implements ActionListener {
             ut += "\n\nFangene er befridd!";
         }
 
+        visResultatBilde(ut, s);
+        TvUtil.toFront();
+    }
+
+    private void visResultatBilde(String ut, Spiller s){
+        TvUtil.visResultatBilde(resultat);
+        innhold = vindu.innhold();
+        innhold.add(new Knapp("Fortsett", Knapp.SUPER, e -> visResultatTekst(ut, s)));
+        resultat = 0;
+    }
+
+    private void visResultatTekst(String ut, Spiller s){
+        TvUtil.skjulBilde();
+
         //Rapporter hendelsen
         informer(ut);
         rapporter(ut);
@@ -1104,7 +1120,6 @@ public class Spill implements ActionListener {
         else
             dagensResultat();
 
-        TvUtil.toFront();
     }
 
     public void nyttSpill() {
@@ -1130,13 +1145,17 @@ public class Spill implements ActionListener {
         if (s.skjult() && spillere.antallMafia() > 1)
             ut += " kan ha vært hva som helst.\nPapirene er rotet bort.";
         else if (side > Rolle.MAFIOSO)
-            if (s.id(Rolle.TROMPET))
+            if (s.id(Rolle.TROMPET)) {
                 ut += " var IKKE mafia, men var TROMPET!!!" +
                         "Hvem vil trompeten sprenge?";
-            else
+                resultat = HENRETTETTROMPET;
+            } else {
                 ut += " var IKKE mafia!";
+                resultat = HENRETTETBORGER;
+            }
         else {
             ut += " var mafia!";
+            resultat = HENRETTETMAFIA;
             if (sjekkRolle(Rolle.VARA)) {
                 ut += "\n\nOg dermed trer VaraMafiaen inn i hans sted!";
                 Spiller vara = finnSpiller(Rolle.VARA);
@@ -1157,20 +1176,26 @@ public class Spill implements ActionListener {
         // Utstemt
         if (utstemt.forsvart()) {
             ut = utstemt + " er beskyttet, og er derfor ikke død!";
+            resultat = HENRETTETBESKYTTET;
         } else {
             if (utstemt.id(Rolle.BOMBER)) {
                 ut = utstemt + " VAR Bomberen, og bomben er desarmert!";
+                resultat = HENRETTETBOMBER;
                 return ut;
             } else {
                 if (utstemt.side() < 0) {
                     ut = utstemt + " var IKKE Bomberen, men var Mafia!";
                     mafiadød = true;
-                } else if (utstemt.id(Rolle.TROMPET))
+                    resultat = HENRETTETMAFIA;
+                } else if (utstemt.id(Rolle.TROMPET)) {
                     ut = utstemt
                             + " var IKKE Bomberen, men var TROMPET!!!" +
                             "\nHvem vil trompeten sprenge?";
-                else
+                    resultat = HENRETTETTROMPET;
+                } else {
                     ut = utstemt + " var IKKE Bomberen, og heller IKKE Mafia!";
+                    resultat = HENRETTETBORGER;
+                }
             }
         }
 

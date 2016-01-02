@@ -280,6 +280,7 @@ public class Oppstart implements ActionListener {
         innhold.add(tekst);
         vindu.oppdaterRamme(innhold);
 
+        personIndeks = -1;
         nestePerson();
     }
 
@@ -400,7 +401,7 @@ public class Oppstart implements ActionListener {
     public void nestePerson() {
         if (++personIndeks == spillere.spillere().size()) {
             nyfase(++fase);
-            TvUtil.skjulRolleBilde();
+            TvUtil.skjulBilde();
             TvUtil.lukkGuide();
             return;
         }
@@ -525,7 +526,7 @@ public class Oppstart implements ActionListener {
                     personIndeks = -1;
                     fortsett.setText("Fortsett");
                     fortsett.setPreferredSize(Knapp.HEL);
-                    TvUtil.skjulRolleBilde();
+                    TvUtil.skjulBilde();
                 }
             }
             //////////////////////LEGG TIL ALLE//////////////////////
