@@ -1,9 +1,9 @@
 package datastruktur;
 
+import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 import personer.roller.*;
-import sun.security.provider.ConfigFile;
 
 import java.util.*;
 
@@ -204,20 +204,20 @@ public class Spillerliste {
             }
         }
         if (snille + slemme < 1)
-            return 2;
+            return Spill.UAVGJORTSEIER;
         else if (snille < 1)
-            return -1;
+            return Spill.MAFIASEIER;
         else if (slemme < 1) {
             if (smiths == snille)
-                return 4;
+                return Spill.SMITHSEIER;
             if (anarki > 0)
-                return 3;
+                return Spill.ANARKISTSEIER;
             else
-                return 1;
+                return Spill.LANDSBYSEIER;
         } else if (fanger == snille + slemme - 1 && finnSpiller(Rolle.PRINCESS).lever())
-            return 5;
+            return Spill.PRINCESSEIER;
         else
-            return 0;
+            return -1;
     }
 
     public int length() {

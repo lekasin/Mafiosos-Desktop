@@ -175,4 +175,35 @@ public class TvUtil {
         }
     }
 
+    public static void visVinnerBilde(int vinner){
+        switch (vinner) {
+            case Spill.MAFIASEIER:
+                tv.visBilde(ImgUtil.getStretchIcon("skyldig.jpg"));
+                break;
+            case Spill.LANDSBYSEIER:
+                tv.visBilde(ImgUtil.getStretchIcon("uskyldig.jpg"));
+                break;
+            case Spill.UAVGJORTSEIER:
+                tv.visBilde(ImgUtil.getStretchIcon("beskyttet.jpg"));
+                break;
+            case Spill.ANARKISTSEIER:
+                tv.visBilde(ImgUtil.getStretchIcon("trompet.jpg"));
+                break;
+            case Spill.PRINCESSEIER:
+                tv.visBilde(ImgUtil.getStretchIcon("desarmert.jpg"));
+                break;
+            case Spill.JOKERSEIER:
+                tv.visBilde(ImgUtil.getStretchIcon("desarmert.jpg"));
+                break;
+            case Spill.SMITHSEIER:
+                tv.visBilde(ImgUtil.getStretchIcon("desarmert.jpg"));
+                break;
+            case Spill.PYROMANSEIER:
+                tv.visBilde(ImgUtil.getStretchIcon("desarmert.jpg"));
+                break;
+            default:
+                tv.visBilde(ImgUtil.getStretchIcon("uskyldig.jpg"));
+        }
+    }
+
 }

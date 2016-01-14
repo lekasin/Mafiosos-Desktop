@@ -20,6 +20,8 @@ public class Spill implements ActionListener {
     public static final int ORDFØRERFASE = 0, DISKUSJONSFASE = 1, AVSTEMNINGSFASE = 2,
             TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 7, NATTFASE = 8;
     public static final int HENRETTETMAFIA = 0, HENRETTETBORGER = 1, HENRETTETBESKYTTET = 2, HENRETTETTROMPET = 3, HENRETTETBOMBER = 4;
+    public static final int MAFIASEIER = 0, LANDSBYSEIER = 1, UAVGJORTSEIER = 2, JOKERSEIER = 3, PRINCESSEIER = 4, SMITHSEIER = 5,
+            ANARKISTSEIER = 6, PYROMANSEIER = 7;
     public Vindu vindu;
     JPanel innhold;
     public Countdown timer;
@@ -226,7 +228,8 @@ public class Spill implements ActionListener {
 
         if (seier) {
             tittuler("Vi har en vinner!");
-            innhold.add(new Knapp("Nytt Spill", Knapp.SUPER, e -> nyttSpill()));
+            TvUtil.visVinnerBilde(spillere.vinner());
+            innhold.add(new Knapp("Fortsett", Knapp.SUPER, e -> visSluttresultat()));
         } else if (rakett) {
             innhold.add(new Knapp("Fortsett", Knapp.SUPER, e -> avsluttRakett()));
         } else
@@ -234,6 +237,12 @@ public class Spill implements ActionListener {
 
         innhold.revalidate();
         innhold.repaint();
+    }
+
+    private void visSluttresultat(){
+        innhold = vindu.innhold();
+        innhold.add(new Knapp("Nytt Spill", Knapp.SUPER, e -> nyttSpill()));
+        TvUtil.skjulBilde();
     }
 
     public void refresh() {
@@ -979,39 +988,44 @@ public class Spill implements ActionListener {
         if (finnRolle(Rolle.ARVING) != null)
             ((Arving) finnRolle(Rolle.ARVING)).arv();
         switch (spillere.vinner()) {
-            case -1:
+            case MAFIASEIER:
                 informer("Mafiaen har vunnet!" + "\n" + annonse);
                 rapporter("Mafiaen har vunnet!");
                 seier = true;
                 break;
-            case 1:
+            case LANDSBYSEIER:
                 informer("Landsbyen har vunnet!" + "\n" + annonse);
                 rapporter("Landsbyen har vunnet!");
                 seier = true;
                 break;
-            case 2:
+            case UAVGJORTSEIER:
                 informer("Alle er døde! Ingen vant!" + "\n" + annonse);
                 rapporter("Alle er døde! Ingen vant!");
                 seier = true;
                 break;
-            case 3:
+            case ANARKISTSEIER:
                 informer("Mafiaene er døde, men Anarkisten takler ikke freden og forgifter drikkevannet til landsbyen!\nAnarkisten har vunnet!" + "\n" + annonse);
                 rapporter("Mafiaene er døde, men Anarkisten takler ikke freden og forgifter drikkevannet til landsbyen!\nAnarkisten har vunnet!");
                 seier = true;
                 break;
-            case 4:
+            case SMITHSEIER:
                 informer("Agent Smith har tatt over hele landsbyen, og har vunnet!" + "\n" + annonse);
                 rapporter("Agent Smith har tatt over hele landsbyen, og har vunnet!");
                 seier = true;
                 break;
-            case 5:
+            case PRINCESSEIER:
                 informer("Princess98 har kidnappet hele landsbyen, og har vunnet!!" + "\n" + annonse);
                 rapporter("Princess98 har kidnappet hele landsbyen, og har vunnet!");
                 seier = true;
                 break;
-            case 6:
+            case JOKERSEIER:
                 informer("Jokeren har vunnet!" + "\n" + annonse);
                 rapporter("Jokeren har vunnet!");
+                seier = true;
+                break;
+            case PYROMANSEIER:
+                informer("Pyromanen har vunnet!" + "\n" + annonse);
+                rapporter("Pyromanen har vunnet!");
                 seier = true;
                 break;
 
