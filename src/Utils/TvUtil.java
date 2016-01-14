@@ -178,31 +178,31 @@ public class TvUtil {
     public static void visVinnerBilde(int vinner){
         switch (vinner) {
             case Spill.MAFIASEIER:
-                tv.visBilde(ImgUtil.getStretchIcon("skyldig.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("mafiaseier.jpg"));
                 break;
             case Spill.LANDSBYSEIER:
-                tv.visBilde(ImgUtil.getStretchIcon("uskyldig.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("landsbyseier.jpg"));
                 break;
             case Spill.UAVGJORTSEIER:
-                tv.visBilde(ImgUtil.getStretchIcon("beskyttet.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("uavgjortseier.jpg"));
                 break;
             case Spill.ANARKISTSEIER:
-                tv.visBilde(ImgUtil.getStretchIcon("trompet.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("anarkistseier.jpg"));
                 break;
             case Spill.PRINCESSEIER:
-                tv.visBilde(ImgUtil.getStretchIcon("desarmert.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("princesseier.jpg"));
                 break;
             case Spill.JOKERSEIER:
-                tv.visBilde(ImgUtil.getStretchIcon("desarmert.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("jokerseier.jpg"));
                 break;
             case Spill.SMITHSEIER:
-                tv.visBilde(ImgUtil.getStretchIcon("desarmert.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("smithseier.jpg"));
                 break;
             case Spill.PYROMANSEIER:
-                tv.visBilde(ImgUtil.getStretchIcon("desarmert.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("pyromanseier.jpg"));
                 break;
             default:
-                tv.visBilde(ImgUtil.getStretchIcon("uskyldig.jpg"));
+                tv.visBilde(ImgUtil.getStretchIcon("landsbyseier.jpg"));
         }
     }
 

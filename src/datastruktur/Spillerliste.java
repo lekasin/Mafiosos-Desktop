@@ -191,8 +191,8 @@ public class Spillerliste {
         int smiths = 0;
         int fanger = 0;
 
-        if (levende().size() == 1 && levende().get(0).id(Rolle.JOKER))
-            return 6;
+//        if (levende().size() == 1 && levende().get(0).id(Rolle.JOKER))
+//            return Spill.JOKERSEIER;
 
         for (Spiller s : spillere) {
             if (s.lever()) {

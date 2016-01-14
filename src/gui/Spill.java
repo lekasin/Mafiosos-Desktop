@@ -674,7 +674,9 @@ public class Spill implements ActionListener {
         } else if (medJokeren.size() == spillere.levendeOgFri().size() - 1) {
             for (Spiller s : medJokeren)
                 s.henrett();
+            seier = true;
             dagensResultat();
+            TvUtil.visVinnerBilde(JOKERSEIER);
             tittuler("Jokeren vant!");
             informer("Jokeren, " + joker.spiller() + " seiret, og vi har en vinner!");
             rapporter("Jokeren, " + joker.spiller() + " seiret, og vi har en vinner!");
@@ -1019,8 +1021,8 @@ public class Spill implements ActionListener {
                 seier = true;
                 break;
             case JOKERSEIER:
-                informer("Jokeren har vunnet!" + "\n" + annonse);
-                rapporter("Jokeren har vunnet!");
+                informer("Jokeren, " + finnSpiller(Rolle.JOKER) + " seiret, og vi har en vinner!");
+                rapporter("Jokeren, " + finnSpiller(Rolle.JOKER) + " seiret, og vi har en vinner!");
                 seier = true;
                 break;
             case PYROMANSEIER:
