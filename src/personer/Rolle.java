@@ -250,7 +250,10 @@ public abstract class Rolle {
         if (spiller.id(Rolle.PSYKOLOG))
             ((Psykolog)spiller.rolle()).bestillTime(this.spiller);
 
-		offer = spiller;
+        if (spiller.minelagt())
+            this.spiller.drep(spiller.rolle());
+
+        offer = spiller;
 		evne(spiller);
 		return true;
 	}

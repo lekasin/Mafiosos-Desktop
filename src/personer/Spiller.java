@@ -13,7 +13,7 @@ public class Spiller {
 	Rolle beskytter, forsvarer, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse, supperpartner, grafiker;
 	int stemmer = 1;
 	int mafiarolle = 0;
-	boolean lever = true, funker = true, død = false, beskyttet = false, forsvart = false, forsinket = false,
+	boolean lever = true, funker = true, død = false, beskyttet = false, forsvart = false, minelagt = false, forsinket = false,
 			reddet = false, skjult = false, løgn = false, kløna = false, nyligKlonet = false, skalKlones = false, fange = false, kidnappet = false,
 			talt = false, spiser = false, flyers = false;
 
@@ -126,7 +126,18 @@ public class Spiller {
             klon();
     }
 
+    public void våknOpp() {
+        if (!lever() && !id(Rolle.ZOMBIE))
+            stopp();
+        if (id(Rolle.BELIEBER)) rolle().lever();
+        if (id(Rolle.SOFA)) rolle().lever();
+        minelagt = false;
+    }
+
 	public void rens(Rolle r){
+        if (r.id(Rolle.MAFIA)) {
+            minelagt = false;
+        }
 		if(beskytter == r){
 			beskytter = null;
 			beskyttet = false;
@@ -191,6 +202,7 @@ public class Spiller {
         supperpartner = null;
         flyers = false;
         grafiker = null;
+        minelagt = false;
 	}
 
 	public void stopp(){
@@ -263,6 +275,11 @@ public class Spiller {
         if (offer != null)
             Spill.spillere.leggInnDelay(offer, rolle);
 	}
+
+    public void minelegg() {
+        if (id(Rolle.MAFIA))
+            minelagt = true;
+    }
 
     public void setNyligKlonet(boolean klonet){
         nyligKlonet = klonet;
@@ -408,6 +425,10 @@ public class Spiller {
 	public boolean forsinket() {
 		return forsinket;
 	}
+
+    public boolean minelagt(){
+        return minelagt;
+    }
 
 	public Spiller offer(){
 		return offer;

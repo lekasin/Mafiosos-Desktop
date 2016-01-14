@@ -11,7 +11,7 @@ public class Mafia extends Rolle {
 
     int antall = 1, levende = 1;
 
-    boolean snipe, saboter, flukt, forfalsk;
+    boolean mine, snipe, saboter, flukt, forfalsk;
 
     public Mafia() {
         super("Mafia");
@@ -102,12 +102,26 @@ public class Mafia extends Rolle {
     @Override
     public boolean evne(Spiller spiller) {
         fortsett(true);
-        if (blokkert && !(blokk.id(POLITI) && offer.id(POLITI)))
+        if (mine) {
+            mine();
+            spiller.minelegg();
+        }
+        else if (blokkert && !(blokk.id(POLITI) && offer.id(POLITI)))
             return false;
         else if (snill)
             spiller.snipe(this);
         else
             spiller.drep(this);
         return true;
+    }
+
+    public boolean mine() {
+        mine = !mine;
+        if (mine) {
+            oppgave = "Hvem vil Mafiaen legge minen hos?";
+        } else {
+            oppgave = "Hvem vil Mafiaen drepe?";
+        }
+        return mine;
     }
 }

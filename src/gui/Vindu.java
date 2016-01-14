@@ -349,7 +349,26 @@ public class Vindu extends JFrame {
         }
         panel.revalidate();
         panel.repaint();
+    }
 
+    public void visMafiaKnapper(JPanel panel){
+        Component[] knapper = panel.getComponents();
+
+        for (Component c : knapper) {
+            if (c instanceof Knapp) {
+                Knapp k = (Knapp) c;
+                Spiller s = k.spiller();
+
+                if (s != null && s.funker() && s.id(Rolle.MAFIA))
+                    k.setEnabled(true);
+                else
+                    k.setEnabled(false);
+
+            } else if (c instanceof JPanel)
+                panel.remove(c);
+        }
+        panel.revalidate();
+        panel.repaint();
     }
 
     public void nullstillKnapper(JPanel panel, ActionListener al) {

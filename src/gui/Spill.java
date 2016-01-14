@@ -267,6 +267,7 @@ public class Spill implements ActionListener {
 
         if (r instanceof Mafia) {
             visMafiaKnapper();
+            vindu.kontroll(new Kontroll(), fase, new Knapp("Minelegg", Knapp.HALV, new Mafiaknapper()));
         } else if (r instanceof BodyGuard)
             vindu.kontroll(new Kontroll(), fase, new Knapp("Drep/Beskytt", Knapp.HALV, new Mafiaknapper()));
         else if (r instanceof Carlsen)
@@ -1414,7 +1415,14 @@ public class Spill implements ActionListener {
     private class Mafiaknapper implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // MAFIAKNAPPER
-            if (knapp(e, "Snipe")) {
+            if (knapp(e, "Minelegg")) {
+                Mafia m = ((Mafia) aktiv);
+                if (m.mine())
+                    vindu.visMafiaKnapper(innhold);
+                else
+                    refresh(aktiv);
+                tittuler(m.oppgave());
+            } else if (knapp(e, "Snipe")) {
                 ((Mafia) finnRolle(Rolle.MAFIA)).snipe();
                 sniper = false;
                 knapp(e).setEnabled(false);

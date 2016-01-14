@@ -61,10 +61,7 @@ public class Spillerliste {
         if (!fanger.isEmpty())
             kidnappFanger();
         for (Spiller s : spillere) {
-            if (!s.lever() && !s.id(Rolle.ZOMBIE))
-                s.stopp();
-            if (s.id(Rolle.BELIEBER)) s.rolle().lever();
-            if (s.id(Rolle.SOFA)) s.rolle().lever();
+            s.våknOpp();
         }
     }
 
