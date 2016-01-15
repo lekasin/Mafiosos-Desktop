@@ -1,17 +1,21 @@
 package personer.roller;
 
+import Utils.ImgUtil;
 import gui.Spill;
+import gui.StretchIcon;
 import personer.Rolle;
 import personer.Spiller;
+
+import java.util.HashMap;
 
 
 public class Mafia extends Rolle {
 
-    public static int SNIPER = 1, SABOTØR = 2, FLUKT = 3, FORFALSKER = 4;
+    public static final String SNIPER = "Sniper", SABOTØR = "Sabotør", SJÅFØR = "Sjåfør", FORFALSKER = "Forfalsker";
 
     int antall = 1, levende = 1;
-
-    boolean mine, snipe, saboter, flukt, forfalsk;
+    boolean mine, snipe, saboter;
+    HashMap<String, Spiller> spesialister = new HashMap<>();
 
     public Mafia() {
         super("Mafia");
@@ -27,6 +31,27 @@ public class Mafia extends Rolle {
                 "Om alle mafiaene dør, har landsbyen vunnet.";
         side = MAFIOSO;
         prioritet = MAFIA;
+    }
+
+    public StretchIcon getBilde(String spesialist) {
+        String bildePath = "roller/" + bilde;
+        switch (spesialist) {
+            case SNIPER :
+                bildePath += "sniper";
+                break;
+            case SJÅFØR :
+                bildePath += "sjafor";
+                break;
+            case SABOTØR :
+                bildePath += "sabotor";
+                break;
+            case FORFALSKER :
+                bildePath += "forfalsker";
+                break;
+            default:
+        }
+        bildePath += ".jpg";
+        return ImgUtil.getStretchIcon(bildePath);
     }
 
     @Override
@@ -68,6 +93,7 @@ public class Mafia extends Rolle {
         fortsett(false);
         spiller.blokker(this);
         oppgave();
+        spesialister.remove(SABOTØR);
     }
 
     @Override
@@ -93,6 +119,7 @@ public class Mafia extends Rolle {
             if (snipe) {
                 snill = true;
                 snipe = false;
+                spesialister.remove(SNIPER);
             }
             super.pek(spiller);
         }
@@ -123,5 +150,60 @@ public class Mafia extends Rolle {
             oppgave = "Hvem vil Mafiaen drepe?";
         }
         return mine;
+    }
+
+    @Override
+    public String rapport(){
+        String ut = tittel + "(" + spiller + ")";
+        if(offer != null && mine)
+            ut += " har lagt minen hos " + offer + "(" + offer.rolle() + ")";
+        else
+            ut = super.rapport();
+        return ut;
+    }
+
+    public boolean leggTilSpesialist(String spesialist){
+        if (spesialister.size() < antall) {
+            spesialister.put(spesialist, null);
+            return spesialister.size() == antall;
+        }
+        return true;
+    }
+
+    public void fjernSpesialist(String spesialist){
+        if (spesialister.containsKey(spesialist))
+            spesialister.remove(spesialist);
+    }
+
+    public String hentLedigSpesialist(){
+        for (String s : spesialister.keySet()) {
+            if (spesialister.get(s) == null)
+                return s;
+        }
+        return "";
+    }
+
+    public void setSpesialist(String spesialist, Spiller spiller) {
+        spesialister.put(spesialist, spiller);
+    }
+
+    public boolean spesialistLever(String spesialist) {
+        return spesialister.containsKey(spesialist) && spesialister.get(spesialist) != null && spesialister.get(spesialist).funker();
+    }
+
+    public boolean fjernAlleSpesialister(){
+        if (spesialister.isEmpty())
+            return false;
+        spesialister.clear();
+        return true;
+    }
+
+    public boolean nullstillSpesialister(){
+        boolean tom = true;
+        for (String spesialist : spesialister.keySet()) {
+            if (spesialister.put(spesialist, null) != null)
+                tom = false;
+        }
+        return !tom;
     }
 }

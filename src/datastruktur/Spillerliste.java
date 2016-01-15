@@ -51,7 +51,12 @@ public class Spillerliste {
 
         Collections.shuffle(aktiveRoller);
         for (int i = 0; i < spillere.size(); i++) {
-            spillere.get(i).setRolle(aktiveRoller.get(i));
+            if (aktiveRoller.get(i) instanceof Mafia) {
+                Mafia mafia = ((Mafia) aktiveRoller.get(i));
+                String spesialist = mafia.hentLedigSpesialist();
+                spillere.get(i).setRolle(mafia, spesialist);
+            } else
+                spillere.get(i).setRolle(aktiveRoller.get(i));
         }
 
 
@@ -464,6 +469,7 @@ public class Spillerliste {
             if (s.rolle() instanceof Mafia) {
                 s.forsvar(s.rolle());
             }
+        ((Mafia)finnRolle(Rolle.MAFIA)).fjernSpesialist(Mafia.SJÅFØR);
     }
 
     public void forfalsk() {
@@ -471,14 +477,11 @@ public class Spillerliste {
             if (s.rolle() instanceof Mafia) {
                 s.lyv(s.rolle());
             }
+        ((Mafia)finnRolle(Rolle.MAFIA)).fjernSpesialist(Mafia.FORFALSKER);
     }
 
-    public boolean mafiaRolleLever(int mafia) {
-        for (Spiller s : spillere) {
-            if (s.getMafiarolle() == mafia)
-                return s.lever();
-        }
-        return false;
+    public boolean spesialistLever(String mafia) {
+        return ((Mafia)finnRolle(Rolle.MAFIA)).spesialistLever(mafia);
     }
 
     public void fordelGjenstander(ArrayList<String> gjenstander) {
@@ -849,7 +852,7 @@ public class Spillerliste {
     public String hvemErHva() {
         String ut = "";
         for (Spiller s : spillere)
-            if (s.rolle() != null) ut += s + " er " + s.rolle() + "\n";
+            if (s.rolle() != null) ut += s + " er " + s.rolle() + (s.getMafiarolle().isEmpty() ? "\n" : "(" + s.getMafiarolle() + ")\n");
         return ut;
     }
 }

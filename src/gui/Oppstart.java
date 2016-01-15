@@ -11,7 +11,6 @@ import personer.Spiller;
 import personer.roller.*;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,26 +18,29 @@ import java.util.ArrayList;
 
 public class Oppstart implements ActionListener {
 
-    JPanel innhold, mafiaRoller;
+    JPanel innhold;
     JTextField navnefelt;
-    JLabel tekst;
+    JLabel tekst, spesialistTekst = new JLabel();
     Vindu vindu;
     private static Spillerliste spillere;
 
     public static Rolle[] roller;
     ArrayList<String> gjenstander;
-    Knapp fortsett, sniper, sjåfør, sabotør, forfalsker;
+    Knapp fortsett;
 
     public int antallspillere = 0;
     int fase = 100, mafiaer = -1, politi = -1, venner = -1, backup, tid = 6;
-    static int indeks = 0;
-    boolean mafiaroller, fjerning, snipe, flukt, saboter, forfalsk;
+    private static int indeks = 0, personIndeks = -1;
+    boolean fordelerSpesialister, fjerning;
 
-    public static final int TITTEL = 50, VELGSPILLERE = 100, VELGROLLER = 101, VELGGJENSTANDER = -1, HVEMERHVA = 102, STARTSPILL = 103;
+    public static final int VELGSPILLERE = 100, VELGROLLER = 101, VELGSPESIALISTER = 102, VELGGJENSTANDER = -1, HVEMERHVA = 103, STARTSPILL = 104;
+    public static final int TITTEL = 50, UNDERTITTEL = 30;
+
+    private Mafia mafia;
 
     public Oppstart(Vindu vindu) {
         this.vindu = vindu;
-        this.spillere = vindu.spillere;
+        spillere = vindu.spillere;
         this.innhold = vindu.innhold;
 
         vindu.setOppstart(this);
@@ -52,6 +54,33 @@ public class Oppstart implements ActionListener {
 
     public Spillerliste getSpillere() {
         return spillere;
+    }
+
+    public void nyfase(int f) {
+        switch (f) {
+            case VELGSPILLERE:
+                velgSpillere();
+                break;
+            case VELGROLLER:
+                velgRoller();
+                break;
+            case VELGSPESIALISTER:
+                velgSpesialister();
+                break;
+            case VELGGJENSTANDER:
+                velgGjenstander();
+                break;
+            case HVEMERHVA:
+                hvemErHva();
+                informer("Følgende roller er med:");
+                visRoller(spillere.visRoller(roller));
+                SkjermUtil.fullLogg(spillere.visRoller(roller));
+                break;
+            case STARTSPILL:
+                startSpill();
+                break;
+        }
+        MenyUtil.visSpillMeny(vindu, f);
     }
 
     private void velgSpillere() {
@@ -111,7 +140,8 @@ public class Oppstart implements ActionListener {
         SkjermUtil.tittuler("Hvilke roller skal være med?");
         vindu.kontroll(new Lytter(), VELGROLLER);
 
-        Mafia mafia = new Mafia();
+        if (mafia == null)
+            mafia = new Mafia();
         Politi politi = new Politi();
         Bestevenn venn = new Bestevenn();
         innhold.add(new Knapp("Mafia", mafia, Knapp.KVART, this));
@@ -210,7 +240,6 @@ public class Oppstart implements ActionListener {
                     c.setEnabled(false);
             }
         }
-
     }
 
     public void velgGjenstander() {
@@ -258,14 +287,36 @@ public class Oppstart implements ActionListener {
         p.add(tekst, BorderLayout.NORTH);
         p.add(innhold, BorderLayout.CENTER);
 
-        nesteRolle();
-
         vindu.personknapper(innhold, this);
         vindu.oppdaterRamme(p);
-        if (indeks == Rolle.MAFIA) mafiaRoller();
+
+        nesteRolle();
+    }
+
+    private void fordelSpesialister() {
+        fordelerSpesialister = true;
+        String spesialist = mafia.hentLedigSpesialist();
+        TvUtil.visMafiaRolleBilde(mafia, spesialist);
+        if (spesialist.isEmpty())
+            return;
+        spesialistTekst = new JLabel();
+        spesialistTekst.setPreferredSize(new Dimension(600, 135));
+        spesialistTekst.setFont(new Font("Arial", Font.BOLD, Oppstart.UNDERTITTEL));
+        spesialistTekst.setHorizontalAlignment(JLabel.CENTER);
+        spesialistTekst.setText("Hvem er " + spesialist + "?");
+        innhold.add(spesialistTekst);
+
+    }
+
+    public void stopSpesialistFordeling() {
+        fordelerSpesialister = false;
+        innhold.remove(spesialistTekst);
+        innhold.revalidate();
+        innhold.repaint();
     }
 
     public void autoFordelRoller() {
+        mafia.nullstillSpesialister();
         spillere.fordelRoller(roller);
         innhold = vindu.innhold();
         innhold.removeAll();
@@ -284,28 +335,25 @@ public class Oppstart implements ActionListener {
         nestePerson();
     }
 
-    public void mafiaRoller() {
-        mafiaRoller = new JPanel();
-        mafiaRoller.setBorder(new TitledBorder("Spesialister"));
-        mafiaRoller.setPreferredSize(new Dimension(600, 135));
-        mafiaRoller.setVisible(true);
-        sabotør = new Knapp("Sabotør", Knapp.HALV, this);
-        sjåfør = new Knapp("Sjåfør", Knapp.HALV, this);
-        sniper = new Knapp("Sniper", Knapp.HALV, this);
-        forfalsker = new Knapp("Forfalsker", Knapp.HALV, this);
-        mafiaRoller.add(sabotør);
-        mafiaRoller.add(sjåfør);
-        mafiaRoller.add(sniper);
-        mafiaRoller.add(forfalsker);
+    public void velgSpesialister() {
+        VeiledningsUtil.setTekst("Spesialistvalg:\n" +
+                "Her kan du velge om mafiaen skal noen spesialister på sitt lag, som får en ekstra engangsevne." +
+                "For å legge til en spesialist, trykker knappen med spesialistens navn. " +
+                "Om du ikke vil ha noen spesialister, eller har valgt alle du vil ha, trykker du på fortsett.\n" +
+                "For å nullstille spesialistene, trykker du tilbake én gang.\n" +
+                "Trykker du på tilbake igjen, går du tilbake til rollevalg.");
+        fase = VELGSPESIALISTER;
+        innhold = vindu.innhold();
+        mafia.fjernAlleSpesialister();
 
-        innhold.add(mafiaRoller);
-        mafiaroller = true;
-    }
+        SkjermUtil.tittuler("Hvilke spesialister skal mafiaen ha?");
 
-    public void stoppMafia() {
-        innhold.remove(mafiaRoller);
-        innhold.revalidate();
-        innhold.repaint();
+        innhold.add(new Knapp(Mafia.SNIPER, Knapp.KVART, this));
+        innhold.add(new Knapp(Mafia.SJÅFØR, Knapp.KVART, this));
+        innhold.add(new Knapp(Mafia.SABOTØR, Knapp.KVART, this));
+        innhold.add(new Knapp(Mafia.FORFALSKER, Knapp.KVART, this));
+
+        vindu.kontroll(new Lytter(), VELGSPESIALISTER);
     }
 
     public void startSpill() {
@@ -318,30 +366,6 @@ public class Oppstart implements ActionListener {
         innhold.add(fortsett);
         SkjermUtil.fullLogg("");
         SkjermUtil.tittuler("Klar til å begynne spillet?");
-    }
-
-    public void nyfase(int f) {
-        switch (f) {
-            case VELGSPILLERE:
-                velgSpillere();
-                break;
-            case VELGROLLER:
-                velgRoller();
-                break;
-            case VELGGJENSTANDER:
-                velgGjenstander();
-                break;
-            case HVEMERHVA:
-                hvemErHva();
-                informer("Følgende roller er med:");
-                visRoller(spillere.visRoller(roller));
-                SkjermUtil.fullLogg(spillere.visRoller(roller));
-                break;
-            case STARTSPILL:
-                startSpill();
-                break;
-        }
-        MenyUtil.visSpillMeny(vindu, f);
     }
 
     public void nesteRolle() {
@@ -391,17 +415,20 @@ public class Oppstart implements ActionListener {
             TvUtil.lukkGuide();
         } else if (indeks < roller.length) {
             tekst.setText(roller[indeks].tittel() + " våkner");
-            TvUtil.visRolleBilde(roller[indeks]);
             innhold.revalidate();
             if (TvUtil.tv.guideErSynlig())
                 TvUtil.visGuide(roller[indeks].getGuide());
+            if (indeks == Rolle.MAFIA)
+                fordelSpesialister();
+            else
+                TvUtil.visRolleBilde(roller[indeks]);
+
         } else {
             nyfase(++fase);
             TvUtil.skjulBilde();
         }
     }
 
-    private static int personIndeks = -1;
     public void nestePerson() {
         if (++personIndeks == spillere.spillere().size()) {
             nyfase(++fase);
@@ -411,8 +438,11 @@ public class Oppstart implements ActionListener {
         }
         Spiller spiller = spillere.spillere().get(personIndeks);
         tekst.setText(spiller.navn() + " våkner");
-        SkjermUtil.fullLogg(spiller.navn() + " er " + spiller.rolle().tittel());
-        TvUtil.visRolleBilde(spiller.rolle());
+        SkjermUtil.fullLogg(spiller.navn() + " er " + spiller.rolle() + (spiller.getMafiarolle().isEmpty() ? "" : "(" + spiller.getMafiarolle() + ")"));
+        if (spiller.rolle() instanceof Mafia)
+            TvUtil.visMafiaRolleBilde((Mafia) spiller.rolle(), spiller.getMafiarolle());
+        else
+            TvUtil.visRolleBilde(spiller.rolle());
         if (TvUtil.tv.guideErSynlig())
             TvUtil.visGuide(spiller.rolle().getGuide());
     }
@@ -487,7 +517,7 @@ public class Oppstart implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             //////////////////////FORTSETT//////////////////////
-            if (e.getSource() == fortsett) {
+            if (e.getSource() == vindu.getFortsett()) {
                 if (fase == STARTSPILL) {
                     Spill spill = new Spill(vindu, roller, tid);
                     indeks = -1;
@@ -514,6 +544,11 @@ public class Oppstart implements ActionListener {
                         nyfase(fase);
                     } else
                         nyfase(--fase);
+                } else if (fase == VELGSPESIALISTER) {
+                    if (mafia.fjernAlleSpesialister()) {
+                        nyfase(fase);
+                    } else
+                        nyfase(--fase);
                 } else if (fase == HVEMERHVA || fase == STARTSPILL) {
                     //Nullstill indeks for fordeling av roller
                     int i = indeks;
@@ -522,9 +557,9 @@ public class Oppstart implements ActionListener {
                     venner = -1;
                     for (indeks = 0; roller[indeks] == null; indeks++) ;
 
-                    if (i != indeks || personIndeks >= 0)
+                    if (mafia.nullstillSpesialister() || i != indeks || personIndeks >= 0) {
                         nyfase(HVEMERHVA);
-                    else {
+                    } else {
                         nyfase(--fase);
                         TvUtil.skjulBilde();
                     }
@@ -601,7 +636,7 @@ public class Oppstart implements ActionListener {
                         else if (i == Rolle.BESTEVENN)
                             ((Bestevenn) roller[i]).fjern();
                         else if (i == Rolle.MAFIA)
-                            ((Mafia) roller[i]).fjern();
+                            mafia.fjern();
                     } else
                         roller[i] = null;
                 }
@@ -621,12 +656,17 @@ public class Oppstart implements ActionListener {
             else if (i == Rolle.BESTEVENN)
                 ((Bestevenn) roller[i]).fler();
             else if (i == Rolle.MAFIA)
-                ((Mafia) roller[i]).fler();
+                mafia.fler();
 
             informer(spillere.rolleString(roller, --antallspillere));
             if (antallspillere < 1) {
                 nyfase(++fase);
             }
+        } else if (fase == VELGSPESIALISTER) {
+            String tekst = ((Knapp)e.getSource()).getText();
+            k.setEnabled(false);
+            if (mafia.leggTilSpesialist(tekst))
+                vindu.getFortsett().doClick();
         } else if (fase == VELGGJENSTANDER) {
             gjenstander.add(k.getText());
             TvUtil.leggTil("\n" + k.getText());
@@ -637,47 +677,18 @@ public class Oppstart implements ActionListener {
                 spillere.fordelGjenstander(gjenstander);
                 nyfase(++fase);
             }
-            return;
         } else if (fase == HVEMERHVA) {
-            if (e.getSource() == sniper) {
-                snipe = true;
-                return;
-            } else if (e.getSource() == sabotør) {
-                saboter = true;
-                return;
-            } else if (e.getSource() == sjåfør) {
-                flukt = true;
-                return;
-            } else if (e.getSource() == forfalsker) {
-                forfalsk = true;
-                return;
-            } else {
+            if (fordelerSpesialister) {
+                k.spiller().setRolle(mafia, mafia.hentLedigSpesialist());
+                stopSpesialistFordeling();
+            } else
                 k.spiller().setRolle(roller[indeks]);
-                if (snipe) {
-                    k.spiller.setMafiarolle(Mafia.SNIPER);
-                    snipe = false;
-                }
-                if (saboter) {
-                    k.spiller.setMafiarolle(Mafia.SABOTØR);
-                    saboter = false;
-                }
-                if (flukt) {
-                    k.spiller.setMafiarolle(Mafia.FLUKT);
-                    flukt = false;
-                }
-                if (forfalsk) {
-                    k.spiller.setMafiarolle(Mafia.FORFALSKER);
-                    forfalsk = false;
-                }
 
-                if (indeks != Rolle.POLITI && indeks != Rolle.MAFIA && indeks != Rolle.BESTEVENN)
-                    indeks++;
-                nesteRolle();
+            if (indeks != Rolle.POLITI && indeks != Rolle.MAFIA && indeks != Rolle.BESTEVENN)
+                indeks++;
 
-                if (indeks == Rolle.MAFIA && !mafiaroller) mafiaRoller();
-                else if (mafiaroller && indeks != Rolle.MAFIA) stoppMafia();
-                k.setEnabled(false);
-            }
+            nesteRolle();
+            k.setEnabled(false);
         }
     }
 }

@@ -36,7 +36,6 @@ public class Spill implements ActionListener {
     String annonse;
     int fase, døgn, antallDøde, tid, taler, resultat;
     boolean dag, seier, rakett, tiltale, bombe, joker;
-    boolean sniper = false, flukt = false, sabotage = false, forfalskning = false;
     public static Spill instans;
 
     public Spill(Vindu v, Rolle[] r, int t) {
@@ -60,14 +59,6 @@ public class Spill implements ActionListener {
         rapporter("LOGG (" + format.format(cal.getTime()) + ")\n");
         rapporter(spillere.hvemErHva());
 
-        if (spillere.mafiaRolleLever(Mafia.FLUKT))
-            flukt = true;
-        if (spillere.mafiaRolleLever(Mafia.SNIPER))
-            sniper = true;
-        if (spillere.mafiaRolleLever(Mafia.SABOTØR))
-            sabotage = true;
-        if (spillere.mafiaRolleLever(Mafia.FORFALSKER))
-            forfalskning = true;
         instans = this;
     }
 
@@ -290,17 +281,17 @@ public class Spill implements ActionListener {
 
     public void visMafiaKnapper() {
         JPanel p = new JPanel();
-        p.setPreferredSize(new Dimension(600, 60));
+        p.setPreferredSize(new Dimension(600, 100));
 
         Mafiaknapper mk = new Mafiaknapper();
 
-        if (spillere.mafiaRolleLever(Mafia.SNIPER) && sniper)
+        if (spillere.spesialistLever(Mafia.SNIPER))
             p.add(new Knapp("Snipe", Knapp.HALV, mk));
-        if (spillere.mafiaRolleLever(Mafia.FLUKT) && flukt)
+        if (spillere.spesialistLever(Mafia.SJÅFØR))
             p.add(new Knapp("Flykt", Knapp.HALV, mk));
-        if (spillere.mafiaRolleLever(Mafia.SABOTØR) && sabotage)
+        if (spillere.spesialistLever(Mafia.SABOTØR))
             p.add(new Knapp("Saboter", Knapp.HALV, mk));
-        if (spillere.mafiaRolleLever(Mafia.FORFALSKER) && forfalskning)
+        if (spillere.spesialistLever(Mafia.FORFALSKER))
             p.add(new Knapp("Forfalsk", Knapp.HALV, mk));
 
         if (p.getComponents().length > 0)
@@ -1424,26 +1415,18 @@ public class Spill implements ActionListener {
                 tittuler(m.oppgave());
             } else if (knapp(e, "Snipe")) {
                 ((Mafia) finnRolle(Rolle.MAFIA)).snipe();
-                sniper = false;
                 knapp(e).setEnabled(false);
                 proklamer("Hvem vil sniperen skyte?");
-                return;
-            } else if (knapp(e, "Beskytt")) {
+            } else if (knapp(e, "Flykt")) {
                 spillere.flykt();
-                flukt = false;
                 knapp(e).setEnabled(false);
-                return;
             } else if (knapp(e, "Saboter")) {
                 ((Mafia) aktiv).sabotage();
-                sabotage = false;
                 knapp(e).setEnabled(false);
                 proklamer("Hvem vil sabotøren sabotere?");
-                return;
             } else if (knapp(e, "Forfalsk")) {
                 spillere.forfalsk();
-                forfalskning = false;
                 knapp(e).setEnabled(false);
-                return;
             } else if (knapp(e, "Drep/Beskytt")) {
                 BodyGuard bg = ((BodyGuard) finnRolle(Rolle.BODYGUARD));
                 bg.skift();

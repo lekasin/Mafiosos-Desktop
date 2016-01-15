@@ -3,6 +3,7 @@ package personer;
 
 import gui.Spill;
 import personer.roller.Bestemor;
+import personer.roller.Mafia;
 import personer.roller.Smith;
 
 public class Spiller {
@@ -12,7 +13,7 @@ public class Spiller {
 	Spiller offer;
 	Rolle beskytter, forsvarer, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse, supperpartner, grafiker;
 	int stemmer = 1;
-	int mafiarolle = 0;
+	String mafiarolle = "";
 	boolean lever = true, funker = true, død = false, beskyttet = false, forsvart = false, minelagt = false, forsinket = false,
 			reddet = false, skjult = false, løgn = false, kløna = false, nyligKlonet = false, skalKlones = false, fange = false, kidnappet = false,
 			talt = false, spiser = false, flyers = false;
@@ -340,6 +341,13 @@ public class Spiller {
 			rolle.setSpiller(this);
 	}
 
+    public void setRolle(Mafia mafia, String spesialist) {
+        setRolle(mafia);
+        setMafiaRolle(spesialist);
+        if (!spesialist.isEmpty())
+            mafia.setSpesialist(spesialist, this);
+    }
+
 	public void setGjenstand(String gjenstand){
 		this.gjenstand = gjenstand;
 	}
@@ -482,13 +490,13 @@ public class Spiller {
 		return gjenstand;
 	}
 
-	public void setMafiarolle(int rolle) {
-		mafiarolle = rolle;
-	}
-
-	public int getMafiarolle() {
+	public String getMafiarolle() {
 		return mafiarolle;
 	}
+
+    public void setMafiaRolle(String spesialist) {
+        mafiarolle = spesialist;
+    }
 
     public Rolle finnRolle(int id) {
 		return rolle.finnRolle(id);

@@ -6,6 +6,7 @@ import gui.Spill;
 import gui.TV;
 import personer.Rolle;
 import personer.Spiller;
+import personer.roller.Mafia;
 
 import javax.swing.*;
 
@@ -147,6 +148,10 @@ public class TvUtil {
 
     public static void visRolleBilde(Rolle rolle) {
         tv.visBilde(rolle.getBilde());
+    }
+
+    public static void visMafiaRolleBilde(Mafia mafia, String spesialist) {
+        tv.visBilde(mafia.getBilde(spesialist));
     }
 
     public static void skjulBilde() {
