@@ -20,7 +20,7 @@ public class ImgUtil {
     }
 
     public static ImageIcon getAppIcon(){
-        return getScaledIcon("mafiosos.png", 90, 900);
+        return getScaledIcon("mafiosos.png", 90, 90);
     }
 
     public static ImageIcon getIcon(String imgName) {
