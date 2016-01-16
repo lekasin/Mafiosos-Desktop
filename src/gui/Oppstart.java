@@ -12,8 +12,7 @@ import personer.roller.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class Oppstart implements ActionListener {
@@ -86,9 +85,10 @@ public class Oppstart implements ActionListener {
     private void velgSpillere() {
         fase = VELGSPILLERE;
         vindu.kontroll.setVisible(false);
+        vindu.visLogg(false);
         VeiledningsUtil.setTekst("Spillerregistrering:\n" +
-                "Skriv inn navnet på nye spillere og trykk enter, eller klikk på registrer for å registrere dem." +
-                "For å fjerne en spiller, skriver du inn det registrerte navnet og trykker fjern.\n" +
+                "Skriv inn navnet på nye spillere og trykk enter, eller klikk på registrer for å registrere dem.\n" +
+                "For å fjerne en spiller, trykker du på spillerens navn i listen og trykker fjern.\n" +
                 "Trykk fortsett for å gå til neste steg.");
         Lytter lytt = new Lytter();
         navnefelt = new JTextField();
@@ -102,15 +102,7 @@ public class Oppstart implements ActionListener {
         fortsett = vindu.getFortsett();
         fortsett.setPreferredSize(Knapp.HEL);
         fortsett.setVisible(true);
-        Knapp fjern = new Knapp("Fjern", Knapp.HEL, e -> {
-            String n = navnefelt.getText();
-            if (spillere.finnSpillerMedNavn(n) != null)
-                antallspillere--;
-            spillere.fjern(n);
-            informer(spillere.toString());
-            navnefelt.setText("");
-            navnefelt.requestFocusInWindow();
-        });
+        Knapp fjern = new Knapp("Fjern", Knapp.HEL, e -> fjernSpillere());
 
         informer(spillere.toString());
 
@@ -121,9 +113,34 @@ public class Oppstart implements ActionListener {
         innhold.add(fortsett);
         innhold.add(new Knapp("Fjern alle", Knapp.HEL, e -> {
             spillere.spillere().clear();
+            vindu.tømListe();
+            vindu.velgIngen();
             informer(spillere.toString());
         }));
         innhold.add(new Knapp("Legg til alle", Knapp.HEL, lytt));
+    }
+
+    private void leggTilSpiller(Spiller spiller){
+        if (spillere.finnSpillerMedNavn(spiller.navn()) != null)
+            return;
+        spillere.leggTil(spiller);
+        antallspillere++;
+        vindu.leggTilListe(spiller);
+        vindu.setListetittel("Spillere: " + spillere.spillere().size());
+        informer(spillere.toString());
+    }
+
+    private void fjernSpillere(){
+        for (Spiller spiller : vindu.hentValgteSpillere()) {
+            vindu.fjernFraListe(spiller);
+            spillere.fjern(spiller.navn());
+            antallspillere--;
+        }
+        informer(spillere.toString());
+        navnefelt.setText("");
+        navnefelt.requestFocusInWindow();
+        vindu.setListetittel("Spillere: " + spillere.spillere().size());
+        vindu.velgIngen();
     }
 
     public void velgRoller() {
@@ -139,6 +156,7 @@ public class Oppstart implements ActionListener {
         innhold = vindu.innhold();
         SkjermUtil.tittuler("Hvilke roller skal være med?");
         vindu.kontroll(new Lytter(), VELGROLLER);
+        vindu.visLogg(true);
 
         if (mafia == null)
             mafia = new Mafia();
@@ -571,11 +589,11 @@ public class Oppstart implements ActionListener {
             }
             //////////////////////LEGG TIL ALLE//////////////////////
             else {
-                spillere.leggTil(new Spiller("Sondre"));
-                spillere.leggTil(new Spiller("Lars-Erik"));
-                spillere.leggTil(new Spiller("Ørnulf"));
-                spillere.leggTil(new Spiller("Daniel"));
-                spillere.leggTil(new Spiller("Adrian"));
+                leggTilSpiller(new Spiller("Sondre"));
+                leggTilSpiller(new Spiller("Lars-Erik"));
+                leggTilSpiller(new Spiller("Ørnulf"));
+                leggTilSpiller(new Spiller("Daniel"));
+                leggTilSpiller(new Spiller("Adrian"));
                 //				spillere.leggTil(new Spiller("Kjetil"));
                 //				spillere.leggTil(new Spiller("Jens Emil"));
                 //				spillere.leggTil(new Spiller("Ole-Halvor"));
@@ -601,24 +619,23 @@ public class Oppstart implements ActionListener {
 
                 informer(spillere.toString());
             }
+            vindu.velgIngen();
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (fase == VELGSPILLERE) {
-            if (navnefelt.getText().matches("[0-9]|[0-9][0-9]")) {
-                tid = Integer.parseInt(navnefelt.getText());
-            } else if (spillere.finnSpillerMedNavn(navnefelt.getText()) == null) {
-                spillere.leggTil(new Spiller(navnefelt.getText()));
-                antallspillere++;
-                informer(spillere.toString());
+            if (spillere.finnSpillerMedNavn(navnefelt.getText()) == null) {
+                Spiller spiller = new Spiller(navnefelt.getText().isEmpty() ? "Anonym" : navnefelt.getText());
+                leggTilSpiller(spiller);
             } else {
                 informer("Finnes allerede");
             }
 
             navnefelt.setText("");
             navnefelt.requestFocusInWindow();
+            vindu.velgIngen();
             return;
         }
 

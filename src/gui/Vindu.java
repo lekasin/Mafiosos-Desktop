@@ -18,15 +18,21 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 
 public class Vindu extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    JPanel rammeverk, header, innhold, display, kontroll, rammen;
-    JLabel klokke;
-    JScrollPane innholdScroll;
-    Knapp tilbake, fortsett;
-    Border ramme = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
+    JPanel innhold, kontroll;
+    private JPanel rammeverk, header, display, rammen, listePanel;
+    private JLabel klokke, listeTittel;
+    private JScrollPane innholdScroll, loggScroller;
+    private JTextArea info;
+    private JList<Spiller> liste;
+    private DefaultListModel<Spiller> spillerListeModel;
+    private Knapp tilbake, fortsett;
+    private Border ramme = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
 
     Spillerliste spillere;
     Spill spill;
@@ -123,18 +129,40 @@ public class Vindu extends JFrame {
         veiledning.setText("Veiledning");
         display.add(veiledning, BorderLayout.NORTH);
 
-        JTextArea info = new JTextArea();
+        loggScroller = new JScrollPane();
+        loggScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        display.add(loggScroller, BorderLayout.CENTER);
+
+        Border paddingBorder = BorderFactory.createEmptyBorder(5,5,5,5);
+
+        //Spillerliste
+        spillerListeModel = new DefaultListModel<>();
+        liste = new JList<>(spillerListeModel); //data has type Object[]
+        liste.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        liste.setLayoutOrientation(JList.VERTICAL);
+        liste.setCellRenderer(new CellRenderer());
+
+        listeTittel = new JLabel("Spillere: 0");
+        listeTittel.setBorder(paddingBorder);
+        listeTittel.setFont(new Font("Arial", Font.BOLD, 15));
+
+        listePanel = new JPanel(new BorderLayout());
+        listePanel.setBackground(Color.white);
+        listePanel.add(listeTittel, BorderLayout.NORTH);
+        listePanel.add(liste);
+        loggScroller.setViewportView(listePanel);
+
+        //Logg
+        info = new JTextArea();
         info.setColumns(40);
         info.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         info.setEditable(false);
         info.setLineWrap(true);
         info.setWrapStyleWord(true);
-        SkjermUtil.init(info, overskrift);
         //info.setFont(new Font("Serif", Font.BOLD, 15));
-        JScrollPane scroller = new JScrollPane(info);
-        scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        display.add(scroller, BorderLayout.CENTER);
+        SkjermUtil.init(info, overskrift);
 
         //RAMME
         rammen = new JPanel(new BorderLayout());
@@ -154,6 +182,8 @@ public class Vindu extends JFrame {
 
     public JPanel innhold() {
         innhold = new JPanel(new WrapLayout());
+        if (listePanel.isVisible())
+            innhold.addMouseListener(deselectListener);
         innhold.revalidate();
         innhold.setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
         oppdaterRamme(innhold);
@@ -169,6 +199,40 @@ public class Vindu extends JFrame {
             rammen.add(kontroll, BorderLayout.SOUTH);
         rammen.revalidate();
         rammen.repaint();
+    }
+
+    public List<Spiller> hentValgteSpillere(){
+        return liste.getSelectedValuesList();
+    }
+
+    public void velgIngen(){
+        liste.clearSelection();
+    }
+
+    public void setListetittel(String tekst){
+        listeTittel.setText(tekst);
+    }
+
+    public void leggTilListe(Spiller spiller) {
+        spillerListeModel.addElement(spiller);
+    }
+
+    public void fjernFraListe(Spiller spiller) {
+        spillerListeModel.removeElement(spiller);
+    }
+
+    public void tømListe() {
+        spillerListeModel.removeAllElements();
+    }
+
+    public void visLogg(boolean logg){
+        if (logg) {
+            listePanel.setVisible(false);
+            loggScroller.setViewportView(info);
+        } else {
+            listePanel.setVisible(true);
+            loggScroller.setViewportView(listePanel);
+        }
     }
 
     public void kontroll(ActionListener al, int fase) {
@@ -420,4 +484,31 @@ public class Vindu extends JFrame {
         Oppstart o = new Oppstart(this);
         o.setAntall(spillere.length());
     }
+
+    MouseListener deselectListener = new MouseListener() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            velgIngen();
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+    };
 }
