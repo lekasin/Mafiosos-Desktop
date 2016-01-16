@@ -19,6 +19,10 @@ public class ImgUtil {
         return Toolkit.getDefaultToolkit().createImage(url);
     }
 
+    public static ImageIcon getAppIcon(){
+        return getScaledIcon("mafiosos.png", 90, 900);
+    }
+
     public static ImageIcon getIcon(String imgName) {
         String imgPath = IMG_PATH + imgName;
         URL url = Main.class.getResource(imgPath);

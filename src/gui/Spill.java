@@ -1138,9 +1138,10 @@ public class Spill implements ActionListener {
     public void nyttSpill() {
         tittuler("Vi har en vinner!");
 
-        int svar = JOptionPane.showConfirmDialog(vindu,
+        Object[] options = {"Ja", "Nei"};
+        int svar = JOptionPane.showOptionDialog(vindu,
                 "Er du sikker på at du vil starte nytt spill?",
-                "Sikker?", JOptionPane.YES_NO_OPTION);
+                "Sikker?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, ImgUtil.getAppIcon(), options, options[0]);
 
         if (svar == JOptionPane.YES_OPTION) {
             timer.stop();

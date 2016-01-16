@@ -1,10 +1,6 @@
 package gui;
 
-import Utils.SkjermUtil;
-import Utils.InnstillingsUtil;
-import Utils.VeiledningsUtil;
-import Utils.MenyUtil;
-import Utils.TvUtil;
+import Utils.*;
 import datastruktur.Spillerliste;
 import personer.Rolle;
 import personer.Spiller;
@@ -687,9 +683,18 @@ public class Oppstart implements ActionListener {
 
             if (antallspillere > 0)
                 vindu.getFortsett().setEnabled(false);
-            else if (antallspillere > -3)
+            else if (antallspillere == 0) {
+                Object[] options = {"Fortsett", "Velg flere"};
+                int svar = JOptionPane.showOptionDialog(vindu,
+                        "Du har nå nok roller for alle spillerne.\nVil du fortsette eller legge til ekstra roller?",
+                        "Nok Roller", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, ImgUtil.getAppIcon(), options, options[0]);
+
+                if (svar == JOptionPane.YES_OPTION)
+                    nyfase(++fase);
+            }
+            else if (antallspillere > -3) {
                 vindu.getFortsett().setEnabled(true);
-            else
+            } else
                 nyfase(++fase);
 
         } else if (fase == VELGSPESIALISTER) {
