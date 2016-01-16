@@ -6,7 +6,10 @@ import gui.StretchIcon;
 import personer.Rolle;
 import personer.Spiller;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class Mafia extends Rolle {
@@ -181,6 +184,22 @@ public class Mafia extends Rolle {
                 return s;
         }
         return "";
+    }
+
+    public String hentRandomLedigSpesialist(){
+        List<String> spesNavn = new ArrayList<>();
+
+        for (String s : spesialister.keySet()) {
+            if (spesialister.get(s) == null)
+                spesNavn.add(s);
+        }
+
+        if (spesNavn.isEmpty())
+            return "";
+        else {
+            Collections.shuffle(spesNavn);
+            return spesNavn.get(0);
+        }
     }
 
     public void setSpesialist(String spesialist, Spiller spiller) {

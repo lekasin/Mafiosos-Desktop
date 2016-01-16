@@ -53,7 +53,7 @@ public class Spillerliste {
         for (int i = 0; i < spillere.size(); i++) {
             if (aktiveRoller.get(i) instanceof Mafia) {
                 Mafia mafia = ((Mafia) aktiveRoller.get(i));
-                String spesialist = mafia.hentLedigSpesialist();
+                String spesialist = mafia.hentRandomLedigSpesialist();
                 spillere.get(i).setRolle(mafia, spesialist);
             } else
                 spillere.get(i).setRolle(aktiveRoller.get(i));
