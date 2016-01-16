@@ -1,6 +1,7 @@
 package gui;
 
 import Utils.MenyUtil;
+import Utils.SkjermUtil;
 import datastruktur.Spillerliste;
 import personer.Rolle;
 import personer.Spiller;
@@ -112,16 +113,23 @@ public class TV extends JFrame {
 
     public void special(boolean lever) {
         vis((lever) ? "Special Guy er ikke drept." : "Special Guy ER drept! \n\nHvem vil Special Guy drepe?");
+        SkjermUtil.logg((lever) ? "Special Guy er ikke drept." : "Special Guy ER drept!");
     }
 
     public void quisling(boolean lever, Spiller s) {
+        String beskjed = "";
         if (!lever && s.funker() && s.drapsmann().id(Rolle.MAFIA)) {
             ((Quisling) s.rolle()).konverter();
-            vis("Quisling ER drept,\nog konverterer til Mafiaens side!");
+            beskjed = "Quisling ER drept,\nog konverterer til Mafiaens side!";
         } else if (s.funker())
-            vis("Quisling er ikke drept av Mafiaen.");
+            beskjed = "Quisling er ikke drept av Mafiaen.";
         else
-            vis("Quisling er død.");
+            beskjed = "Quisling er død.";
+
+        if (!beskjed.isEmpty()) {
+            vis(beskjed);
+            SkjermUtil.logg(beskjed);
+        }
     }
 
     public void avstemning() {

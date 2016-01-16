@@ -48,11 +48,17 @@ public class Sherlock extends Rolle {
 		
 		if(blokkert){
 			if(blokk != forsinkelse) ut = "Sherlock ble blokkert forrige natt!\n\n";
-			TvUtil.vis("Sherlock er blokkert!");
-			return false;
+			ut = "Sherlock er blokkert!";
 		}
 		
 		TvUtil.vis(ut);
 		return true;
 	}
+
+    @Override
+    public String rapport() {
+        if (ut.isEmpty())
+            return super.rapport();
+        return super.rapport() + "\nInfo: " + ut;
+    }
 }

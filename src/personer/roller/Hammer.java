@@ -1,5 +1,6 @@
 package personer.roller;
 
+import Utils.SkjermUtil;
 import Utils.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
@@ -42,11 +43,12 @@ public class Hammer extends Rolle {
 		}
 		
 		if(søk == 0 || valgt != spiller) {
-			valgt = spiller; 
-			TvUtil.vis("Ikke nok research");
+			valgt = spiller;
+            ut = "Ikke nok research";
+			TvUtil.vis(ut);
 			søk = 1;
 		}
-		else if(valgt == spiller){
+		else {
 			int resultat = spiller.side();
 			if(spiller.løgn()) resultat = resultat-(2*resultat);
 			ut = spiller + " er ";
@@ -59,4 +61,11 @@ public class Hammer extends Rolle {
 
 		return true;
 	}
+
+    @Override
+    public String rapport() {
+        if (ut.isEmpty())
+            return super.rapport();
+        return super.rapport() + "\nInfo: " + ut;
+    }
 }

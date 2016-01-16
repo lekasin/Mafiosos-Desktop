@@ -1,5 +1,6 @@
 package personer.roller;
 
+import Utils.SkjermUtil;
 import Utils.TvUtil;
 import personer.Rolle;
 import personer.Spiller;
@@ -58,7 +59,7 @@ public class Drommer extends Rolle {
 	@Override
 	public String rapport() {
 		String ut = tittel + "(" + spiller + ") ";
-		ut += this.ut;
+		ut += this.ut.substring(0, this.ut.length()-1);
 		return ut;
 	}
 }

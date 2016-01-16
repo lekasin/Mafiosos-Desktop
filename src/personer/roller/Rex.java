@@ -41,10 +41,16 @@ public class Rex extends Rolle {
 		
 		if(blokkert){
 			if(blokk != forsinkelse) ut = "Rex ble blokkert forrige natt!\n\n";
-			TvUtil.vis("Rex er blokkert!");
-			return false;
+			ut = "Rex er blokkert!";
 		}
 		TvUtil.vis(ut);
 		return true;
 	}
+
+    @Override
+    public String rapport() {
+        if (ut.isEmpty())
+            return super.rapport();
+        return super.rapport() + "\nInfo: " + ut;
+    }
 }
