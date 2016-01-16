@@ -400,6 +400,16 @@ public abstract class Rolle {
         return 1;
     }
 
+    public void tom(){
+        if (!flere())
+            funk(false);
+        else
+            drep();
+    }
+
+    public void reset(){
+        vekk();
+    }
 
 	//Evner/Arv
 	public abstract boolean evne(Spiller spiller);

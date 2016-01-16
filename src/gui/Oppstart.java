@@ -56,6 +56,7 @@ public class Oppstart implements ActionListener {
     }
 
     public void nyfase(int f) {
+        vindu.getFortsett().setEnabled(true);
         switch (f) {
             case VELGSPILLERE:
                 velgSpillere();
@@ -160,6 +161,9 @@ public class Oppstart implements ActionListener {
 
         if (mafia == null)
             mafia = new Mafia();
+        else while (mafia.flere())
+            mafia.fjern();
+
         Politi politi = new Politi();
         Bestevenn venn = new Bestevenn();
         innhold.add(new Knapp("Mafia", mafia, Knapp.KVART, this));
@@ -253,11 +257,11 @@ public class Oppstart implements ActionListener {
             informer(spillere.rolleString(roller, --antallspillere));
         } else {
             informer(spillere.rolleString(roller, antallspillere));
-            for (Component c : innhold.getComponents()) {
-                if (c instanceof Knapp)
-                    c.setEnabled(false);
-            }
+            oppdaterKnapper();
         }
+
+        if (antallspillere > 0)
+            vindu.getFortsett().setEnabled(false);
     }
 
     public void velgGjenstander() {
@@ -306,9 +310,19 @@ public class Oppstart implements ActionListener {
         p.add(innhold, BorderLayout.CENTER);
 
         vindu.personknapper(innhold, this);
+        tommePersonKnapper();
         vindu.oppdaterRamme(p);
 
         nesteRolle();
+    }
+
+    private void tommePersonKnapper(){
+        spillere.tømTommeRoller();
+        for (int i = antallspillere; i < 0; i++) {
+            Knapp k = new Knapp("Ingen spiller", Knapp.HALV, this);
+            k.setForeground(Color.RED);
+            innhold.add(k);
+        }
     }
 
     private void fordelSpesialister() {
@@ -337,7 +351,6 @@ public class Oppstart implements ActionListener {
         mafia.nullstillSpesialister();
         spillere.fordelRoller(roller);
         innhold = vindu.innhold();
-        innhold.removeAll();
         fortsett.setVisible(true);
 
         SkjermUtil.tittuler("Hvem er hva?");
@@ -500,34 +513,30 @@ public class Oppstart implements ActionListener {
     }
 
     public void oppdaterKnapper() {
-        if (!fjerning && antallspillere == 0) {
-            for (Component k : innhold.getComponents())
-                if (k instanceof Knapp) k.setEnabled(false);
-            return;
-        }
-
         for (Component k : innhold.getComponents()) {
-            Rolle r = ((Knapp) k).rolle();
-            if (k.getSize().equals(Knapp.KVART)) {
+            if (k instanceof Knapp) {
+                Rolle r = ((Knapp) k).rolle();
                 if (fjerning) {
-                    k.setEnabled(harRolle(r));
+                    k.setEnabled(harRolle(r.pri()));
                     if (r.id(Rolle.MAFIA) && !r.flere())
                         k.setEnabled(false);
 
-                } else if (r.id(Rolle.POLITI) || r.id(Rolle.MAFIA) || r.id(Rolle.BESTEVENN))
+                } else if (antallspillere < -2)
+                    k.setEnabled(false);
+                else if (r.id(Rolle.POLITI) || r.id(Rolle.MAFIA) || r.id(Rolle.BESTEVENN))
                     k.setEnabled(true);
-                else
-                    k.setEnabled(!harRolle(r));
+                else {
+                    k.setEnabled(!harRolle(r.pri()));
+                }
             }
         }
     }
 
-    private boolean harRolle(Rolle rolle) {
-        for (Rolle r : roller) {
-            if (r != null && r.pri() == rolle.pri())
-                return true;
-        }
-        return false;
+    private boolean harRolle(int id) {
+        if (roller != null)
+            return roller[id] != null;
+        else
+            return false;
     }
 
     private class Lytter implements ActionListener {
@@ -648,12 +657,7 @@ public class Oppstart implements ActionListener {
             if (fjerning) {
                 if (roller[i] != null) {
                     if (roller[i].flere()) {
-                        if (i == Rolle.POLITI)
-                            ((Politi) roller[i]).fjern();
-                        else if (i == Rolle.BESTEVENN)
-                            ((Bestevenn) roller[i]).fjern();
-                        else if (i == Rolle.MAFIA)
-                            mafia.fjern();
+                        ((FlerSpillerRolle)roller[i]).fjern();
                     } else
                         roller[i] = null;
                 }
@@ -661,6 +665,10 @@ public class Oppstart implements ActionListener {
                 informer(spillere.rolleString(roller, ++antallspillere));
                 inverserKnapper();
 
+                if (antallspillere > 0)
+                    vindu.getFortsett().setEnabled(false);
+                else
+                    vindu.getFortsett().setEnabled(true);
                 return;
             }
 
@@ -676,9 +684,14 @@ public class Oppstart implements ActionListener {
                 mafia.fler();
 
             informer(spillere.rolleString(roller, --antallspillere));
-            if (antallspillere < 1) {
+
+            if (antallspillere > 0)
+                vindu.getFortsett().setEnabled(false);
+            else if (antallspillere > -3)
+                vindu.getFortsett().setEnabled(true);
+            else
                 nyfase(++fase);
-            }
+
         } else if (fase == VELGSPESIALISTER) {
             String tekst = ((Knapp)e.getSource()).getText();
             k.setEnabled(false);
@@ -695,7 +708,10 @@ public class Oppstart implements ActionListener {
                 nyfase(++fase);
             }
         } else if (fase == HVEMERHVA) {
-            if (fordelerSpesialister) {
+            if (k.spiller() == null) {
+                roller[indeks].tom();
+                spillere.hentTommeRoller().add(roller[indeks]);
+            } else if (fordelerSpesialister) {
                 k.spiller().setRolle(mafia, mafia.hentLedigSpesialist());
                 stopSpesialistFordeling();
             } else

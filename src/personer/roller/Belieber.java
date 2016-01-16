@@ -1,6 +1,7 @@
 package personer.roller;
 
 import Utils.TvUtil;
+import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -25,7 +26,13 @@ public class Belieber extends Rolle {
 		fortsett = false;
 	}
 
-	public void beliebe(){
+    @Override
+    public void autoEvne() {
+        if (Spill.NATT > 1 && !funker)
+            aktiver(false);
+    }
+
+    public void beliebe(){
 		if(justin != null && !justin.lever()) {
 			spiller.snipe(this);
 			spiller.stopp();

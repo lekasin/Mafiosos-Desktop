@@ -62,6 +62,9 @@ public class Joker extends Rolle {
     public void autoEvne() {
         if (Spill.spillere.levende().size() < 6 && !ferdig && lever())
             aktiver(true);
+
+        if (!funker)
+            aktiver(false);
     }
 
     @Override

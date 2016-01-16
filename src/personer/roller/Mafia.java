@@ -1,6 +1,7 @@
 package personer.roller;
 
 import Utils.ImgUtil;
+import gui.FlerSpillerRolle;
 import gui.Spill;
 import gui.StretchIcon;
 import personer.Rolle;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class Mafia extends Rolle {
+public class Mafia extends Rolle implements FlerSpillerRolle{
 
     public static final String SNIPER = "Sniper", SABOTØR = "Sabotør", SJÅFØR = "Sjåfør", FORFALSKER = "Forfalsker";
 
@@ -55,6 +56,23 @@ public class Mafia extends Rolle {
         }
         bildePath += ".jpg";
         return ImgUtil.getStretchIcon(bildePath);
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        levende = antall;
+    }
+
+    @Override
+    public void autoEvne() {
+        if (Spill.NATT == 1 && !Spill.spillere.hentTommeRoller().isEmpty()) {
+            String info = "\n\nDisse rollene står tomme:";
+            for (Rolle rolle : Spill.spillere.hentTommeRoller()) {
+                info += "\n" + rolle;
+            }
+            informer(null, info);
+        }
     }
 
     @Override

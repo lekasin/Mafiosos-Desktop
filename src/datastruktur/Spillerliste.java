@@ -19,6 +19,8 @@ public class Spillerliste {
     ArrayList<HashMap<Integer, Spiller>> pekeHistorikk = new ArrayList<>();
     ArrayList<HashMap<Spiller, Spiller>> stemmeHistorikk = new ArrayList<>();
 
+    List<Rolle> tommeRoller = new ArrayList<>();
+
     public Spillerliste() {
         spillere = new ArrayList<>();
     }
@@ -48,18 +50,40 @@ public class Spillerliste {
                     aktiveRoller.add(rolle);
             }
         }
+        do {
+            Collections.shuffle(aktiveRoller);
+        } while (mistetMafia(aktiveRoller));
 
-        Collections.shuffle(aktiveRoller);
-        for (int i = 0; i < spillere.size(); i++) {
-            if (aktiveRoller.get(i) instanceof Mafia) {
-                Mafia mafia = ((Mafia) aktiveRoller.get(i));
+        for (int i = 0; i < aktiveRoller.size(); i++) {
+            Rolle rolle = aktiveRoller.get(i);
+            if (i >= spillere.size()) {
+                rolle.tom();
+                tommeRoller.add(rolle);
+            } else if (rolle instanceof Mafia) {
+                Mafia mafia = ((Mafia) rolle);
                 String spesialist = mafia.hentRandomLedigSpesialist();
                 spillere.get(i).setRolle(mafia, spesialist);
             } else
-                spillere.get(i).setRolle(aktiveRoller.get(i));
+                spillere.get(i).setRolle(rolle);
         }
+    }
 
+    public List<Rolle> hentTommeRoller(){
+        return tommeRoller;
+    }
 
+    public void tømTommeRoller(){
+        tommeRoller.clear();
+    }
+
+    private boolean mistetMafia(ArrayList<Rolle> aktiveRoller){
+        if (aktiveRoller.size() > spillere.size()) {
+            for (int i = spillere.size(); i < aktiveRoller.size(); i++) {
+                if (aktiveRoller.get(i).id(Rolle.MAFIA))
+                    return true;
+            }
+        }
+        return false;
     }
 
     public void våknOpp() {
@@ -817,7 +841,10 @@ public class Spillerliste {
 
     public String rolleString(Rolle[] roller, int antall) {
         String rolleString = spillere.size() + " Spillere\n\n" +
-                "Gjenstående roller: " + antall + "\nMafia x" + roller[Rolle.MAFIA].antall();
+                (antall < 0 ? "Ekstra roller: " + (antall*-1) : "Gjenstående roller: " + antall) +
+                "\n----------------\n" +
+                "Mafia x" + roller[Rolle.MAFIA].antall();
+
         if (roller[Rolle.POLITI] != null) rolleString += "\nPoliti x" + roller[Rolle.POLITI].antall();
         if (roller[Rolle.BESTEVENN] != null)
             rolleString += "\nBestevenn x" + roller[Rolle.BESTEVENN].antall();
@@ -853,6 +880,8 @@ public class Spillerliste {
         String ut = "";
         for (Spiller s : spillere)
             if (s.rolle() != null) ut += s + " er " + s.rolle() + (s.getMafiarolle().isEmpty() ? "\n" : "(" + s.getMafiarolle() + ")\n");
+        for (Rolle r : tommeRoller)
+            ut += "Ingen er " + r + "\n";
         return ut;
     }
 }

@@ -1,6 +1,7 @@
 package personer.roller;
 
 import Utils.TvUtil;
+import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -41,6 +42,9 @@ public class Jesus extends Rolle {
 
 	@Override
 	public void autoEvne() {
+        if (Spill.NATT > 1 && !funker)
+            aktiver(false);
+
         if(frelst != null && lever()) {
             frelst.beskytt(this);
             frelst.forsvar(this);

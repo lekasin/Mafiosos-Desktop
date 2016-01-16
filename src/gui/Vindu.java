@@ -250,8 +250,10 @@ public class Vindu extends JFrame {
             kontroll.add(knapp);
 
         if (fase == Oppstart.VELGROLLER) {
-            kontroll.add(new Knapp("Fjern", Knapp.HEL, e -> oppstart.inverserKnapper()));
-        } else if (fase == Oppstart.HVEMERHVA) {
+            kontroll.add(new Knapp("Fjern", Knapp.HALV, e -> oppstart.inverserKnapper()));
+        }
+
+        if (fase == Oppstart.HVEMERHVA) {
             kontroll.add(new Knapp("Fordel roller automatisk", Knapp.HEL, e -> startRolleGjennomgang()));
         } else {
             fortsett = new Knapp("Fortsett", Knapp.HEL, al);

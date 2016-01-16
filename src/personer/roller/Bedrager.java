@@ -1,6 +1,7 @@
 package personer.roller;
 
 import Utils.TvUtil;
+import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -22,9 +23,14 @@ public class Bedrager extends Rolle {
 		skjerm = true;
 	}
 
-	@Override
+    @Override
+    public void autoEvne() {
+        if (Spill.NATT > 1 && !nyligKlonet())
+            aktiver(false);
+    }
+
+    @Override
 	public String oppgave() {
-        aktiver(false);
 		TvUtil.toFront();
         if (klonet)
             return super.oppgave();

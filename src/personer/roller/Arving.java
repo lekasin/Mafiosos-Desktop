@@ -1,6 +1,7 @@
 package personer.roller;
 
 import Utils.TvUtil;
+import gui.Spill;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -42,14 +43,17 @@ public class Arving extends Rolle {
 
 	@Override
 	public void autoEvne() {
-		if (arvet)
+		if (arvet && !nyligKlonet())
 			aktiver(false);
-		else if(arv() && lever() && !arvet) {
+		else if(arv() && lever()) {
 			aktiver(true);
 			tvOppgave = "Arvingen har nå arvet rollen " + riking.rolle() + "!";
 			TvUtil.toFront();
 			arvet = true;
 		}
+
+        if (Spill.NATT > 1 && !funker)
+            aktiver(false);
 	}
 
 	@Override

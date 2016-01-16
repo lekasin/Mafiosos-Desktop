@@ -22,6 +22,8 @@ public class Spill implements ActionListener {
     public static final int HENRETTETMAFIA = 0, HENRETTETBORGER = 1, HENRETTETBESKYTTET = 2, HENRETTETTROMPET = 3, HENRETTETBOMBER = 4;
     public static final int MAFIASEIER = 0, LANDSBYSEIER = 1, UAVGJORTSEIER = 2, JOKERSEIER = 3, PRINCESSEIER = 4, SMITHSEIER = 5,
             ANARKISTSEIER = 6, PYROMANSEIER = 7;
+
+    public static int NATT = 0;
     public Vindu vindu;
     JPanel innhold;
     public Countdown timer;
@@ -39,6 +41,7 @@ public class Spill implements ActionListener {
     public static Spill instans;
 
     public Spill(Vindu v, Rolle[] r, int t) {
+        NATT = 0;
         vindu = v;
         spillere = v.spillere;
         innhold = v.innhold;
@@ -67,7 +70,8 @@ public class Spill implements ActionListener {
     }
 
     public void natt() {
-        rapporter("\nNY NATT");
+        NATT++;
+        rapporter("\nNY NATT (" + NATT + ")");
         TvUtil.rensVedlegg();
         dag = false;
         nyFase(NATTFASE);

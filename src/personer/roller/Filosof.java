@@ -27,8 +27,14 @@ public class Filosof extends Rolle {
 		prioritet = FILOSOF;
 		fortsett = false;
 	}
-	
-	public Spiller getValgt(){
+
+    @Override
+    public void autoEvne() {
+        if (Spill.NATT > 1 && !funker)
+            aktiver(false);
+    }
+
+    public Spiller getValgt(){
 		return valgt;
 	}
 
@@ -66,7 +72,6 @@ public class Filosof extends Rolle {
 		if((valgt == null || !valgt.lever() ) && !spiller.rolle().id(SMITH)) 
 			aktiver(true);
 		super.sov();
-
 	}
 	
 }

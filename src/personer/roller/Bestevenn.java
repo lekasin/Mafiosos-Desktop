@@ -1,9 +1,10 @@
 package personer.roller;
 
+import gui.FlerSpillerRolle;
 import personer.Rolle;
 import personer.Spiller;
 
-public class Bestevenn extends Rolle {
+public class Bestevenn extends Rolle implements FlerSpillerRolle{
 
 	int antall = 1, levende = 1;
 
@@ -20,6 +21,12 @@ public class Bestevenn extends Rolle {
 		side = BORGER;
 		prioritet = BESTEVENN;
 	}
+
+    @Override
+    public void reset() {
+        super.reset();
+        levende = antall;
+    }
 
     @Override
     public int antall(){
