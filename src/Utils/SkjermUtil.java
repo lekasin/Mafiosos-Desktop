@@ -1,5 +1,7 @@
 package Utils;
 
+import personer.Rolle;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -44,6 +46,20 @@ public class SkjermUtil {
 
     public static void fargTittel(Color farge){
         tittel.setForeground(farge);
+    }
+
+    public static void setTittelFarge(Rolle r) {
+        if (r == null) {
+            fargTittel(Color.BLACK);
+            return;
+        }
+
+        if (!r.funker() && !r.nyligKlonet())
+            fargTittel(Color.RED);
+        else if (r.skjerm() || r.informert() || r.nyligKlonet())
+            fargTittel(Color.BLUE);
+        else
+            fargTittel(Color.BLACK);
     }
 
 }

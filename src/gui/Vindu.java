@@ -330,7 +330,8 @@ public class Vindu extends JFrame {
             if (c instanceof Knapp) {
                 Knapp k = (Knapp) c;
                 k.setEnabled(false);
-            }
+            } else if (c instanceof JPanel)
+                panel.remove(c);
         }
         panel.revalidate();
         panel.repaint();

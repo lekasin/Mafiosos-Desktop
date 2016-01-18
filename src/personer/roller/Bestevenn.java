@@ -1,12 +1,9 @@
 package personer.roller;
 
-import gui.FlerSpillerRolle;
-import personer.Rolle;
+import personer.FlerSpillerRolle;
 import personer.Spiller;
 
-public class Bestevenn extends Rolle implements FlerSpillerRolle{
-
-	int antall = 1, levende = 1;
+public class Bestevenn extends FlerSpillerRolle{
 
 	public Bestevenn(){
 		super("Bestevenn");
@@ -20,38 +17,6 @@ public class Bestevenn extends Rolle implements FlerSpillerRolle{
                 "De kan fra da av jobbe sammen om å finne mafiaen, men vet ikke annet enn at de andre er uskyldige.";
 		side = BORGER;
 		prioritet = BESTEVENN;
-	}
-
-    @Override
-    public void reset() {
-        super.reset();
-        levende = antall;
-    }
-
-    @Override
-    public int antall(){
-		return antall;
-	}
-	
-	public void fler(){
-		antall++;
-		levende++;
-	}
-	
-	public void fjern(){
-		antall--;
-		levende--;
-	}
-	
-	public boolean flere(){
-		return levende > 1;
-	}
-	
-	@Override
-	public void drep(){
-		if(!flere())
-			lever = false;
-		levende--;
 	}
 	
 	@Override

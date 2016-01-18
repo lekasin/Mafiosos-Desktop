@@ -182,28 +182,28 @@ public class TvUtil {
 
     public static void visVinnerBilde(int vinner){
         switch (vinner) {
-            case Spill.MAFIASEIER:
+            case ResultatUtil.MAFIASEIER:
                 tv.visBilde(ImgUtil.getStretchIcon("mafiaseier.jpg"));
                 break;
-            case Spill.LANDSBYSEIER:
+            case ResultatUtil.LANDSBYSEIER:
                 tv.visBilde(ImgUtil.getStretchIcon("landsbyseier.jpg"));
                 break;
-            case Spill.UAVGJORTSEIER:
+            case ResultatUtil.UAVGJORTSEIER:
                 tv.visBilde(ImgUtil.getStretchIcon("uavgjortseier.jpg"));
                 break;
-            case Spill.ANARKISTSEIER:
+            case ResultatUtil.ANARKISTSEIER:
                 tv.visBilde(ImgUtil.getStretchIcon("anarkistseier.jpg"));
                 break;
-            case Spill.PRINCESSEIER:
+            case ResultatUtil.PRINCESSEIER:
                 tv.visBilde(ImgUtil.getStretchIcon("princesseier.jpg"));
                 break;
-            case Spill.JOKERSEIER:
+            case ResultatUtil.JOKERSEIER:
                 tv.visBilde(ImgUtil.getStretchIcon("jokerseier.jpg"));
                 break;
-            case Spill.SMITHSEIER:
+            case ResultatUtil.SMITHSEIER:
                 tv.visBilde(ImgUtil.getStretchIcon("smithseier.jpg"));
                 break;
-            case Spill.PYROMANSEIER:
+            case ResultatUtil.PYROMANSEIER:
                 tv.visBilde(ImgUtil.getStretchIcon("pyromanseier.jpg"));
                 break;
             default:

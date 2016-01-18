@@ -1,9 +1,9 @@
 package personer.roller;
 
 import Utils.ImgUtil;
-import gui.FlerSpillerRolle;
 import gui.Spill;
 import gui.StretchIcon;
+import personer.FlerSpillerRolle;
 import personer.Rolle;
 import personer.Spiller;
 
@@ -13,11 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class Mafia extends Rolle implements FlerSpillerRolle{
+public class Mafia extends FlerSpillerRolle {
 
     public static final String SNIPER = "Sniper", SABOTØR = "Sabotør", SJÅFØR = "Sjåfør", FORFALSKER = "Forfalsker";
 
-    int antall = 1, levende = 1;
     boolean mine, snipe, saboter;
     HashMap<String, Spiller> spesialister = new HashMap<>();
 
@@ -59,12 +58,6 @@ public class Mafia extends Rolle implements FlerSpillerRolle{
     }
 
     @Override
-    public void reset() {
-        super.reset();
-        levende = antall;
-    }
-
-    @Override
     public void autoEvne() {
         if (Spill.NATT == 1 && !Spill.spillere.hentTommeRoller().isEmpty()) {
             String info = "\n\nDisse rollene står tomme:";
@@ -73,32 +66,6 @@ public class Mafia extends Rolle implements FlerSpillerRolle{
             }
             informer(null, info);
         }
-    }
-
-    @Override
-    public int antall() {
-        return antall;
-    }
-
-    public void fler() {
-        antall++;
-        levende++;
-    }
-
-    public void fjern() {
-        antall--;
-        levende--;
-    }
-
-    public boolean flere() {
-        return levende > 1;
-    }
-
-    @Override
-    public void drep() {
-        if (!flere())
-            lever = false;
-        levende--;
     }
 
     public void snipe() {

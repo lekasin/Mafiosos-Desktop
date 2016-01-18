@@ -1,14 +1,12 @@
 package personer.roller;
 
-import gui.FlerSpillerRolle;
 import gui.Spill;
+import personer.FlerSpillerRolle;
 import personer.Rolle;
 import personer.Spiller;
 
-public class Politi extends Rolle implements FlerSpillerRolle{
+public class Politi extends FlerSpillerRolle{
 
-	int antall = 1, levende = 1;
-	
 	public Politi(){
 		super("Politi");
         bilde = "politi";
@@ -26,38 +24,6 @@ public class Politi extends Rolle implements FlerSpillerRolle{
 		prioritet = POLITI;
 	}
 
-    @Override
-    public void reset() {
-        super.reset();
-        levende = antall;
-    }
-
-    @Override
-	public int antall(){
-		return antall;
-	}
-	
-	public void fler(){
-		antall++;
-		levende++;
-	}
-	
-	public void fjern(){
-		antall--;
-		levende--;
-	}
-	
-	public boolean flere(){
-		return levende > 1;
-	}
-	
-	@Override
-	public void drep(){
-		if(!flere())
-			lever = false;
-		levende--;
-	}
-	
 	@Override
 	public boolean pek(Spiller spiller) {
 		for(Spiller s: Spill.spillere.spillere())

@@ -210,42 +210,6 @@ public class Spillerliste {
             s.setRolle(null);
     }
 
-    public int vinner() {
-        int slemme = 0;
-        int snille = 0;
-        int anarki = 0;
-        int smiths = 0;
-        int fanger = 0;
-
-//        if (levende().size() == 1 && levende().get(0).id(Rolle.JOKER))
-//            return Spill.JOKERSEIER;
-
-        for (Spiller s : spillere) {
-            if (s.lever()) {
-                if (s.id(Rolle.ANARKIST)) anarki++;
-                if (s.id(Rolle.SMITH)) smiths++;
-                if (this.fanger.contains(s)) fanger++;
-                if (s.side() < Rolle.NØYTRAL) slemme++;
-                else snille++;
-            }
-        }
-        if (snille + slemme < 1)
-            return Spill.UAVGJORTSEIER;
-        else if (snille < 1)
-            return Spill.MAFIASEIER;
-        else if (slemme < 1) {
-            if (smiths == snille)
-                return Spill.SMITHSEIER;
-            if (anarki > 0)
-                return Spill.ANARKISTSEIER;
-            else
-                return Spill.LANDSBYSEIER;
-        } else if (fanger == snille + slemme - 1 && finnSpiller(Rolle.PRINCESS).lever())
-            return Spill.PRINCESSEIER;
-        else
-            return -1;
-    }
-
     public int length() {
         return spillere.size();
     }
@@ -571,6 +535,10 @@ public class Spillerliste {
         return !fanger.isEmpty();
     }
 
+    public List<Spiller> hentFanger(){
+        return fanger;
+    }
+
     public boolean rolleFanget(int rolleId) {
         for (Spiller s : spillere)
             if (s.rolle().id(rolleId) && (!s.fange() && s.funker()))
@@ -649,7 +617,6 @@ public class Spillerliste {
         if (spiller.kidnappet()) snylter.kidnapp(finnRolle(Rolle.PRINCESS));
         if (spiller.harFlyers()) snylter.trykkOppFlyers(r);
         if (spiller.spiser()) snylter.inviterPåSuppe(r);
-
     }
 
     public void cupider(Cupid cupid) {

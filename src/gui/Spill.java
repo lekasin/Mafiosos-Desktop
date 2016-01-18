@@ -20,8 +20,6 @@ public class Spill implements ActionListener {
     public static final int ORDFØRERFASE = 0, DISKUSJONSFASE = 1, AVSTEMNINGSFASE = 2,
             TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 7, NATTFASE = 8;
     public static final int HENRETTETMAFIA = 0, HENRETTETBORGER = 1, HENRETTETBESKYTTET = 2, HENRETTETTROMPET = 3, HENRETTETBOMBER = 4;
-    public static final int MAFIASEIER = 0, LANDSBYSEIER = 1, UAVGJORTSEIER = 2, JOKERSEIER = 3, PRINCESSEIER = 4, SMITHSEIER = 5,
-            ANARKISTSEIER = 6, PYROMANSEIER = 7;
 
     public static int NATT = 0;
     public Vindu vindu;
@@ -223,7 +221,7 @@ public class Spill implements ActionListener {
 
         if (seier) {
             tittuler("Vi har en vinner!");
-            TvUtil.visVinnerBilde(spillere.vinner());
+            TvUtil.visVinnerBilde(ResultatUtil.vinner());
             innhold.add(new Knapp("Fortsett", Knapp.SUPER, e -> visSluttresultat()));
         } else if (rakett) {
             innhold.add(new Knapp("Fortsett", Knapp.SUPER, e -> avsluttRakett()));
@@ -245,7 +243,7 @@ public class Spill implements ActionListener {
         vindu.personknapper(innhold, this);
         vindu.kontroll(new Kontroll(), -1);
         vindu.oppdaterRamme(innhold);
-        setTittelFarge(null);
+        SkjermUtil.setTittelFarge(null);
 
         if (sjekkRolle(Rolle.BØDDEL) && dag && finnRolle(Rolle.BØDDEL).lever()) {
             vindu.kontroll(new Kontroll(), fase, new Knapp("Halshugg!", Knapp.HALV, e -> halshugging()));
@@ -257,7 +255,7 @@ public class Spill implements ActionListener {
         if (r == null) return;
         timer.stop();
         vindu.kontroll(new Kontroll(), -1);
-        setTittelFarge(r);
+        SkjermUtil.setTittelFarge(r);
         tittuler(r.oppgave());
 
         if (r instanceof Mafia) {
@@ -267,20 +265,6 @@ public class Spill implements ActionListener {
             vindu.kontroll(new Kontroll(), fase, new Knapp("Drep/Beskytt", Knapp.HALV, new Mafiaknapper()));
         else if (r instanceof Carlsen)
             vindu.kontroll(new Kontroll(), fase, new Knapp("Angrep/Forsvar", Knapp.HALV, new Mafiaknapper()));
-    }
-
-    public void setTittelFarge(Rolle r) {
-        if (r == null) {
-            SkjermUtil.fargTittel(Color.BLACK);
-            return;
-        }
-
-        if (!r.funker() && !r.nyligKlonet())
-            SkjermUtil.fargTittel(Color.RED);
-        else if (r.skjerm() || r.informert() || r.nyligKlonet())
-            SkjermUtil.fargTittel(Color.BLUE);
-        else
-            SkjermUtil.fargTittel(Color.BLACK);
     }
 
     public void visMafiaKnapper() {
@@ -426,7 +410,6 @@ public class Spill implements ActionListener {
             default:
                 forrigeRolle();
         }
-
     }
 
     public void startAvstemning() {
@@ -672,7 +655,7 @@ public class Spill implements ActionListener {
                 s.henrett();
             seier = true;
             dagensResultat();
-            TvUtil.visVinnerBilde(JOKERSEIER);
+            TvUtil.visVinnerBilde(ResultatUtil.JOKERSEIER);
             tittuler("Jokeren vant!");
             informer("Jokeren, " + joker.spiller() + " seiret, og vi har en vinner!");
             rapporter("Jokeren, " + joker.spiller() + " seiret, og vi har en vinner!");
@@ -985,53 +968,16 @@ public class Spill implements ActionListener {
         timer.stop();
         if (finnRolle(Rolle.ARVING) != null)
             ((Arving) finnRolle(Rolle.ARVING)).arv();
-        switch (spillere.vinner()) {
-            case MAFIASEIER:
-                informer("Mafiaen har vunnet!" + "\n" + annonse);
-                rapporter("Mafiaen har vunnet!");
-                seier = true;
-                break;
-            case LANDSBYSEIER:
-                informer("Landsbyen har vunnet!" + "\n" + annonse);
-                rapporter("Landsbyen har vunnet!");
-                seier = true;
-                break;
-            case UAVGJORTSEIER:
-                informer("Alle er døde! Ingen vant!" + "\n" + annonse);
-                rapporter("Alle er døde! Ingen vant!");
-                seier = true;
-                break;
-            case ANARKISTSEIER:
-                informer("Mafiaene er døde, men Anarkisten takler ikke freden og forgifter drikkevannet til landsbyen!\nAnarkisten har vunnet!" + "\n" + annonse);
-                rapporter("Mafiaene er døde, men Anarkisten takler ikke freden og forgifter drikkevannet til landsbyen!\nAnarkisten har vunnet!");
-                seier = true;
-                break;
-            case SMITHSEIER:
-                informer("Agent Smith har tatt over hele landsbyen, og har vunnet!" + "\n" + annonse);
-                rapporter("Agent Smith har tatt over hele landsbyen, og har vunnet!");
-                seier = true;
-                break;
-            case PRINCESSEIER:
-                informer("Princess98 har kidnappet hele landsbyen, og har vunnet!!" + "\n" + annonse);
-                rapporter("Princess98 har kidnappet hele landsbyen, og har vunnet!");
-                seier = true;
-                break;
-            case JOKERSEIER:
-                informer("Jokeren, " + finnSpiller(Rolle.JOKER) + " seiret, og vi har en vinner!");
-                rapporter("Jokeren, " + finnSpiller(Rolle.JOKER) + " seiret, og vi har en vinner!");
-                seier = true;
-                break;
-            case PYROMANSEIER:
-                informer("Pyromanen har vunnet!" + "\n" + annonse);
-                rapporter("Pyromanen har vunnet!");
-                seier = true;
-                break;
 
-            default:
-                return true;
+        String vinnerTekst = ResultatUtil.hentVinner();
+        if (!vinnerTekst.isEmpty()) {
+            seier = true;
+            informer(vinnerTekst + annonse);
+            rapporter(vinnerTekst);
+            dagensResultat();
+            return false;
         }
-        dagensResultat();
-        return false;
+        return true;
     }
 
     public void henrett(Spiller s) {
