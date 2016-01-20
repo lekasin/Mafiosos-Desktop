@@ -97,7 +97,7 @@ public class Mafia extends FlerSpillerRolle {
         for (Spiller s : Spill.spillere.spillere())
             if (s.id(MAFIA) && s.funker()) {
                 s.setOffer(spiller);
-                if (!this.spiller.lever())
+                if (this.spiller == null || !this.spiller.lever())
                     setSpiller(s);
             }
 

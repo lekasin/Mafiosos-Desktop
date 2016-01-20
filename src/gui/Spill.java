@@ -3,7 +3,6 @@ package gui;
 import Utils.*;
 import datastruktur.Countdown;
 import datastruktur.Spillerliste;
-import javafx.geometry.Pos;
 import personer.Rolle;
 import personer.Spiller;
 import personer.roller.*;
@@ -98,6 +97,7 @@ public class Spill implements ActionListener {
         innhold = vindu.innhold();
         vindu.kontroll.setVisible(false);
         proklamer("Landsbyen Våkner");
+        VeiledningsUtil.setTekst("Trykk på knappen for å vekke landsbyen og se nattens resultat.");
         SkjermUtil.fargTittel(Color.black);
         innhold.add(new Knapp("Landsbyen våkner", Knapp.SUPER, e -> dag()));
         innhold.revalidate();
@@ -276,6 +276,7 @@ public class Spill implements ActionListener {
         Spiller mottaker = finnOffer(Rolle.POSTMANN);
         hentetPost = true;
 
+        setVeiledning();
         SkjermUtil.fargTittel(Color.black);
         proklamer("Post til " + mottaker + "!");
         rapporter("Post til " + mottaker + "!");
@@ -930,6 +931,10 @@ public class Spill implements ActionListener {
             case TALEFASE:
                 if (tiltale)
                     unntak = VeiledningsUtil.FASE_TILTALE;
+                break;
+            case NATTFASE:
+                if (hentetPost)
+                    unntak = VeiledningsUtil.FASE_POST;
                 break;
             default:
                 unntak = -1;

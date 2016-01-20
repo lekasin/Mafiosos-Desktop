@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 public class VeiledningsUtil {
     private static JTextArea info;
     public static final int ORDFØRERFASE = 0, DISKUSJONSFASE = 1, AVSTEMMINGSFASE = 2,
-            TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 7;
+            TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 7, NATTFASE = 8;
 
 
     public static void init(JTextArea info) {
@@ -33,7 +33,7 @@ public class VeiledningsUtil {
         visVeiledning(!info.isVisible());
     }
 
-    public static int FASE_BOMBE = 0, FASE_TILTALE = 1, FASE_RAKETT = 2, FASE_OPPGJØR = 3;
+    public static int FASE_BOMBE = 0, FASE_TILTALE = 1, FASE_RAKETT = 2, FASE_OPPGJØR = 3, FASE_POST = 4;
 
     public static void setVeiledningForFase(int fase, int unntak) {
         switch (fase) {
@@ -131,7 +131,16 @@ public class VeiledningsUtil {
                         "For å gå rett til avstemmingen, trykker du på fortsett. Når avstemmingen er i gang, trykker du på alle som stemmer OPP (appen ordner resten).\n" +
                         "Når avstemmingen er ferdig, trykker du fortsett igjen for å se resultatet.");
                 break;
-
+            case NATTFASE:
+                if (unntak == FASE_POST)
+                    setTekst("Post:\n" +
+                            "Noen har fått post av Pat, og må velge å åpne den eller returnere den.\n" +
+                            "Velger mottakeren å åpne pakken, vil pakkens innhold påvirke mottakeren.\n" +
+                            "Velger mottakeren å returnere pakken, blir den sendt tilbake til Pat, " +
+                            "og han kan gi den til noen andre. Ingenting skjer med mottakeren.\n" +
+                            "Mottakeren kan gi tommel opp for å åpne, eller tommel ned for å returnere.\n" +
+                            "For å registrer valget, trykker du på den tilsvarende knappen.");
+                break;
             default:
                 setTekst("Veiledning");
                 break;
