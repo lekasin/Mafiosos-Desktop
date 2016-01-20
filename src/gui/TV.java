@@ -132,8 +132,8 @@ public class TV extends JFrame {
         }
     }
 
-    public void avstemning() {
-        vis(spillere.visAvstemning());
+    public void avstemming() {
+        vis(spillere.visAvstemming());
     }
 
     public String vedlegg() {
