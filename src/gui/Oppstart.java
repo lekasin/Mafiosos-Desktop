@@ -129,11 +129,6 @@ public class Oppstart implements ActionListener {
         vindu.kontroll(new KontrollLytter(), VELGROLLER);
         vindu.visLogg(true);
 
-        if (mafia == null)
-            mafia = new Mafia();
-        else while (mafia.flere())
-            mafia.fjern();
-
         opprettRolleKnapper();
 
         if (roller == null) {
@@ -638,6 +633,7 @@ public class Oppstart implements ActionListener {
     }
 
     private void opprettRolleKnapper() {
+        mafia = new Mafia();
         Politi politi = new Politi();
         Bestevenn venn = new Bestevenn();
         innhold.add(new Knapp("Mafia", mafia, Knapp.KVART, this));
@@ -695,6 +691,7 @@ public class Oppstart implements ActionListener {
         innhold.add(new Knapp("Obduksjonist", new Obduksjonist(), Knapp.KVART, this));
 
         innhold.add(new Knapp("Politi", politi, Knapp.KVART, this));
+        innhold.add(new Knapp("Postmann", new Postmann(), Knapp.KVART, this));
         innhold.add(new Knapp("Princess98", new Princess(), Knapp.KVART, this));
         innhold.add(new Knapp("Psykolog", new Psykolog(), Knapp.KVART, this));
 

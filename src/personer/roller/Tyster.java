@@ -14,9 +14,9 @@ public class Tyster extends Rolle {
                 "Hvis personen våknet før informanten på natten, får de ingen info.";
         guide = "Tysteren er på mafiaen sitt lag, og fremstår som mafia ved henrettelse, men våkner aldri sammen med de andre mafiaene. " +
                 "Tysteren gjør derimot jobben sin på egenhånd, når ingen venter det. " +
-                "Ved hver avstemning sjekker nemlig tysteren bakgrunnen til alle som er ved stemmeboden samtidig med han, og finner ut hvilke roller som er representert. " +
+                "Ved hver avstemming sjekker nemlig tysteren bakgrunnen til alle som er ved stemmeboden samtidig med han, og finner ut hvilke roller som er representert. " +
                 "Denne infoen videreformidler han så til mafiaen ved solnedgang. " +
-                "Med andre ord får mafiaen hver natt vite hvilke roller som stemte det samme som tysteren ved siste avstemning dagen før.";
+                "Med andre ord får mafiaen hver natt vite hvilke roller som stemte det samme som tysteren ved siste avstemming dagen før.";
         side = MAFIOSO;
         prioritet = TYSTER;
         aktiver(false);

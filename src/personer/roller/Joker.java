@@ -21,7 +21,7 @@ public class Joker extends Rolle {
 				"Om Jokeren får alle til å velge det samme som han neste dag, vinner han.";
         guide = "Ved 5 gjenstående spillere, er det Jokerens tur. På natten våkner han og velger «tommel opp» eller «tommel ned». " +
                 "Neste dag må de gjenværende spillerne finne ut om de skal stemme opp eller ned. " +
-                "De har da to minutter til å finne ut av dette, før en anonym avstemning foretas. Her er det dog lov å stemme motsatt av det landsbyen ble enige om. " +
+                "De har da to minutter til å finne ut av dette, før en anonym avstemming foretas. Her er det dog lov å stemme motsatt av det landsbyen ble enige om. " +
                 "Hvis alle stemmer likt som Jokeren, vinner Jokeren og spillet er over. " +
                 "Hvis alle stemmer motsatt av Jokeren, dør Jokeren og spillet fortsetter. " +
                 "Hvis spillerne stemmer ulikt, taper Jokeren, men overlever, og alle de som stemmer likt som ham dør.";

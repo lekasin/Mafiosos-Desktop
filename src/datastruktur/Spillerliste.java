@@ -1,6 +1,8 @@
 package datastruktur;
 
+import Utils.SkjermUtil;
 import gui.Spill;
+import javafx.geometry.Pos;
 import personer.Rolle;
 import personer.Spiller;
 import personer.roller.*;
@@ -255,7 +257,7 @@ public class Spillerliste {
     public Rolle tylersRolle() {
         int id = -1;
         Random random = new Random();
-        while (finnSpiller(id) == null || id == Rolle.TYLER || !finnRolle(id).fortsetter() || id == Rolle.CUPID || id == Rolle.KIRSTEN || id == Rolle.COPYCAT || id == Rolle.BERIT || (id == Rolle.PRINCESS && !finnRolle(Rolle.PRINCESS).funker()))
+        while (finnSpiller(id) == null || id == Rolle.TYLER || !finnRolle(id).fortsetter() || id == Rolle.POSTMANN || id == Rolle.CUPID || id == Rolle.KIRSTEN || id == Rolle.COPYCAT || id == Rolle.BERIT || (id == Rolle.PRINCESS && !finnRolle(Rolle.PRINCESS).funker()))
             id = random.nextInt((Rolle.MARIUS - Rolle.UNDERCOVER) + 1) + Rolle.UNDERCOVER;
         return finnRolle(id);
     }
@@ -677,8 +679,8 @@ public class Spillerliste {
 
     }
 
-    public String visAvstemning() {
-        String output = "Det er klart for avstemning!\n\nDe mistenkte er:";
+    public String visAvstemming() {
+        String output = "Det er klart for avstemming!\n\nDe mistenkte er:";
         for (Spiller s : nominerte)
             output += "\n" + s.navn();
         return output;

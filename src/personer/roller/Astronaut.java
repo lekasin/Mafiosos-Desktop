@@ -16,7 +16,7 @@ public class Astronaut extends Rolle {
                 "Om raketten ikke er ferdig, trykker du på fortsett for å gå videre til neste rolle.\n" +
                 "Når raketten er ferdig, trykker du på astronautens eget navn (eneste mulige), for å starte en rakettoppskytning neste dag.";
         guide = "Astronauten våkner hver natt, og gir beskjed til forteller om raketten hans er ferdig eller ikke. Når Astronauten sier at raketten er ferdig, " +
-                "er det klart for rakettoppskytning. Neste morgen får landsbyen vite at rakett er klar, og det skal være anonym avstemning for å avgjøre hvem som skal sendes opp i raketten (og dermed dø). " +
+                "er det klart for rakettoppskytning. Neste morgen får landsbyen vite at rakett er klar, og det skal være anonym avstemming for å avgjøre hvem som skal sendes opp i raketten (og dermed dø). " +
                 "Altså: Når landsbyen våkner til rakettoppskytning, må alle umiddelbart lukke øyenene (bortsett fra astronauten). " +
                 "Forteller tar da en runde med alle navnene på gjenlevende borgere, og landsbyen stemmer på den de vil sende ut. " +
                 "Astronauten er derimot våken, kan se hva alle andre stemmer, og har selv en dobbeltstemme. Personen med flest stemmer, " +

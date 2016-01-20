@@ -7,6 +7,9 @@ import gui.Spill;
 import gui.StretchIcon;
 import personer.roller.Psykolog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Rolle {
 
 	protected boolean lever = true, blokkert = false, snill = false, informert = false, aktiv = true, funker = true, fortsett = true, skjerm = false, klonet = false;
@@ -15,6 +18,7 @@ public abstract class Rolle {
 	protected Rolle blokk, informant, forsinkelse;
 	protected int prioritet = 0, side = 1;
 	protected String info = "";
+    protected List<Spiller> forbudsListe = new ArrayList<>();
 	public static int FAKEBORGER = -2, MAFIOSO = -1, NØYTRAL = 0, BORGER = 1,  FAKEMAFIA = 2;
 	public static int
 	ZOMBIE = 0,
@@ -55,8 +59,9 @@ public abstract class Rolle {
 	SNYLTER = KIRSTEN+1,
 	CUPID = SNYLTER+1,
 	SPECIAL = CUPID+1,
+    POSTMANN = SPECIAL+1,
 
-	KLØNA = SPECIAL+1,
+	KLØNA = POSTMANN+1,
 	RAVN = KLØNA+1,
 	MARIUS = RAVN+1,
 	CARLSEN = MARIUS+1,
@@ -342,6 +347,11 @@ public abstract class Rolle {
 	public Spiller forbud2(){
 		return forbud2;
 	}
+
+
+    public boolean harForbudMot(Spiller spiller) {
+        return spiller == forbud || spiller == forbud2 || forbudsListe.contains(spiller);
+    }
 
 	public Rolle finnRolle(int id) {
 		return Spill.spillere.finnRolle(id);

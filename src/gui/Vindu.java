@@ -363,6 +363,15 @@ public class Vindu extends JFrame {
         innhold.repaint();
     }
 
+    public void postKnapper(ActionListener postLytter) {
+        innhold();
+        innhold.add(new Knapp("Returner", Knapp.HEL, postLytter));
+        innhold.add(new Knapp("Åpne", Knapp.HEL, postLytter));
+        kontroll.setVisible(false);
+        innhold.revalidate();
+        innhold.repaint();
+    }
+
     public void oppdaterKnapper(JPanel panel, Rolle r) {
         Component[] knapper = panel.getComponents();
 
@@ -380,7 +389,7 @@ public class Vindu extends JFrame {
                 if (c instanceof Knapp) {
                     Knapp k = (Knapp) c;
                     k.setForeground(Color.BLACK);
-                    if (k.spiller() != null && k.spiller() == r.forbud() || k.spiller() == r.forbud2() || k.spiller.fange() ||
+                    if (k.spiller() != null && r.harForbudMot(k.spiller())|| k.spiller.fange() ||
                             (r.id(Rolle.SMITH) && k.spiller().id(Rolle.SMITH)) ||
                             (r.id(Rolle.ASTRONAUT) && k.spiller != r.spiller()))
                         k.setEnabled(false);

@@ -13,7 +13,7 @@ public class Klona extends Rolle {
 				"Kløna velger hver natt en person å sikte på.\n" +
 				"Når kløna har valgt, trykker du på vedkommendes navn for kløne dem.\n" +
 				"Den kløna sikter på, får ikke holde forsvarstale neste dag, " +
-                "men dør umiddeltbart, hvis vedkommende får flest stemmer under en avstemning.";
+                "men dør umiddeltbart, hvis vedkommende får flest stemmer under en avstemming.";
         guide = "Kløna er et klønete medlem av landsbyen. " +
                 "Han velger en person å sikte på hver natt, og kommer borti avtrekkeren på henrettelsesgeværet hvis personen skal holde forsvarstale neste dag. " +
                 "Med andre ord, når personen kløna valgte skal starte forsvarstalen sin neste dag, dør plutselig personen istedenfor å kunne forsvare seg. " +

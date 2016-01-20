@@ -4,6 +4,7 @@ package personer;
 import gui.Spill;
 import personer.roller.Bestemor;
 import personer.roller.Mafia;
+import personer.roller.Postmann;
 import personer.roller.Smith;
 
 public class Spiller {
@@ -11,12 +12,12 @@ public class Spiller {
 	String navn, gjenstand;
 	Rolle rolle;
 	Spiller offer;
-	Rolle beskytter, forsvarer, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse, supperpartner, grafiker;
+	Rolle beskytter, forsvarer, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse, supperpartner, grafiker, postmann;
 	int stemmer = 1;
 	String mafiarolle = "";
 	boolean lever = true, funker = true, død = false, beskyttet = false, forsvart = false, minelagt = false, forsinket = false,
 			reddet = false, skjult = false, løgn = false, kløna = false, nyligKlonet = false, skalKlones = false, fange = false, kidnappet = false,
-			talt = false, spiser = false, flyers = false;
+			talt = false, spiser = false, flyers = false, post;
 
 	public Spiller(String navn) {
 		this.navn = navn;
@@ -122,6 +123,8 @@ public class Spiller {
         supperpartner = null;
         flyers = false;
         grafiker = null;
+        post = false;
+        postmann = null;
 		rolle.sov();
         if (skalKlones())
             klon();
@@ -175,6 +178,10 @@ public class Spiller {
             grafiker = null;
             flyers = false;
         }
+        if (postmann == r) {
+            postmann = null;
+            post = false;
+        }
 		if(drapsmann == r) {
 			drapsmann = null;
 		}
@@ -203,6 +210,8 @@ public class Spiller {
         supperpartner = null;
         flyers = false;
         grafiker = null;
+        post = false;
+        postmann = null;
         minelagt = false;
 	}
 
@@ -230,6 +239,11 @@ public class Spiller {
     public void inviterPåSuppe(Rolle r){
         supperpartner = r;
 		spiser = true;
+    }
+
+    public void giPost(Rolle r) {
+        postmann = r;
+        post = true;
     }
 
     public void trykkOppFlyers(Rolle r){
@@ -396,6 +410,10 @@ public class Spiller {
 
     public boolean harFlyers() {
         return flyers;
+    }
+
+    public boolean harPost() {
+        return post;
     }
 
     public boolean død() {

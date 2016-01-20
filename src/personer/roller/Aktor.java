@@ -13,7 +13,7 @@ public class Aktor extends Rolle {
                 "Aktor kan kun bruke rollen sin én gang, og må derfor velge med omhu.\n" +
                 "Om aktor vil vente og ikke tiltale noen i natt, trykker du fortsett.\n" +
                 "Når aktor vil tiltale noen, trykker du på navnet til den han peker på.\n" +
-                "Denne personen vil da sitte på tiltalebenken neste dag, og dagen består kun av vedkommends forsvarstale og en avstemning.";
+                "Denne personen vil da sitte på tiltalebenken neste dag, og dagen består kun av vedkommends forsvarstale og en avstemming.";
 		guide = "Aktor våkner hver natt, og velger om han har lyst til å tiltale noen. Han kan i utgangspunktet bare gjøre dette én gang, og må derfor velge med omhu. " +
                 "Når aktor vil slå til velger han en person som blir satt på tiltalebenken. Neste runde vil kun den valgte personen kunne snakke. " +
                 "Det blir altså én forsvarstale på ett minutt. Ved slutten av talen må landsbyen stemme. De kan kun stemme for eller imot at den tiltalte skal drepes. " +

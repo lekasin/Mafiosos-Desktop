@@ -3,6 +3,7 @@ package gui;
 import Utils.*;
 import datastruktur.Countdown;
 import datastruktur.Spillerliste;
+import javafx.geometry.Pos;
 import personer.Rolle;
 import personer.Spiller;
 import personer.roller.*;
@@ -17,7 +18,7 @@ import java.util.Calendar;
 
 public class Spill implements ActionListener {
 
-    public static final int ORDFØRERFASE = 0, DISKUSJONSFASE = 1, AVSTEMNINGSFASE = 2,
+    public static final int ORDFØRERFASE = 0, DISKUSJONSFASE = 1, AVSTEMMINGSFASE = 2,
             TALEFASE = 3, GODKJENNINGSFASE = 4, TIEBREAKERFASE = 5, JOKERFASE = 6, RØMNINGSFASE = 7, NATTFASE = 8;
     public static final int HENRETTETMAFIA = 0, HENRETTETBORGER = 1, HENRETTETBESKYTTET = 2, HENRETTETTROMPET = 3, HENRETTETBOMBER = 4;
 
@@ -35,7 +36,7 @@ public class Spill implements ActionListener {
     static Rolle aktiv;
     String annonse;
     int fase, døgn, antallDøde, tid, taler, resultat;
-    boolean dag, seier, rakett, tiltale, bombe, joker;
+    boolean dag, seier, rakett, tiltale, bombe, joker, hentetPost;
     public static Spill instans;
 
     public Spill(Vindu v, Rolle[] r, int t) {
@@ -77,7 +78,7 @@ public class Spill implements ActionListener {
         spillere.sov();
         spillere.nullstillAvstemming();
         refresh();
-        bombe = tiltale = rakett = false;
+        bombe = tiltale = rakett = hentetPost = false;
         dødsdømt = null;
         annonse = "";
 
@@ -90,6 +91,10 @@ public class Spill implements ActionListener {
     }
 
     public void avsluttNatt() {
+        if (sjekkOffer(Rolle.POSTMANN) && !hentetPost){
+            leverPost();
+            return;
+        }
         innhold = vindu.innhold();
         vindu.kontroll.setVisible(false);
         proklamer("Landsbyen Våkner");
@@ -267,6 +272,36 @@ public class Spill implements ActionListener {
             vindu.kontroll(new Kontroll(), fase, new Knapp("Angrep/Forsvar", Knapp.HALV, new Mafiaknapper()));
     }
 
+    private void leverPost(){
+        Spiller mottaker = finnOffer(Rolle.POSTMANN);
+        hentetPost = true;
+
+        SkjermUtil.fargTittel(Color.black);
+        proklamer("Post til " + mottaker + "!");
+        rapporter("Post til " + mottaker + "!");
+
+        vindu.postKnapper(e -> håndterPakke(e, mottaker));
+
+        JLabel postbeskjed = new JLabel();
+        postbeskjed.setPreferredSize(new Dimension(600, 135));
+        postbeskjed.setFont(new Font("Arial", Font.BOLD, Oppstart.UNDERTITTEL));
+        postbeskjed.setHorizontalAlignment(JLabel.CENTER);
+        postbeskjed.setText("Vil " + mottaker + " åpne pakken?");
+        innhold.add(postbeskjed);
+    }
+
+    private void håndterPakke(ActionEvent event, Spiller mottaker){
+        String valg = knapp(event).getText();
+        if (valg.equals("Åpne"))
+            informer(((Postmann)finnRolle(Rolle.POSTMANN)).åpnePakke(mottaker));
+
+        innhold = vindu.innhold();
+        innhold.add(new Knapp("Fortsett", Knapp.SUPER, e -> avsluttNatt()));
+        innhold.revalidate();
+        innhold.repaint();
+        TvUtil.lukkGuide();
+    }
+
     public void visMafiaKnapper() {
         JPanel p = new JPanel();
         p.setPreferredSize(new Dimension(600, 100));
@@ -286,7 +321,7 @@ public class Spill implements ActionListener {
             innhold.add(p);
     }
 
-    public void refreshAvstemning() {
+    public void refreshAvstemming() {
         innhold = vindu.innhold();
         vindu.stemmeKnapper(innhold, this);
         vindu.kontroll(new Kontroll(), -1);
@@ -378,17 +413,17 @@ public class Spill implements ActionListener {
     public void tidenErUte() {
         if (fase(TALEFASE)) {
             if (sjekkOffer(Rolle.AKTOR))
-                startAvstemning();
+                startAvstemming();
             else
                 nesteForsvarsTale();
         } else if (fase(DISKUSJONSFASE))
             if (spillere.nominerte().isEmpty())
                 godkjenn(null);
             else
-                startAvstemning();
+                startAvstemming();
         else if (fase(TIEBREAKERFASE))
             godkjenn(null);
-        else if (fase(AVSTEMNINGSFASE))
+        else if (fase(AVSTEMMINGSFASE))
             nesteAvstemming();
         else if (fase(JOKERFASE))
             dilemma();
@@ -401,7 +436,7 @@ public class Spill implements ActionListener {
             case DISKUSJONSFASE:
                 talt(tid - 2);
                 break;
-            case AVSTEMNINGSFASE:
+            case AVSTEMMINGSFASE:
                 talt(tid - 2);
                 break;
             case TIEBREAKERFASE:
@@ -412,19 +447,19 @@ public class Spill implements ActionListener {
         }
     }
 
-    public void startAvstemning() {
-        nyFase(AVSTEMNINGSFASE);
+    public void startAvstemming() {
+        nyFase(AVSTEMMINGSFASE);
         timer.stop();
         vindu.kontroll.setVisible(false);
         innhold = vindu.innhold();
         forsvarende = null;
-        rapporter("\nAVSTEMNING:");
-        tittuler("Avstemning!");
-        TvUtil.avstemning();
+        rapporter("\nAVSTEMMING:");
+        tittuler("Avstemming!");
+        TvUtil.avstemming();
 
-        innhold.add(new Knapp("Start avstemning", Knapp.SUPER,
+        innhold.add(new Knapp("Start avstemming", Knapp.SUPER,
                 e -> {
-                    refreshAvstemning();
+                    refreshAvstemming();
                     nesteAvstemming();
                     vindu.kontroll.setVisible(true);
                 }));
@@ -440,7 +475,7 @@ public class Spill implements ActionListener {
         if (!forsvarende.navn().isEmpty())
             avstemming(forsvarende);
         else {
-            avsluttAvstemning();
+            avsluttAvstemming();
         }
     }
 
@@ -459,12 +494,12 @@ public class Spill implements ActionListener {
             spillere.stem(finnSpiller(Rolle.PSYKOLOG), s);
     }
 
-    public void avsluttAvstemning() {
+    public void avsluttAvstemming() {
         ArrayList<Spiller> utstemte = spillere.hentUtstemte();
         ArrayList<Spiller> talere = spillere.hentTalere(utstemte);
 
         if (talere.isEmpty() || rakett) {
-            //Avgjørende avstemning - Sjekk ordførerstemmer
+            //Avgjørende avstemming - Sjekk ordførerstemmer
             utstemte = spillere.hentUtstemte(ordfører);
 
             if (utstemte.isEmpty())
@@ -730,7 +765,7 @@ public class Spill implements ActionListener {
                 spillere.nominer(s);
 
         finnSpiller(Rolle.ASTRONAUT).ekstraStemme();
-        startAvstemning();
+        startAvstemming();
         informer(annonse.substring(1) + "\n\nDet er tid for rakettoppskytning!!!");
         rapporter("\nDet er tid for rakettoppskytning!!!");
         tittuler("Hvem skal sendes opp i raketten?");
@@ -886,7 +921,7 @@ public class Spill implements ActionListener {
                 else if (taler > 2)
                     unntak = VeiledningsUtil.FASE_OPPGJØR;
                 break;
-            case AVSTEMNINGSFASE:
+            case AVSTEMMINGSFASE:
                 if (rakett)
                     unntak = VeiledningsUtil.FASE_RAKETT;
                 else if (tiltale)
@@ -1336,7 +1371,7 @@ public class Spill implements ActionListener {
                         timer.fortsett();
                     } else if (fase(TALEFASE)) {
                         tidenErUte();
-                    } else if (fase(AVSTEMNINGSFASE)) {
+                    } else if (fase(AVSTEMMINGSFASE)) {
                         nesteAvstemming();
                     } else if (fase(ORDFØRERFASE)) {
                         velgOrdfører(null);
@@ -1416,7 +1451,7 @@ public class Spill implements ActionListener {
                         timer.setText(annonse + "\n\nMistenktlisten er full");
                     }
                 }
-            } else if (fase(AVSTEMNINGSFASE)) {
+            } else if (fase(AVSTEMMINGSFASE)) {
                 knapp(e).setEnabled(false);
                 spillere.stem(valgt, forsvarende);
                 timer.nyStartSek(timer.getTid() + 3);

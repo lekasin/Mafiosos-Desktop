@@ -30,8 +30,8 @@ public class TvUtil {
         return tv.getTvText();
     }
 
-    public static void avstemning() {
-        tv.avstemning();
+    public static void avstemming() {
+        tv.avstemming();
     }
 
     public static void leggVed(String s) {

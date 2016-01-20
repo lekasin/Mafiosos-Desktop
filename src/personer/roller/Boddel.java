@@ -18,7 +18,7 @@ public class Boddel extends Rolle {
         guide = "Bøddelen kan når som helst på dagtid finne fram øksen sin og drepe en annen borger. " +
                 "Dette synes imidlertid landsbyen er forkastelig, og bøddelen blir umiddelbart bortvist fra landsbyen (Han er da ute av spillet). " +
                 "Bøddelen må da nøye vurdere når han vil bruke evnen sin, og blir han drept på natten, er løpet kjørt. " +
-                "Bøddelen kan senest gripe øksen FØR den avgjørende avstemning starter.";
+                "Bøddelen kan senest gripe øksen FØR den avgjørende avstemming starter.";
         side = BORGER;
 		prioritet = BØDDEL;
 		aktiver(false);

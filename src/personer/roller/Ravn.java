@@ -5,7 +5,6 @@ import personer.Spiller;
 
 public class Ravn extends Rolle {
 
-	String ut;
 	Spiller gjest;
 	
 	public Ravn(){
@@ -36,9 +35,7 @@ public class Ravn extends Rolle {
 		
 		if(spiller != offer)
 			gjest = spiller;
-		if(gjest != null)
-			ut = "";
-		
+
 		if(this.spiller.lever() && spiller.lever() && !blokkert) {
             spiller.inviterPåSuppe(this);
         }

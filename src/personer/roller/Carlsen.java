@@ -16,11 +16,11 @@ public class Carlsen extends Rolle {
         oppgave = "Hvem vil Carlsen forsvare?";
         veiledning = "Magnus Carlsen:\n" +
                 "Carlsen våkner hver natt og prøver å lese spillet. Han velger først om han vil spille angrep eller forsvar," +
-                " og velger så den personen han tror får flest stemmer ved første avstemning neste dag.\n" +
+                " og velger så den personen han tror får flest stemmer ved første avstemming neste dag.\n" +
                 "For å bytte mellom angrep og forsvar, trykker du på Angrep/Forsvar.\n" +
                 "Carlsen signalisere hvordan han vil spille ved å vise en pistolhånd for angrep, og \"stopp\"-hånd for forsvar.\n" +
                 "Når Calsen har valgt, trykker du på vedkommendes navn for å angripe/forsvare dem.\n";
-        guide = "Magnus våkner hver natt og peker på den personen han tror får flest stemmer ved første avstemning neste dag, og om han vil spille offensivt eller defensivt.\n" +
+        guide = "Magnus våkner hver natt og peker på den personen han tror får flest stemmer ved første avstemming neste dag, og om han vil spille offensivt eller defensivt.\n" +
                 "Spiller han offensivt og…\n" +
                 "- har rett, vil personen han valgte bli henrettet på slutten av dagen, uansett hvem som blir stemt ut.\n" +
                 "- tar feil, er det han selv som henrettet, hvis han mistenkes i løpet av dagen.\n" +
