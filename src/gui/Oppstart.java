@@ -162,6 +162,7 @@ public class Oppstart implements ActionListener {
         innhold.add(new Knapp(Mafia.SJÅFØR, Knapp.KVART, this));
         innhold.add(new Knapp(Mafia.SABOTØR, Knapp.KVART, this));
         innhold.add(new Knapp(Mafia.FORFALSKER, Knapp.KVART, this));
+        innhold.add(new Knapp(Mafia.LOMMETYV, Knapp.KVART, this));
 
         vindu.kontroll(new KontrollLytter(), VELGSPESIALISTER);
     }

@@ -1,8 +1,5 @@
 package datastruktur;
 
-import Utils.SkjermUtil;
-import gui.Spill;
-import javafx.geometry.Pos;
 import personer.Rolle;
 import personer.Spiller;
 import personer.roller.*;

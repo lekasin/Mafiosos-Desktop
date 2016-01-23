@@ -26,6 +26,7 @@ public class CopyCat extends Rolle {
 		side = BORGER;
 		prioritet = COPYCAT;
 		fortsett = false;
+        flerTrykk(true);
 	}
 
 	@Override

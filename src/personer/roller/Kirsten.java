@@ -24,6 +24,7 @@ public class Kirsten extends Rolle {
 		side = BORGER;
 		prioritet = KIRSTEN;
 		fortsett = false;
+        flerTrykk(true);
 	}
 
 	@Override

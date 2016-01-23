@@ -1,6 +1,7 @@
 package personer.roller;
 
 import Utils.ImgUtil;
+import Utils.TvUtil;
 import gui.Spill;
 import gui.StretchIcon;
 import personer.FlerSpillerRolle;
@@ -15,9 +16,9 @@ import java.util.List;
 
 public class Mafia extends FlerSpillerRolle {
 
-    public static final String SNIPER = "Sniper", SABOTØR = "Sabotør", SJÅFØR = "Sjåfør", FORFALSKER = "Forfalsker";
+    public static final String SNIPER = "Sniper", SABOTØR = "Sabotør", SJÅFØR = "Sjåfør", FORFALSKER = "Forfalsker", LOMMETYV = "Lommetyv";
 
-    boolean mine, snipe, saboter;
+    boolean mine, snipe, saboter, undersøk;
     HashMap<String, Spiller> spesialister = new HashMap<>();
 
     public Mafia() {
@@ -51,6 +52,9 @@ public class Mafia extends FlerSpillerRolle {
             case FORFALSKER :
                 bildePath += "forfalsker";
                 break;
+            case LOMMETYV :
+                bildePath += "";
+                break;
             default:
         }
         bildePath += ".jpg";
@@ -76,12 +80,25 @@ public class Mafia extends FlerSpillerRolle {
         saboter = true;
     }
 
+    public void undersøkelse() {
+        undersøk = true;
+    }
+
     public void saboter(Spiller spiller) {
         saboter = false;
         fortsett(false);
+        flerTrykk(true);
         spiller.blokker(this);
         oppgave();
         spesialister.remove(SABOTØR);
+    }
+
+    public void undersøk(Spiller spiller){
+        undersøk = false;
+        fortsett(false);
+        TvUtil.toFront();
+        TvUtil.vis(spiller + " er " + spiller.rolle() + "!");
+        spesialister.remove(LOMMETYV);
     }
 
     @Override
@@ -92,6 +109,7 @@ public class Mafia extends FlerSpillerRolle {
 
     @Override
     public boolean pek(Spiller spiller) {
+        flerTrykk(false);
         if (spiller == null) return false;
 
         for (Spiller s : Spill.spillere.spillere())
@@ -103,7 +121,9 @@ public class Mafia extends FlerSpillerRolle {
 
         if (saboter)
             saboter(spiller);
-        else {
+        else if (undersøk) {
+            undersøk(spiller);
+        } else {
             if (snipe) {
                 snill = true;
                 snipe = false;
@@ -125,6 +145,8 @@ public class Mafia extends FlerSpillerRolle {
             return false;
         else if (snill)
             spiller.snipe(this);
+        else if (blokkert && !(blokk.id(POLITI) && offer.id(POLITI)))
+            return false;
         else
             spiller.drep(this);
         return true;

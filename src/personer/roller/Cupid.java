@@ -25,6 +25,7 @@ public class Cupid extends Rolle {
 		side = BORGER;
 		prioritet = CUPID;
 		fortsett = false;
+        flerTrykk(true);
 	}
 
 	@Override

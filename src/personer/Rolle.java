@@ -12,7 +12,7 @@ import java.util.List;
 
 public abstract class Rolle {
 
-	protected boolean lever = true, blokkert = false, snill = false, informert = false, aktiv = true, funker = true, fortsett = true, skjerm = false, klonet = false;
+	protected boolean lever = true, blokkert = false, snill = false, informert = false, aktiv = true, funker = true, fortsett = true, flerTrykk = true, skjerm = false, klonet = false;
 	protected String tittel, bilde, oppgave, tvOppgave, veiledning, guide;
 	protected Spiller offer, spiller, forbud, forbud2;
 	protected Rolle blokk, informant, forsinkelse;
@@ -237,6 +237,9 @@ public abstract class Rolle {
 		side = side-(side*2);
 	}
 
+    public void flerTrykk(boolean fler){
+        flerTrykk = fler;
+    }
 	public boolean pek(Spiller spiller){
         this.spiller.setOffer(spiller);
 
@@ -331,6 +334,10 @@ public abstract class Rolle {
 	public boolean fortsetter() {
 		return fortsett;
 	}
+
+    public boolean flerTrykk(){
+        return flerTrykk;
+    }
 
 	public boolean fanget() {
 		return Spill.spillere.rolleFanget(prioritet);

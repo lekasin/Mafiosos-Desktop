@@ -317,6 +317,8 @@ public class Spill implements ActionListener {
             p.add(new Knapp("Saboter", Knapp.HALV, mk));
         if (spillere.spesialistLever(Mafia.FORFALSKER))
             p.add(new Knapp("Forfalsk", Knapp.HALV, mk));
+        if (spillere.spesialistLever(Mafia.LOMMETYV))
+            p.add(new Knapp("Undersøk", Knapp.HALV, mk));
 
         if (p.getComponents().length > 0)
             innhold.add(p);
@@ -1397,28 +1399,34 @@ public class Spill implements ActionListener {
     private class Mafiaknapper implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // MAFIAKNAPPER
+            Mafia mafia = ((Mafia) finnRolle(Rolle.MAFIA));
             if (knapp(e, "Minelegg")) {
-                Mafia m = ((Mafia) aktiv);
-                if (m.mine())
+                if (mafia.mine())
                     vindu.visMafiaKnapper(innhold);
                 else
                     refresh(aktiv);
-                tittuler(m.oppgave());
+                tittuler(mafia.oppgave());
             } else if (knapp(e, "Snipe")) {
-                ((Mafia) finnRolle(Rolle.MAFIA)).snipe();
+                mafia.snipe();
                 knapp(e).setEnabled(false);
                 proklamer("Hvem vil sniperen skyte?");
             } else if (knapp(e, "Flykt")) {
                 spillere.flykt();
                 knapp(e).setEnabled(false);
             } else if (knapp(e, "Saboter")) {
-                ((Mafia) aktiv).sabotage();
+                mafia.sabotage();
                 knapp(e).setEnabled(false);
                 proklamer("Hvem vil sabotøren sabotere?");
             } else if (knapp(e, "Forfalsk")) {
                 spillere.forfalsk();
                 knapp(e).setEnabled(false);
-            } else if (knapp(e, "Drep/Beskytt")) {
+            } else if (knapp(e, "Undersøk")) {
+                mafia.undersøkelse();
+                knapp(e).setEnabled(false);
+                proklamer("Hvem vil lommetyven undersøke?");
+            }
+
+            else if (knapp(e, "Drep/Beskytt")) {
                 BodyGuard bg = ((BodyGuard) finnRolle(Rolle.BODYGUARD));
                 bg.skift();
                 tittuler(bg.oppgave());
@@ -1496,7 +1504,7 @@ public class Spill implements ActionListener {
                 nesteRolle();
             else {
                 //Ikke deaktiverknapper for flertrykksroller
-                refresh(aktiv(Rolle.MAFIA) || aktiv(Rolle.COPYCAT) || aktiv(Rolle.KIRSTEN) || aktiv(Rolle.CUPID) || aktiv(Rolle.PSYKOLOG) ? aktiv : null);
+                refresh((aktiv != null && aktiv.flerTrykk()) ? aktiv : null);
             }
         }
     }
