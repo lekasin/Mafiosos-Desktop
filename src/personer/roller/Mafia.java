@@ -53,7 +53,7 @@ public class Mafia extends FlerSpillerRolle {
                 bildePath += "forfalsker";
                 break;
             case LOMMETYV :
-                bildePath += "";
+                bildePath += "lommetyv";
                 break;
             default:
         }
