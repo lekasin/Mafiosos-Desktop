@@ -12,7 +12,7 @@ import java.util.List;
 
 public abstract class Rolle {
 
-	protected boolean lever = true, blokkert = false, snill = false, informert = false, aktiv = true, funker = true, fortsett = true, flerTrykk = true, skjerm = false, klonet = false;
+	protected boolean lever = true, blokkert = false, snill = false, informert = false, aktiv = true, funker = true, fortsett = true, flerTrykk = false, skjerm = false, klonet = false;
 	protected String tittel, bilde, oppgave, tvOppgave, veiledning, guide;
 	protected Spiller offer, spiller, forbud, forbud2;
 	protected Rolle blokk, informant, forsinkelse;
