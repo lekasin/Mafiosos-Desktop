@@ -374,7 +374,8 @@ public class Oppstart implements ActionListener {
     }
 
     private void visRoller(String rollerListe) {
-        TvUtil.visRoller(rollerListe);
+        TvUtil.setRoller(rollerListe);
+        TvUtil.visSideInfo(rollerListe);
     }
 
     public void inverserKnapper() {

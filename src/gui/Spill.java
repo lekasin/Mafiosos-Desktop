@@ -70,6 +70,7 @@ public class Spill implements ActionListener {
     public void natt() {
         NATT++;
         rapporter("\nNY NATT (" + NATT + ")");
+        TvUtil.oppdaterSideInfo();
         TvUtil.rensVedlegg();
         dag = false;
         nyFase(NATTFASE);

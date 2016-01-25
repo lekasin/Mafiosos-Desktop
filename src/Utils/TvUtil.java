@@ -17,6 +17,7 @@ import javax.swing.*;
 public class TvUtil {
     public static TV tv;
     public static String roller;
+    public static Spiller ordfører;
 
     public static void init(Spillerliste spillere) {
         tv = new TV("MafiososInfo", spillere);
@@ -54,17 +55,30 @@ public class TvUtil {
         tv.leggtil(s);
     }
 
-    public static void visRoller(String roller) {
+    public static void setRoller(String roller) {
         TvUtil.roller = roller;
+    }
 
-        tv.visRoller(roller);
+    public static void visSideInfo(String sideInfo) {
+        tv.visRoller(sideInfo);
     }
 
     public static void visOrdfører(Spiller ordfører) {
-        if (ordfører.lever())
-            tv.visRoller("Ordfører:\n" + ordfører + "\n\n" + roller);
+        if (ordfører.lever()) {
+            TvUtil.ordfører = ordfører;
+            oppdaterSideInfo();
+        } else
+            TvUtil.ordfører = null;
+
+    }
+
+    public static void oppdaterSideInfo(){
+        if (ordfører != null)
+            visSideInfo("Dag " + Spill.NATT + "\n\nOrdfører:\n" + ordfører + "\n\n" + roller);
         else
-            visRoller(roller);
+            visSideInfo(
+
+                    "Dag " + Spill.NATT + "\n\n" + roller);
     }
 
     public static void setTvFont(int størrelse) {
