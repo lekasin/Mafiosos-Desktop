@@ -10,7 +10,8 @@ import personer.roller.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
 
 public class Oppstart implements ActionListener {
 
@@ -99,6 +100,7 @@ public class Oppstart implements ActionListener {
         Knapp fjern = new Knapp("Fjern", Knapp.HEL, e -> fjernSpillere());
 
         informer(spillere.toString());
+        leggTilSpillere(spillere);
 
         innhold = vindu.innhold();
         innhold.add(navnefelt);
@@ -244,8 +246,21 @@ public class Oppstart implements ActionListener {
         informer(spillere.toString());
     }
 
+    private void leggTilSpillere(Spillerliste spillere){
+        vindu.setListetittel("Spillere: " + spillere.spillere().size());
+        for (Spiller spiller : spillere.spillere()) {
+            vindu.leggTilListe(spiller);
+        }
+    }
+
     private void fjernSpillere(){
-        for (Spiller spiller : vindu.hentValgteSpillere()) {
+        List<Spiller> valgte = vindu.hentValgteSpillere();
+        if (valgte.isEmpty()) valgte = new ArrayList<>();
+        Spiller navngitt = spillere.finnSpillerMedNavn(navnefelt.getText());
+        if (navngitt != null)
+            valgte.add(navngitt);
+
+        for (Spiller spiller : valgte) {
             vindu.fjernFraListe(spiller);
             spillere.fjern(spiller.navn());
             antallspillere--;
@@ -454,6 +469,12 @@ public class Oppstart implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println("Hey");
+        if (e.getSource().equals(navnefelt)) {
+            registrerSpiller();
+            return;
+        }
+
         Knapp k = (Knapp) e.getSource();
         if (fase == VELGSPILLERE)
             registrerSpiller();

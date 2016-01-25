@@ -195,6 +195,7 @@ public class Spillerliste {
             s.sov();
             s.vekk();
             s.rensAlle();
+            s.setMafiaRolle("");
         }
         sl.clear();
         stemmeHistorikk.clear();
@@ -202,6 +203,7 @@ public class Spillerliste {
         stemmer.clear();
         fanger.clear();
         dilemma.clear();
+        delays.clear();
     }
 
     public void slettRoller() {
