@@ -69,8 +69,8 @@ public class Spill implements ActionListener {
 
     public void natt() {
         NATT++;
+        TvUtil.oppdaterSideInfo(fase(NATTFASE));
         rapporter("\nNY NATT (" + NATT + ")");
-        TvUtil.oppdaterSideInfo();
         TvUtil.rensVedlegg();
         dag = false;
         nyFase(NATTFASE);
@@ -113,6 +113,7 @@ public class Spill implements ActionListener {
     }
 
     public void dag() {
+        TvUtil.oppdaterSideInfo(fase(NATTFASE));
         dag = true;
         aktiv = null;
         rapporter("\nNY DAG");

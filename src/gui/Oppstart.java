@@ -469,7 +469,6 @@ public class Oppstart implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Hey");
         if (e.getSource().equals(navnefelt)) {
             registrerSpiller();
             return;

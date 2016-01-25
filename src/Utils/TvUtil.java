@@ -66,19 +66,17 @@ public class TvUtil {
     public static void visOrdfører(Spiller ordfører) {
         if (ordfører.lever()) {
             TvUtil.ordfører = ordfører;
-            oppdaterSideInfo();
+            oppdaterSideInfo(true);
         } else
             TvUtil.ordfører = null;
 
     }
 
-    public static void oppdaterSideInfo(){
+    public static void oppdaterSideInfo(boolean dag){
         if (ordfører != null)
-            visSideInfo("Dag " + Spill.NATT + "\n\nOrdfører:\n" + ordfører + "\n\n" + roller);
+            visSideInfo((dag ? "Dag " : "Natt ") + Spill.NATT + "\n\nOrdfører:\n" + ordfører + "\n\n" + roller);
         else
-            visSideInfo(
-
-                    "Dag " + Spill.NATT + "\n\n" + roller);
+            visSideInfo((dag ? "Dag " : "Natt ") + Spill.NATT + "\n\n" + roller);
     }
 
     public static void setTvFont(int størrelse) {
