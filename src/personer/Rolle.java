@@ -62,7 +62,8 @@ public abstract class Rolle {
     POSTMANN = SPECIAL+1,
 
 	KLØNA = POSTMANN+1,
-	RAVN = KLØNA+1,
+    FORSVARER = KLØNA+1,
+	RAVN = FORSVARER+1,
 	MARIUS = RAVN+1,
 	CARLSEN = MARIUS+1,
 	QUISLING = CARLSEN+1,
@@ -246,7 +247,7 @@ public abstract class Rolle {
 		if(this.spiller.forsinket && blokk == this.spiller.forsinkelse)
 			Spill.spillere.leggInnDelay(spiller, this);
 
-		if(spiller == null) return false;
+		if(spiller == null || this.spiller().forsvarer() == spiller.rolle()) return false;
 
 		if(spiller.id(Rolle.HAVFRUE) && spiller.offer() == this.spiller) {
 			if(spiller.rolle().snill())

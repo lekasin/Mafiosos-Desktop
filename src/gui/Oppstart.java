@@ -661,6 +661,7 @@ public class Oppstart implements ActionListener {
         innhold.add(new Knapp("Drømmer", new Drommer(), Knapp.KVART, this));
 
         innhold.add(new Knapp("Filosof", new Filosof(), Knapp.KVART, this));
+        innhold.add(new Knapp("Forsvarer", new Forsvarer(), Knapp.KVART, this));
 
         innhold.add(new Knapp("Gærne Berit", new Berit(), Knapp.KVART, this));
 

@@ -454,7 +454,7 @@ public class Spillerliste {
     public void flykt() {
         for (Spiller s : spillere)
             if (s.rolle() instanceof Mafia) {
-                s.forsvar(s.rolle());
+                s.snås(s.rolle());
             }
         ((Mafia)finnRolle(Rolle.MAFIA)).fjernSpesialist(Mafia.SJÅFØR);
     }
@@ -593,6 +593,8 @@ public class Spillerliste {
                 ut += "\n\n" + s + " spiser Friduns fiskesuppe på Den Blå Fisk.";
             if (s.harFlyers())
                 ut += "\n\nFlyerne påstår at " + s + " er mafia!";
+            if (s.forsvart())
+                ut += "\n\nForsvareren har tatt på seg " + s + " sin sak!";
         }
 
         return ut;
@@ -607,7 +609,7 @@ public class Spillerliste {
 
         if (!spiller.lever()) snylter.rolle().drep();
         if (spiller.beskyttet()) snylter.beskytt(r);
-        if (spiller.forsvart()) snylter.forsvar(r);
+        if (spiller.snåset()) snylter.snås(r);
         if (spiller.reddet()) snylter.redd(r);
         if (spiller.løgn()) snylter.lyv(r);
         if (spiller.skjult()) snylter.skjul(r);
@@ -627,7 +629,7 @@ public class Spillerliste {
         if (!kvinne.lever() && !(kvinne.id(Rolle.QUISLING) && kvinne.drapsmann().id(Rolle.MAFIA)))
             mann.drep(finnRolle(Rolle.CUPID));
         if (kvinne.beskyttet()) mann.beskytt(kvinne.beskytter());
-        if (kvinne.forsvart()) mann.forsvar(kvinne.forsvarer());
+        if (kvinne.snåset()) mann.snås(kvinne.snåsa());
         if (kvinne.reddet()) mann.redd(kvinne.redning());
         if (kvinne.løgn()) mann.lyv(kvinne.løgner());
         if (kvinne.skjult()) mann.skjul(kvinne.skjuler());
@@ -642,7 +644,7 @@ public class Spillerliste {
         if (!mann.lever() && !(mann.id(Rolle.QUISLING) && mann.drapsmann().id(Rolle.MAFIA)))
             kvinne.drep(finnRolle(Rolle.CUPID));
         if (mann.beskyttet()) kvinne.beskytt(kvinne.beskytter());
-        if (mann.forsvart()) kvinne.forsvar(kvinne.forsvarer());
+        if (mann.snåset()) kvinne.snås(kvinne.snåsa());
         if (mann.reddet()) kvinne.redd(kvinne.redning());
         if (mann.løgn()) kvinne.lyv(kvinne.løgner());
         if (mann.skjult()) kvinne.skjul(kvinne.skjuler());

@@ -79,7 +79,7 @@ public class Carlsen extends Rolle {
             }
         } else {
             if (treff)
-                offer().forsvar(this);
+                offer().snås(this);
             else {
                 origStemmer = spiller.getStemmer();
                 stemmeløs = true;

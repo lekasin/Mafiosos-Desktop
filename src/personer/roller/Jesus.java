@@ -47,7 +47,7 @@ public class Jesus extends Rolle {
 
         if(frelst != null && lever()) {
             frelst.beskytt(this);
-            frelst.forsvar(this);
+            frelst.snås(this);
             this.spiller.beskytt(this);
         }
         else if(!lever())
@@ -61,7 +61,7 @@ public class Jesus extends Rolle {
 	public boolean evne(Spiller spiller) {
 		frelst = spiller;
 		frelst.beskytt(this);
-		frelst.forsvar(this);
+		frelst.snås(this);
 		this.spiller.beskytt(this);
 		aktiver(false);
 		return true;

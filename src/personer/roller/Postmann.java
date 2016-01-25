@@ -6,6 +6,7 @@ import personer.Rolle;
 import personer.Spiller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -51,11 +52,17 @@ public class Postmann extends Rolle {
     }
 
     private void sjekkAlleForbudt(){
-        for (int i = 0; i < forbudsListe.size(); i++)
-            if (!forbudsListe.get(i).lever())
-                forbudsListe.remove(i);
+        rensForbud();
         if (Spill.spillere.levende().size() == forbudsListe.size())
             forbudsListe.clear();
+    }
+
+    private void rensForbud(){
+        List<Spiller> liste = new ArrayList<>();
+        liste.addAll(forbudsListe);
+        for (Spiller forbud : liste)
+            if (!forbud.lever())
+                forbudsListe.remove(forbud);
     }
 
     public void lastOppPakker() {
@@ -124,7 +131,7 @@ public class Postmann extends Rolle {
                 beskjed += "en benådelse.";
                 SkjermUtil.logg(beskjed);
                 beskjed += "\nDu vil dermed overleve å bli stemt ut i dag.";
-                mottaker.forsvar(this);
+                mottaker.snås(this);
                 break;
             case seddel:
                 beskjed += "en stemmeseddel.";

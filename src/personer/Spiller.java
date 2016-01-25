@@ -4,7 +4,6 @@ package personer;
 import gui.Spill;
 import personer.roller.Bestemor;
 import personer.roller.Mafia;
-import personer.roller.Postmann;
 import personer.roller.Smith;
 
 public class Spiller {
@@ -12,12 +11,12 @@ public class Spiller {
 	String navn, gjenstand;
 	Rolle rolle;
 	Spiller offer;
-	Rolle beskytter, forsvarer, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse, supperpartner, grafiker, postmann;
+	Rolle beskytter, snåsa, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse, supperpartner, grafiker, postmann, forsvarer;
 	int stemmer = 1;
 	String mafiarolle = "";
-	boolean lever = true, funker = true, død = false, beskyttet = false, forsvart = false, minelagt = false, forsinket = false,
+	boolean lever = true, funker = true, død = false, beskyttet = false, snåset = false, minelagt = false, forsinket = false,
 			reddet = false, skjult = false, løgn = false, kløna = false, nyligKlonet = false, skalKlones = false, fange = false, kidnappet = false,
-			talt = false, spiser = false, flyers = false, post;
+			talt = false, spiser = false, flyers = false, post = false, forsvart = false;
 
 	public Spiller(String navn) {
 		this.navn = navn;
@@ -92,7 +91,7 @@ public class Spiller {
 	}
 	
 	public void henrett(){
-		if(forsvart){
+		if(snåset){
 			return;
 		}
 
@@ -103,8 +102,10 @@ public class Spiller {
 
 	public void sov(){
 		talt = false;
-		forsvart = false;
-		forsvarer = null;
+        snåset = false;
+        snåsa = null;
+        forsvart = false;
+        forsvarer = null;
 		beskyttet = false;
 		beskytter = null;
 		reddet = false;
@@ -146,10 +147,14 @@ public class Spiller {
 			beskytter = null;
 			beskyttet = false;
 		}
-		if(forsvarer == r){
-			forsvarer = null;
-			forsvart = false;
-		}
+        if(snåsa == r){
+            snåsa = null;
+            snåset = false;
+        }
+        if(forsvarer == r){
+            forsvarer = null;
+            forsvart = false;
+        }
 		if(redning == r) {
 			redning = null;
 			reddet = false;
@@ -194,8 +199,10 @@ public class Spiller {
 	public void rensAlle(){
 		beskytter = null;
 		beskyttet = false;
-		forsvarer = null;
-		forsvart = false;
+		snåsa = null;
+		snåset = false;
+        forsvarer = null;
+        forsvart = false;
 		redning = null;
 		reddet = false;
 		skjuler = null;
@@ -251,11 +258,18 @@ public class Spiller {
         flyers = true;
     }
 
-	public void forsvar(Rolle r){
+    public void snås(Rolle r){
 		if(id(Rolle.BESTEMOR)) return;
-		forsvarer = r;
-		forsvart = true;
+		snåsa = r;
+		snåset = true;
 	}
+
+    public void forsvar(Rolle r){
+        if(id(Rolle.BESTEMOR)) return;
+        forsvarer = r;
+        forsvart = true;
+        snås(r);
+    }
 
 	public void redd(Rolle r) {
 		if(id(Rolle.BESTEMOR) || id(Rolle.ILLUSJONIST)) return;
@@ -395,10 +409,14 @@ public class Spiller {
 		return beskyttet;
 	}
 
-	public boolean forsvart(){
-		if(forsvarer != null && forsvarer.id(Rolle.JESUS) && !forsvarer.lever()) forsvart = false;
-		return forsvart;
+	public boolean snåset(){
+		if(snåsa != null && snåsa.id(Rolle.JESUS) && !snåsa.lever()) snåset = false;
+		return snåset;
 	}
+
+    public boolean forsvart(){
+        return forsvart;
+    }
 
 	public boolean reddet() {
 		return reddet;
@@ -468,9 +486,13 @@ public class Spiller {
 		return beskytter;
 	}
 
-	public Rolle forsvarer() {
-		return forsvarer;
+	public Rolle snåsa() {
+		return snåsa;
 	}
+
+    public Rolle forsvarer() {
+        return forsvarer;
+    }
 
 	public Rolle redning() {
 		return redning;

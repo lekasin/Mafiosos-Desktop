@@ -26,6 +26,6 @@ public class Jente extends Rolle {
 	public void jul() {
 		super.jul();
 		spiller.beskytt(this);
-		spiller.forsvar(this);
+		spiller.snås(this);
 	}
 }

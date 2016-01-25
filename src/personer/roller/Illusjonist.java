@@ -34,7 +34,7 @@ public class Illusjonist extends Rolle {
 				
 		if(spiller.drapsmann() != null) this.spiller.snipe(spiller.drapsmann());
 
-		this.spiller.forsvar(this);
+		this.spiller.snås(this);
 		return true;
 	}
 }

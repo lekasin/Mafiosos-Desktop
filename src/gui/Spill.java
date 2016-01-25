@@ -294,7 +294,7 @@ public class Spill implements ActionListener {
     private void håndterPakke(ActionEvent event, Spiller mottaker){
         String valg = knapp(event).getText();
         if (valg.equals("Åpne"))
-            informer(((Postmann)finnRolle(Rolle.POSTMANN)).åpnePakke(mottaker));
+            informer(((Postmann) finnRolle(Rolle.POSTMANN)).åpnePakke(mottaker));
 
         innhold = vindu.innhold();
         innhold.add(new Knapp("Fortsett", Knapp.SUPER, e -> avsluttNatt()));
@@ -721,7 +721,7 @@ public class Spill implements ActionListener {
             side = side - (2 * side);
 
         //Lag henrettelsestekst
-        if (s.forsvart())
+        if (s.snåset())
             ut += " er beskyttet, og er derfor ikke død!";
         else {
             ut += (side < Rolle.NØYTRAL ? " VAR " : " var IKKE ") + "mafia!";
@@ -1047,7 +1047,7 @@ public class Spill implements ActionListener {
             side = side - (2 * side);
 
         //Lag henrettelsestekst
-        if (s.forsvart()
+        if (s.snåset()
                 && !((aktiv(Rolle.TROMPET) || aktiv(Rolle.BØDDEL)) && aktiv.snill())
                 && !bombe) {
             ut += " er beskyttet, og er derfor ikke død!";
@@ -1064,7 +1064,7 @@ public class Spill implements ActionListener {
         }
 
         //Faktisk henrett spiller
-        if (!(s.id(Rolle.BOMBER) && s.forsvart()))
+        if (!(s.id(Rolle.BOMBER) && s.snåset()))
             s.henrett();
 
         //Aktor har drept. Får han reset?
@@ -1116,7 +1116,7 @@ public class Spill implements ActionListener {
         rapporter(ut);
 
         //Gå til resultatskjermen. Evt trompetsprengning
-        if (s.id(Rolle.TROMPET) && !s.forsvart())
+        if (s.id(Rolle.TROMPET) && !s.snåset())
             sprengTrompet(s);
         else
             dagensResultat();
@@ -1176,7 +1176,7 @@ public class Spill implements ActionListener {
         boolean mafiadød = false;
 
         // Utstemt
-        if (utstemt.forsvart()) {
+        if (utstemt.snåset()) {
             ut = utstemt + " er beskyttet, og er derfor ikke død!";
             resultat = HENRETTETBESKYTTET;
         } else {
@@ -1207,7 +1207,7 @@ public class Spill implements ActionListener {
             ut += "\n\n";
 
         // Bombet
-        if (bombet.forsvart() && !finnRolle(Rolle.BOMBER).snill()) {
+        if (bombet.snåset() && !finnRolle(Rolle.BOMBER).snill()) {
             ut += bombet
                     + " ble forsøkt sprengt,\nmen er beskyttet, og er derfor ikke død!";
         } else {
@@ -1246,13 +1246,13 @@ public class Spill implements ActionListener {
 
     public String sjekkBøddelFrelse(String ut) {
         aktiv.spiller().henrett();
-        if (aktiv.spiller().forsvart()
-                && aktiv.spiller().forsvarer().id(Rolle.JESUS)) {
+        if (aktiv.spiller().snåset()
+                && aktiv.spiller().snåsa().id(Rolle.JESUS)) {
             ut += "\n\nJesus har ofret seg for bøddelen, "
                     + aktiv.spiller() + ", og "
                     + finnSpiller(Rolle.JESUS)
                     + " er derfor død i hans sted!";
-            aktiv.spiller().forsvarer().funk(false);
+            aktiv.spiller().snåsa().funk(false);
         }
         return ut;
     }

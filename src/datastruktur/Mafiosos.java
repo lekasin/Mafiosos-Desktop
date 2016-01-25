@@ -1,12 +1,15 @@
 package datastruktur;
 
 import Utils.MenyUtil;
+import gui.Spill;
 import gui.Vindu;
 import personer.Rolle;
+import personer.Spiller;
 import personer.roller.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Mafiosos {
 

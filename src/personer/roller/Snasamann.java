@@ -28,7 +28,7 @@ public class Snasamann extends Rolle {
 		if(blokkert)
 			return false;
 		
-		spiller.forsvar(this);
+		spiller.snås(this);
 		return true;
 	}
 }
