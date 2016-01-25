@@ -369,7 +369,8 @@ public class Spill implements ActionListener {
             Rolle r = roller.get(index);
 
             while (!r.aktiv() || r == aktiv) {
-                r.autoEvne();
+                if (r.spiller() != null)
+                    r.autoEvne();
                 if (r.aktiv()) {
                     pek(r);
                     return;
@@ -382,7 +383,8 @@ public class Spill implements ActionListener {
             }
 
             if (r.aktiv()) {
-                r.autoEvne();
+                if (r.spiller() != null)
+                    r.autoEvne();
                 if (r.aktiv())
                     pek(r);
                 else

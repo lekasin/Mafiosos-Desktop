@@ -31,7 +31,7 @@ public class Bestemor extends Rolle {
 
     @Override
     public void autoEvne() {
-        if(spiller.død() || spiller.rolle().id(SMITH))
+        if(spiller == null && (spiller.død() || spiller.rolle().id(SMITH)))
             return;
 
         spiller.rensAlle();
