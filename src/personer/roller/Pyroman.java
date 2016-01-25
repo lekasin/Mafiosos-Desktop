@@ -59,9 +59,7 @@ public class Pyroman extends Rolle {
 
         tenning = false;
         forbudsListe.add(spiller);
-        if (this.spiller.lever() && spiller.lever()) {
-            spiller.dynk(this);
-        }
+        spiller.dynk(this);
 
         return true;
     }

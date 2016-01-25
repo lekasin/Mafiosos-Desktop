@@ -222,6 +222,8 @@ public class Mafia extends FlerSpillerRolle {
     public boolean fjernAlleSpesialister(){
         if (spesialister.isEmpty())
             return false;
+        for (String s : spesialister.keySet())
+            spesialister.get(s).setMafiaRolle("");
         spesialister.clear();
         return true;
     }

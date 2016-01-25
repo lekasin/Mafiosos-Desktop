@@ -271,7 +271,6 @@ public class Spiller {
 	}
 
     public void forsvar(Rolle r){
-        if(id(Rolle.BESTEMOR)) return;
         forsvarer = r;
         forsvart = true;
         snås(r);

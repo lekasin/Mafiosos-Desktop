@@ -595,7 +595,7 @@ public class Spillerliste {
                 ut += "\n\nFlyerne påstår at " + s + " er mafia!";
             if (s.forsvart())
                 ut += "\n\nForsvareren har tatt på seg " + s + " sin sak.";
-            if (s.erDynket())
+            if (s.erDynket() && !s.lever())
                 ut += "\n\nDet lukter bensin av " + s + "...";
         }
 

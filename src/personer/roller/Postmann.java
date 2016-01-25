@@ -18,6 +18,8 @@ public class Postmann extends Rolle {
     Spiller mottaker;
     List<String> pakkeSekken = new ArrayList<>();
     private final String skrin = "Førstehjelpsskrin", nåde = "Benådelse", seddel = "Stemmeseddel", brev = "Tomt brev", invite = "Suppeinvitasjon", trussel = "Trusselbrev", bombe = "Brevbombe";
+    private Spiller forrigeOffer;
+    private String forrigePakke = "";
 
     public Postmann(){
         super("Postmann");
@@ -49,6 +51,12 @@ public class Postmann extends Rolle {
         if (pakkeSekken.isEmpty())
             aktiver(false);
         sjekkAlleForbudt();
+        if (forrigePakke.equals(seddel))
+            forrigeOffer.minkStemmer();
+        else if (forrigePakke.equals(invite))
+            forrigeOffer.ekstraStemme();
+        forrigeOffer = null;
+        forrigePakke = "";
     }
 
     private void sjekkAlleForbudt(){
@@ -119,8 +127,10 @@ public class Postmann extends Rolle {
     }
 
     public String åpnePakke(Spiller mottaker){
+        forrigeOffer = mottaker;
         String beskjed = mottaker + " fikk ";
-        switch (velgPakke()) {
+        forrigePakke = velgPakke();
+        switch (forrigePakke) {
             case skrin:
                 beskjed += "et førstehjelpsskrin!";
                 SkjermUtil.logg(beskjed);
@@ -148,7 +158,7 @@ public class Postmann extends Rolle {
                 beskjed += "en suppeinvitasjon.";
                 SkjermUtil.logg(beskjed);
                 beskjed += "\nDu må dra på den blå fisk, og får dermed ikke mulighet til å stemme.";
-                mottaker.fjernStemmer();
+                mottaker.minkStemmer();
                 break;
             case trussel:
                 beskjed += "et trusselbrev fra kløna.";
