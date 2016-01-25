@@ -26,6 +26,13 @@ public class Forsvarer extends Rolle {
 	}
 
     @Override
+    public void rens() {
+        if (offer != null && forbudsListe.contains(offer))
+            forbudsListe.remove(offer);
+        super.rens();
+    }
+
+    @Override
     public void autoEvne() {
         sjekkAlleForbudt();
     }
@@ -51,7 +58,7 @@ public class Forsvarer extends Rolle {
         List<Spiller> liste = new ArrayList<>();
         liste.addAll(forbudsListe);
         for (Spiller forbud : liste)
-            if (!forbud.lever())
+            if (!forbud.funker())
                 forbudsListe.remove(forbud);
     }
 

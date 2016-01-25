@@ -70,6 +70,11 @@ public class Mafia extends FlerSpillerRolle {
             }
             informer(null, info);
         }
+
+        if (this.spiller == null || !this.spiller.lever())
+            for (Spiller s : Spill.spillere.spillere())
+                if (s.id(MAFIA) && s.funker())
+                    setSpiller(s);
     }
 
     public void snipe() {
@@ -113,11 +118,8 @@ public class Mafia extends FlerSpillerRolle {
         if (spiller == null) return false;
 
         for (Spiller s : Spill.spillere.spillere())
-            if (s.id(MAFIA) && s.funker()) {
+            if (s.id(MAFIA) && s.funker())
                 s.setOffer(spiller);
-                if (this.spiller == null || !this.spiller.lever())
-                    setSpiller(s);
-            }
 
         if (saboter)
             saboter(spiller);

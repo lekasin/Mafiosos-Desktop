@@ -11,12 +11,12 @@ public class Spiller {
 	String navn, gjenstand;
 	Rolle rolle;
 	Spiller offer;
-	Rolle beskytter, snåsa, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse, supperpartner, grafiker, postmann, forsvarer;
+	Rolle beskytter, snåsa, redning, løgner, skjuler, kløne, drapsmann, smith, forsinkelse, supperpartner, grafiker, postmann, forsvarer, dynker;
 	int stemmer = 1;
 	String mafiarolle = "";
 	boolean lever = true, funker = true, død = false, beskyttet = false, snåset = false, minelagt = false, forsinket = false,
 			reddet = false, skjult = false, løgn = false, kløna = false, nyligKlonet = false, skalKlones = false, fange = false, kidnappet = false,
-			talt = false, spiser = false, flyers = false, post = false, forsvart = false;
+			talt = false, spiser = false, flyers = false, post = false, forsvart = false, dynket = false;
 
 	public Spiller(String navn) {
 		this.navn = navn;
@@ -126,6 +126,8 @@ public class Spiller {
         grafiker = null;
         post = false;
         postmann = null;
+        dynket = false;
+        dynker = null;
 		rolle.sov();
         if (skalKlones())
             klon();
@@ -187,7 +189,11 @@ public class Spiller {
             postmann = null;
             post = false;
         }
-		if(drapsmann == r) {
+        if (dynker == r) {
+            dynker = null;
+            dynket = false;
+        }
+        if(drapsmann == r) {
 			drapsmann = null;
 		}
 		if(r.id(Rolle.MAFIA) && !r.snill() && !død && !(r.id(Rolle.MAFIA) && id(Rolle.POLITI) && r.blokk == rolle)){
@@ -295,7 +301,12 @@ public class Spiller {
 		kløna = true;
 	}
 
-	public void forsink(Rolle r) {
+    public void dynk(Rolle r) {
+        dynker = r;
+        dynket = true;
+    }
+
+    public void forsink(Rolle r) {
 		if(id(Rolle.BESTEMOR) || id(Rolle.ILLUSJONIST)) return;
 		blokker(r);
 		forsinkelse = r;
@@ -430,6 +441,10 @@ public class Spiller {
         return flyers;
     }
 
+    public boolean erDynket() {
+        return dynket;
+    }
+
     public boolean harPost() {
         return post;
     }
@@ -553,5 +568,4 @@ public class Spiller {
 		if(rolle.blokkert) ut += ", men ble blokkert av " + rolle.blokk;
 		return ut;
 	}
-
 }

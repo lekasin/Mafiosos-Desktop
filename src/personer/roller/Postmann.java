@@ -61,7 +61,7 @@ public class Postmann extends Rolle {
         List<Spiller> liste = new ArrayList<>();
         liste.addAll(forbudsListe);
         for (Spiller forbud : liste)
-            if (!forbud.lever())
+            if (!forbud.funker())
                 forbudsListe.remove(forbud);
     }
 

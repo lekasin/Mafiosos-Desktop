@@ -105,6 +105,12 @@ public class Spill implements ActionListener {
         TvUtil.lukkGuide();
     }
 
+    private void fortsettNatt(){
+        if (aktiv != null && aktiv.offer() == null && aktiv.funker())
+            rapporter(aktiv.rapport());
+        nesteRolle();
+    }
+
     public void dag() {
         dag = true;
         aktiv = null;
@@ -121,7 +127,7 @@ public class Spill implements ActionListener {
             spillere.bodyguarded(finnSpiller(Rolle.BODYGUARD));
         if (sjekkRolle(Rolle.QUISLING))
             spillere.svik((Quisling) finnRolle(Rolle.QUISLING));
-        if (sjekkRolle(Rolle.RAVN) || sjekkRolle(Rolle.MARIUS))
+        if (sjekkRolle(Rolle.RAVN) || sjekkRolle(Rolle.MARIUS) || sjekkRolle(Rolle.FORSVARER) || sjekkRolle(Rolle.PYROMAN))
             TvUtil.leggVed(spillere.leggVedInfo());
 
         forsvarende = null;
@@ -270,6 +276,9 @@ public class Spill implements ActionListener {
             vindu.kontroll(new Kontroll(), fase, new Knapp("Drep/Beskytt", Knapp.HALV, new Mafiaknapper()));
         else if (r instanceof Carlsen)
             vindu.kontroll(new Kontroll(), fase, new Knapp("Angrep/Forsvar", Knapp.HALV, new Mafiaknapper()));
+        else if (r instanceof Pyroman)
+            vindu.kontroll(new Kontroll(), fase, new Knapp("Tenn på", Knapp.HALV, new Mafiaknapper()));
+
     }
 
     private void leverPost(){
@@ -1388,9 +1397,7 @@ public class Spill implements ActionListener {
                         tidenErUte();
                     }
                 else {
-                    if (aktiv != null && aktiv.offer() == null && aktiv.funker())
-                        rapporter(aktiv.rapport());
-                    nesteRolle();
+                    fortsettNatt();
                 }
             }
         }
@@ -1434,6 +1441,10 @@ public class Spill implements ActionListener {
                 Carlsen c = ((Carlsen) finnRolle(Rolle.CARLSEN));
                 c.skift();
                 tittuler(c.oppgave());
+            } else if (knapp(e, "Tenn på")) {
+                Pyroman p = ((Pyroman) finnRolle(Rolle.PYROMAN));
+                p.tennPå();
+                fortsettNatt();
             }
         }
     }
