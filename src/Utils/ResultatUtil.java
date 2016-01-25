@@ -43,11 +43,13 @@ public class ResultatUtil {
         int anarki = 0;
         int smiths = 0;
         int fanger = 0;
+        int pyroman = 0;
 
         for (Spiller s : spillere.spillere()) {
             if (s.lever()) {
                 if (s.id(Rolle.ANARKIST)) anarki++;
                 if (s.id(Rolle.SMITH)) smiths++;
+                if (s.id(Rolle.PYROMAN)) pyroman++;
                 if (spillere.hentFanger().contains(s)) fanger++;
                 if (s.side() < Rolle.NØYTRAL) slemme++;
                 else snille++;
@@ -60,7 +62,9 @@ public class ResultatUtil {
         else if (slemme < 1) {
             if (smiths == snille)
                 return SMITHSEIER;
-            if (anarki > 0)
+            else if (pyroman == snille)
+                return PYROMANSEIER;
+            else if (anarki > 0)
                 return ANARKISTSEIER;
             else
                 return LANDSBYSEIER;

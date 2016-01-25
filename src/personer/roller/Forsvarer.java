@@ -11,7 +11,7 @@ public class Forsvarer extends Rolle {
 
 	public Forsvarer(){
 		super("Forsvarer");
-        bilde = "snasamannen";
+        bilde = "forsvarer";
         oppgave = "Hvem vil Forsvareren forsvare?";
 		veiledning = "Forsvarer:\n" +
 				"Frosvareren velger hver natt en person å forsvare neste dag.\n" +

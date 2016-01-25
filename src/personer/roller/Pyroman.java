@@ -12,7 +12,7 @@ public class Pyroman extends Rolle {
 
     public Pyroman() {
         super("Pyroman");
-        bilde = "morder";
+        bilde = "pyroman";
         oppgave = "Hvem vil Pyromanen dynke med bensin?";
         veiledning = "Pyroman:\n" +
                 "Pyromanen kan være natt velge en person å dynke med bensin.\n" +
@@ -107,7 +107,7 @@ public class Pyroman extends Rolle {
             else
                 ut += ", " + s;
         }
-        return  ut + " lukter .";
+        return  ut + " lukter bensin.";
     }
 
     @Override
