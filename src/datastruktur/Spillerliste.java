@@ -595,7 +595,7 @@ public class Spillerliste {
                 ut += "\n\nFlyerne påstår at " + s + " er mafia!";
             if (s.forsvart())
                 ut += "\n\nForsvareren har tatt på seg " + s + " sin sak.";
-            if (s.erDynket() && !s.lever())
+            if (s.erDynket() && s.lever())
                 ut += "\n\nDet lukter bensin av " + s + "...";
         }
 
@@ -620,6 +620,8 @@ public class Spillerliste {
         if (spiller.kidnappet()) snylter.kidnapp(finnRolle(Rolle.PRINCESS));
         if (spiller.harFlyers()) snylter.trykkOppFlyers(r);
         if (spiller.spiser()) snylter.inviterPåSuppe(r);
+        if (spiller.erDynket()) snylter.dynk(r);
+        if (spiller.forsvart()) snylter.forsvar(r);
     }
 
     public void cupider(Cupid cupid) {
@@ -640,6 +642,8 @@ public class Spillerliste {
         if (kvinne.kidnappet()) mann.kidnapp(finnRolle(Rolle.PRINCESS));
         if (kvinne.harFlyers()) mann.trykkOppFlyers(cupid);
         if (kvinne.spiser()) mann.inviterPåSuppe(cupid);
+        if (kvinne.erDynket()) mann.dynk(cupid);
+        if (kvinne.forsvart()) mann.forsvar(cupid);
 
 
         if (mann.rolle().blokkert()) ;//HMMMMMMM
@@ -655,6 +659,8 @@ public class Spillerliste {
         if (mann.kidnappet()) kvinne.kidnapp(finnRolle(Rolle.PRINCESS));
         if (mann.harFlyers()) kvinne.trykkOppFlyers(cupid);
         if (mann.spiser()) kvinne.inviterPåSuppe(cupid);
+        if (mann.erDynket()) kvinne.dynk(cupid);
+        if (mann.forsvart()) kvinne.forsvar(cupid);
 
         cupid.nullstill();
     }
