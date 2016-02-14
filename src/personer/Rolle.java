@@ -242,7 +242,8 @@ public abstract class Rolle {
     public void flerTrykk(boolean fler){
         flerTrykk = fler;
     }
-	public boolean pek(Spiller spiller){
+
+    public boolean pek(Spiller spiller){
         this.spiller.setOffer(spiller);
 
 		if(this.spiller.forsinket && blokk == this.spiller.forsinkelse)
