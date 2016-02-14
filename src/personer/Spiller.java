@@ -567,4 +567,49 @@ public class Spiller {
 		if(rolle.blokkert) ut += ", men ble blokkert av " + rolle.blokk;
 		return ut;
 	}
+
+    public void nullstill() {
+        lever = true;
+        funker = true;
+        død = false;
+        beskyttet = false;
+        snåset = false;
+        minelagt = false;
+        forsinket = false;
+        reddet = false;
+        skjult = false;
+        løgn = false;
+        kløna = false;
+        nyligKlonet = false;
+        skalKlones = false;
+        fange = false;
+        kidnappet = false;
+        talt = false;
+        spiser = false;
+        flyers = false;
+        post = false;
+        forsvart = false;
+        dynket = false;
+
+        snåsa = null;
+        forsvarer = null;
+        beskytter = null;
+        redning = null;
+        skjuler = null;
+        løgner = null;
+        kløne = null;
+        forsinkelse = null;
+        drapsmann = null;
+        supperpartner = null;
+        grafiker = null;
+        postmann = null;
+        dynker = null;
+        smith = null;
+
+        rolle = null;
+        offer = null;
+        gjenstand = null;
+        mafiarolle = "";
+        stemmer = 1;
+    }
 }

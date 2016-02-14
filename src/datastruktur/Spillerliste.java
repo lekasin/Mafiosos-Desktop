@@ -191,12 +191,8 @@ public class Spillerliste {
     }
 
     public void restart() {
-        for (Spiller s : spillere) {
-            s.sov();
-            s.vekk();
-            s.rensAlle();
-            s.setMafiaRolle("");
-        }
+        for (Spiller s : spillere)
+            s.nullstill();
         sl.clear();
         stemmeHistorikk.clear();
         pekeHistorikk.clear();
