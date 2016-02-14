@@ -26,7 +26,7 @@ public class Vindu extends JFrame {
     private static final long serialVersionUID = 1L;
     JPanel innhold, kontroll;
     private JPanel rammeverk, header, display, rammen, listePanel;
-    private JLabel klokke, listeTittel;
+    private JLabel klokke, listeTittel, overskrift;
     private JScrollPane innholdScroll, loggScroller;
     private JTextArea info;
     private JList<Spiller> liste;
@@ -96,7 +96,7 @@ public class Vindu extends JFrame {
             }
         });
 
-        JLabel overskrift = new JLabel();
+        overskrift = new JLabel();
         overskrift.setFont(new Font("Arial", Font.BOLD, Oppstart.TITTEL));
         overskrift.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -179,7 +179,6 @@ public class Vindu extends JFrame {
         revalidate();
     }
 
-
     public JPanel innhold() {
         innhold = new JPanel(new WrapLayout());
         if (listePanel.isVisible())
@@ -187,6 +186,7 @@ public class Vindu extends JFrame {
         innhold.revalidate();
         innhold.setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
         oppdaterRamme(innhold);
+        SkjermUtil.oppdaterInnhold(innhold);
         return innhold;
     }
 
@@ -296,6 +296,7 @@ public class Vindu extends JFrame {
     }
 
     public JPanel visAlleKnapper(JPanel panel, ActionListener al) {
+        SkjermUtil.oppdaterInnhold(panel);
         panel.removeAll();
         for (Spiller s : spillere.spillere()) {
             Knapp k = new Knapp(s.navn(), s, Knapp.HALV, al);
@@ -325,6 +326,7 @@ public class Vindu extends JFrame {
     }
 
     public void deaktiverPersonKNapper(JPanel panel) {
+        SkjermUtil.oppdaterInnhold(panel);
         Component[] knapper = panel.getComponents();
         for (Component c : knapper) {
             if (c instanceof Knapp) {
@@ -373,6 +375,7 @@ public class Vindu extends JFrame {
     }
 
     public void oppdaterKnapper(JPanel panel, Rolle r) {
+        SkjermUtil.oppdaterInnhold(panel);
         Component[] knapper = panel.getComponents();
 
         if (r == null || !r.funker() || r.fanget() || !r.aktiv() || (r.id(Rolle.SPECIAL) && r.lever()) ||
@@ -407,6 +410,7 @@ public class Vindu extends JFrame {
     }
 
     public void visDødeKnapper(JPanel panel) {
+        SkjermUtil.oppdaterInnhold(panel);
         Component[] knapper = panel.getComponents();
 
         for (Component c : knapper) {
@@ -428,6 +432,7 @@ public class Vindu extends JFrame {
     }
 
     public void visMafiaKnapper(JPanel panel){
+        SkjermUtil.oppdaterInnhold(panel);
         Component[] knapper = panel.getComponents();
 
         for (Component c : knapper) {
@@ -448,6 +453,7 @@ public class Vindu extends JFrame {
     }
 
     public void nullstillKnapper(JPanel panel, ActionListener al) {
+        SkjermUtil.oppdaterInnhold(panel);
         personknapper(panel, al);
 
         Component[] knapper = panel.getComponents();

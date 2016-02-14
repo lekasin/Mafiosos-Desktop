@@ -1,5 +1,6 @@
 package Utils;
 
+import gui.Oppstart;
 import personer.Rolle;
 
 import javax.swing.*;
@@ -12,10 +13,20 @@ public class SkjermUtil {
     private static JTextArea info;
     private static JLabel tittel;
     private static String logg;
+    private static JPanel innhold;
 
     public static void init(JTextArea info, JLabel tittel) {
         SkjermUtil.tittel = tittel;
         SkjermUtil.info = info;
+    }
+
+    public static void oppdaterInnhold(JPanel innhold) {
+        if (innhold == null)
+            return;
+
+        SkjermUtil.innhold = innhold;
+        if (innhold.getComponentCount() > 0 && innhold.getComponent(0) instanceof JLabel)
+            innhold.remove(0);
     }
 
     public static void logg(String tekst){
@@ -62,4 +73,12 @@ public class SkjermUtil {
             fargTittel(Color.BLACK);
     }
 
+    public static void beskjedPåSkjerm(String tekst) {
+        JLabel label = new JLabel();
+        label.setPreferredSize(new Dimension(innhold.getWidth(), 45));
+        label.setFont(new Font("Arial", Font.BOLD, Oppstart.UNDERTITTEL));
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setText(tekst);
+        innhold.add(label, 0);
+    }
 }

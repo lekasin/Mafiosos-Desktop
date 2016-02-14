@@ -382,8 +382,10 @@ public abstract class Rolle {
             kloneRapport();
 
 		TvUtil.vis(tvOppgave);
-		if(informert)
+		if(informert) {
             TvUtil.leggTil(info);
+            SkjermUtil.beskjedPåSkjerm("Beskjed på skjermen");
+        }
 		return oppgave;
 	}
 
