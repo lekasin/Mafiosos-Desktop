@@ -221,6 +221,7 @@ public class Oppstart implements ActionListener {
         tommePersonKnapper();
         vindu.oppdaterRamme(p);
 
+        indeks = 0;
         nesteRolle();
     }
 
