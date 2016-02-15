@@ -252,7 +252,7 @@ public class Spillerliste {
     public Rolle tylersRolle() {
         int id = -1;
         Random random = new Random();
-        while (finnSpiller(id) == null || id == Rolle.TYLER || !finnRolle(id).fortsetter() || id == Rolle.POSTMANN || id == Rolle.CUPID || id == Rolle.KIRSTEN || id == Rolle.COPYCAT || id == Rolle.BERIT || (id == Rolle.PRINCESS && !finnRolle(Rolle.PRINCESS).funker()))
+        while (finnSpiller(id) == null || id == Rolle.TYLER || !finnRolle(id).fortsetter() || id == Rolle.TYSTER || id == Rolle.POSTMANN || id == Rolle.CUPID || id == Rolle.KIRSTEN || id == Rolle.COPYCAT || id == Rolle.BERIT || (id == Rolle.PRINCESS && !finnRolle(Rolle.PRINCESS).funker()))
             id = random.nextInt((Rolle.MARIUS - Rolle.UNDERCOVER) + 1) + Rolle.UNDERCOVER;
         return finnRolle(id);
     }
