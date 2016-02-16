@@ -149,6 +149,10 @@ public class MenyUtil {
         dagtid.addActionListener(e -> InnstillingsUtil.setDagtid());
         innstillinger.add(dagtid);
 
+        JMenuItem stemmetid = new JMenuItem("Sett stemmetid");
+        stemmetid.addActionListener(e -> InnstillingsUtil.setStemmetid());
+        innstillinger.add(stemmetid);
+
         JMenuItem fortellerinfo = new JMenuItem("Vis fortellerinfo");
         fortellerinfo.addActionListener(e -> InnstillingsUtil.promptFortellerInfo());
         innstillinger.add(fortellerinfo);

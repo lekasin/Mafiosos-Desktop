@@ -60,6 +60,18 @@ public class InnstillingsUtil {
         }
     }
 
+    public static void setStemmetid(){
+        String input = JOptionPane
+                .showInputDialog("Hvor lang skal stemmetiden være? (Sekunder)");
+        if (input.matches("\\d{1,2}")) {
+            int sek = Integer.parseInt(input);
+            if (Spill.instans == null)
+                oppstart.setStemmeTid(sek);
+            else
+                Spill.instans.setTemmeTid(sek);
+        }
+    }
+
     public static void promptLeggTilSpiller(){
         String input = JOptionPane.showInputDialog("Navn på spiller:");
         if (input.length() == 0)

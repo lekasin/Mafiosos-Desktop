@@ -26,7 +26,7 @@ public class Oppstart implements ActionListener {
     Knapp fortsett;
 
     public int antallspillere = 0;
-    int fase = 100, mafiaer = -1, politi = -1, venner = -1, backup, tid = 6;
+    int fase = 100, mafiaer = -1, politi = -1, venner = -1, backup, tid = 6, stemmeTid = 15;
     private static int indeks = 0, personIndeks = -1;
     boolean fordelerSpesialister, fjerning;
 
@@ -384,6 +384,10 @@ public class Oppstart implements ActionListener {
         tid = t;
     }
 
+    public void setStemmeTid(int st) {
+        stemmeTid = st;
+    }
+
     public void informer(String informasjon) {
         TvUtil.vis(informasjon);
         SkjermUtil.fullLogg(informasjon);
@@ -599,7 +603,7 @@ public class Oppstart implements ActionListener {
             //////////////////////FORTSETT//////////////////////
             if (e.getSource() == vindu.getFortsett()) {
                 if (fase == STARTSPILL) {
-                    Spill spill = new Spill(vindu, roller, tid);
+                    Spill spill = new Spill(vindu, roller, tid, stemmeTid);
                     indeks = -1;
                     spill.natt();
                 } else if (fase == HVEMERHVA)

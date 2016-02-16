@@ -34,16 +34,17 @@ public class Spill implements ActionListener {
     Spiller sisteDød, forsvarende, ordfører, dødsdømt;
     static Rolle aktiv;
     String annonse;
-    int fase, døgn, antallDøde, tid, taler, resultat;
+    int fase, døgn, antallDøde, tid, stemmeTid, taler, resultat;
     boolean dag, seier, rakett, tiltale, bombe, joker, hentetPost;
     public static Spill instans;
 
-    public Spill(Vindu v, Rolle[] r, int t) {
+    public Spill(Vindu v, Rolle[] r, int t, int st) {
         NATT = 0;
         vindu = v;
         spillere = v.spillere;
         innhold = v.innhold;
-        tid = t;
+        this.tid = t;
+        stemmeTid = st;
         timer = new Countdown(vindu.getKlokke(), this);
 
         vindu.setSpill(this);
@@ -65,6 +66,10 @@ public class Spill implements ActionListener {
 
     public void setTid(int t) {
         tid = t;
+    }
+
+    public void setTemmeTid(int st) {
+        stemmeTid = st;
     }
 
     public void natt() {
@@ -498,7 +503,7 @@ public class Spill implements ActionListener {
     public void avstemming(Spiller s) {
         tittuler("Hvem stemmer på " + s.navn() + "?");
         timer.setText("\nHvem stemmer på " + s.navn() + "?\n" + hentMistenkte());
-        timer.nyStartSek(15);
+        timer.nyStartSek(stemmeTid);
 
         if (s.lever() && s.harFlyers() && !(rakett || bombe || tiltale)) {
             Spiller marius = new Spiller("Grafiske Marius");
