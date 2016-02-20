@@ -12,6 +12,8 @@ public class FlerSpillerRolle extends Rolle {
     }
 
     public boolean registrer() {
+        if (registrert == antall)
+            registrert = 0;
         return ++registrert == antall();
     }
 

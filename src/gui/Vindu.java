@@ -214,7 +214,8 @@ public class Vindu extends JFrame {
     }
 
     public void leggTilListe(Spiller spiller) {
-        spillerListeModel.addElement(spiller);
+        if (!spillerListeModel.contains(spiller))
+            spillerListeModel.addElement(spiller);
     }
 
     public void fjernFraListe(Spiller spiller) {
@@ -253,28 +254,12 @@ public class Vindu extends JFrame {
             kontroll.add(new Knapp("Fjern", Knapp.HALV, e -> oppstart.inverserKnapper()));
         }
 
-        if (fase == Oppstart.HVEMERHVA) {
-            kontroll.add(new Knapp("Fordel roller automatisk", Knapp.HEL, e -> startRolleGjennomgang()));
-        } else {
-            fortsett = new Knapp("Fortsett", Knapp.HEL, al);
-            kontroll.add(fortsett);
-        }
+        fortsett = new Knapp("Fortsett", Knapp.HEL, al);
+        kontroll.add(fortsett);
 
         kontroll.revalidate();
         kontroll.repaint();
         kontroll.setVisible(true);
-    }
-
-    private void startRolleGjennomgang() {
-        int svar = JOptionPane.showConfirmDialog(this,
-                "Pass på at landsbyen sover, ellers avsløres første rolle",
-                "Sover alle?", JOptionPane.DEFAULT_OPTION);
-
-        if (svar == JOptionPane.OK_OPTION) {
-            oppstart.autoFordelRoller();
-            kontroll.remove(1);
-            kontroll.add(fortsett);
-        }
     }
 
     public Knapp finnKnappForRolle(Container panel, int rolle) {

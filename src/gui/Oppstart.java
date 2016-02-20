@@ -15,6 +15,9 @@ import java.util.List;
 
 public class Oppstart implements ActionListener {
 
+    public static final int VELGSPILLERE = 100, VELGROLLER = 101, VELGSPESIALISTER = 102, VELGGJENSTANDER = -1, HVEMERHVA = 103, STARTSPILL = 104;
+    public static final int TITTEL = 50, UNDERTITTEL = 30;
+
     JPanel innhold;
     JTextField navnefelt;
     JLabel tekst, spesialistTekst = new JLabel();
@@ -30,10 +33,15 @@ public class Oppstart implements ActionListener {
     private static int indeks = 0, personIndeks = -1;
     boolean fordelerSpesialister, fjerning;
 
-    public static final int VELGSPILLERE = 100, VELGROLLER = 101, VELGSPESIALISTER = 102, VELGGJENSTANDER = -1, HVEMERHVA = 103, STARTSPILL = 104;
-    public static final int TITTEL = 50, UNDERTITTEL = 30;
-
     private Mafia mafia;
+
+    private enum Fordeling {
+        kort, manuelt, auto;
+        public boolean kort(){return this == kort;}
+        public boolean manuell(){return this == manuelt;}
+        public boolean auto(){return this == auto;}
+    }
+    private Fordeling fordeling;
 
     public Oppstart(Vindu vindu) {
         this.vindu = vindu;
@@ -191,12 +199,14 @@ public class Oppstart implements ActionListener {
 
     public void hvemErHva() {
         fase = HVEMERHVA;
+        nullstillFordeling();
         VeiledningsUtil.setTekst("Rollefordeling:\n" +
                 "Her skal rollene fordeles på spillerne ved å vekke rollen som vises til høyre, " +
                 "og trykke på navnene til personene som våkner.\n" +
                 "Husk at noen roller har flere spillere, og at alle mafiaspesialister er mafia.\n" +
                 "Husk også at roller som undercover og insider må våkne sammen med henholdsvis mafia og politi.");
 
+        TvUtil.skjulBilde();
         informer("Følgende roller er med:");
         visRoller(spillere.visRoller(roller));
         SkjermUtil.fullLogg(spillere.visRoller(roller));
@@ -207,22 +217,23 @@ public class Oppstart implements ActionListener {
         fortsett = vindu.getFortsett();
         fortsett.setVisible(false);
 
-        tekst = new JLabel();
-        tekst.setFont(new Font("Arial", Font.BOLD, Oppstart.TITTEL));
-        tekst.setHorizontalAlignment(SwingConstants.CENTER);
-        tekst.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        JPanel fordelKnapper = new JPanel();
+        fordelKnapper.setPreferredSize(new Dimension(400, 400));
+        fordelKnapper.add(new Knapp("Fordel roller med kort", Knapp.HEL, e -> fordelRollerKort()));
+        fordelKnapper.add(new Knapp("Fordel roller manuelt", Knapp.HEL, e -> manuellFordelRoller()));
+        fordelKnapper.add(new Knapp("Fordel roller automatisk", Knapp.HEL, e -> autoFordelRoller()));
+        innhold.add(fordelKnapper);
+    }
 
-        JPanel p = new JPanel(new BorderLayout());
-        p.setVisible(true);
-        p.add(tekst, BorderLayout.NORTH);
-        p.add(innhold, BorderLayout.CENTER);
-
-        vindu.personknapper(innhold, this);
-        tommePersonKnapper();
-        vindu.oppdaterRamme(p);
-
-        indeks = 0;
-        nesteRolle();
+    private void nullstillFordeling(){
+        //Nullstill indeks for fordeling av roller
+        int i = indeks;
+        politi = -1;
+        mafiaer = -1;
+        venner = -1;
+        mafia.nullstillSpesialister();
+        for (indeks = 0; roller[indeks] == null; indeks++) ;
+        fordeling = null;
     }
 
     public void startSpill() {
@@ -285,7 +296,8 @@ public class Oppstart implements ActionListener {
     private void fordelSpesialister() {
         fordelerSpesialister = true;
         String spesialist = mafia.hentLedigSpesialist();
-        TvUtil.visMafiaRolleBilde(mafia, spesialist);
+        if (fordeling.kort())
+            TvUtil.visMafiaRolleBilde(mafia, spesialist);
         if (spesialist.isEmpty())
             return;
         spesialistTekst = new JLabel();
@@ -304,9 +316,69 @@ public class Oppstart implements ActionListener {
         innhold.repaint();
     }
 
+    public void fordelRollerKort(){
+        fordeling = Fordeling.kort;
+        innhold = vindu.innhold();
+
+        tekst = new JLabel();
+        tekst.setFont(new Font("Arial", Font.BOLD, Oppstart.TITTEL));
+        tekst.setHorizontalAlignment(SwingConstants.CENTER);
+        tekst.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+
+        JPanel p = new JPanel(new BorderLayout());
+        p.setVisible(true);
+        p.add(tekst, BorderLayout.NORTH);
+        p.add(innhold, BorderLayout.CENTER);
+
+        vindu.personknapper(innhold, this);
+        tommePersonKnapper();
+        vindu.oppdaterRamme(p);
+
+        indeks = 0;
+        nesteRolle();
+    }
+
+
+    public void manuellFordelRoller(){
+        fordeling = Fordeling.manuelt;
+        innhold = vindu.innhold();
+
+        tekst = new JLabel();
+        tekst.setFont(new Font("Arial", Font.BOLD, Oppstart.TITTEL));
+        tekst.setHorizontalAlignment(SwingConstants.CENTER);
+        tekst.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+
+        JPanel p = new JPanel(new BorderLayout());
+        p.setVisible(true);
+        p.add(tekst, BorderLayout.NORTH);
+        p.add(innhold, BorderLayout.CENTER);
+
+        vindu.personknapper(innhold, this);
+        tommePersonKnapper();
+        vindu.oppdaterRamme(p);
+
+        TvUtil.skjulBilde();
+        indeks = 0;
+        nesteRolle();
+    }
+
     public void autoFordelRoller() {
-        mafia.nullstillSpesialister();
+        fordeling = Fordeling.auto;
         spillere.fordelRoller(roller);
+        visRolleGjennomgang();
+    }
+
+    public void visRolleGjennomgang() {
+        int svar = JOptionPane.showConfirmDialog(vindu,
+                "Pass på at landsbyen sover, ellers avsløres første rolle",
+                "Sover alle?", JOptionPane.DEFAULT_OPTION);
+
+        if (svar == JOptionPane.OK_OPTION) {
+            startRolleGjennomgang();
+        }
+    }
+
+    public void startRolleGjennomgang(){
         innhold = vindu.innhold();
         fortsett.setVisible(true);
 
@@ -327,18 +399,21 @@ public class Oppstart implements ActionListener {
         while (indeks < roller.length - 1 && roller[indeks] == null) indeks++;
 
         if (indeks == roller.length - 1 && roller[roller.length - 1] == null && fase == HVEMERHVA) {
-            nyfase(++fase);
-            TvUtil.skjulBilde();
-            TvUtil.lukkGuide();
+            if (fordeling.kort()) {
+                TvUtil.skjulBilde();
+                TvUtil.lukkGuide();
+                nyfase(++fase);
+            } else if (fordeling.manuell())
+                visRolleGjennomgang();
         } else if (indeks < roller.length) {
-            tekst.setText(roller[indeks].tittel() + " våkner");
+            tekst.setText(roller[indeks].tittel() + (fordeling.kort() ? " våkner" : ""));
             innhold.revalidate();
             if (TvUtil.tv.guideErSynlig())
                 TvUtil.visGuide(roller[indeks].getGuide());
 
             if (indeks == Rolle.MAFIA)
                 fordelSpesialister();
-            else
+            else if (fordeling.kort())
                 TvUtil.visRolleBilde(roller[indeks]);
         } else {
             nyfase(++fase);
@@ -453,15 +528,11 @@ public class Oppstart implements ActionListener {
     }
 
     private void tilbakeHvemErHva() {
-        //Nullstill indeks for fordeling av roller
-        int i = indeks;
-        politi = -1;
-        mafiaer = -1;
-        venner = -1;
-        for (indeks = 0; roller[indeks] == null; indeks++) ;
-
-        if (mafia.nullstillSpesialister() || i != indeks || personIndeks >= 0) {
-            nyfase(HVEMERHVA);
+        if (fordeling != null) {
+            if (fordeling.manuell() && personIndeks >= 0)
+                visRolleGjennomgang();
+            else
+                nyfase(HVEMERHVA);
         } else {
             nyfase(--fase);
             TvUtil.skjulBilde();
@@ -542,8 +613,9 @@ public class Oppstart implements ActionListener {
     }
 
     private void sjekkRolleAntall(){
+        fortsett = vindu.getFortsett();
         if (antallspillere > 0)
-            vindu.getFortsett().setEnabled(false);
+            fortsett.setEnabled(false);
         else if (antallspillere == 0) {
             Object[] options = {"Fortsett", "Velg flere"};
             int svar = JOptionPane.showOptionDialog(vindu,
@@ -552,9 +624,11 @@ public class Oppstart implements ActionListener {
 
             if (svar == JOptionPane.YES_OPTION)
                 nyfase(++fase);
+            else
+                fortsett.setEnabled(true);
         }
-        else if (antallspillere > -3) {
-            vindu.getFortsett().setEnabled(true);
+        else if (antallspillere > -spillere.spillere().size()) {
+            fortsett.setEnabled(true);
         } else
             nyfase(++fase);
     }
@@ -621,8 +695,10 @@ public class Oppstart implements ActionListener {
                     tilbakeVelgGjenstander();
                 else if (fase == VELGSPESIALISTER)
                     tilbakeVelgSpesialister();
-                else if (fase == HVEMERHVA || fase == STARTSPILL)
+                else if (fase == HVEMERHVA)
                     tilbakeHvemErHva();
+                else if (fase == STARTSPILL)
+                    nyfase(HVEMERHVA);
             }
         }
     }
