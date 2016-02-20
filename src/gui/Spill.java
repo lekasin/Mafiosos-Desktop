@@ -294,10 +294,14 @@ public class Spill implements ActionListener {
 
         setVeiledning();
         SkjermUtil.fargTittel(Color.black);
-        proklamer("Post til " + mottaker + "!");
-        rapporter("Post til " + mottaker + "!");
+        boolean gave = finnRolle(Rolle.POSTMANN).snill();
+        String postTekst = "Post til " + mottaker;
+        tittuler(postTekst + "!");
+        postTekst = "Post til " + mottaker + (gave ? " fra nissen!" : "!");
+        rapporter(postTekst);
+        informer(gave ? postTekst + "\nGaver fra nissen må åpnes." : postTekst);
 
-        vindu.postKnapper(e -> håndterPakke(e, mottaker));
+        vindu.postKnapper(gave, e -> håndterPakke(e, mottaker));
 
         JLabel postbeskjed = new JLabel();
         postbeskjed.setPreferredSize(new Dimension(600, 135));

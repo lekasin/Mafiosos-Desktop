@@ -350,9 +350,10 @@ public class Vindu extends JFrame {
         innhold.repaint();
     }
 
-    public void postKnapper(ActionListener postLytter) {
+    public void postKnapper(boolean gave, ActionListener postLytter) {
         innhold();
-        innhold.add(new Knapp("Returner", Knapp.HEL, postLytter));
+        if (!gave)
+            innhold.add(new Knapp("Returner", Knapp.HEL, postLytter));
         innhold.add(new Knapp("Åpne", Knapp.HEL, postLytter));
         kontroll.setVisible(false);
         innhold.revalidate();
