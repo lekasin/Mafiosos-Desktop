@@ -126,7 +126,7 @@ public class MenyUtil {
         for (Rolle rolle : Mafiosos.roller()) {
             rolleItem = new JMenuItem(rolle.toString());
             rolleItem.addActionListener(e -> TvUtil.visGuide(rolle.getGuide()));
-            if (Mafiosos.roller().indexOf(rolle) <= 30)
+            if (Mafiosos.roller().indexOf(rolle) <= 31)
                 rolleMeny.add(rolleItem);
             else
                 rolleMeny2.add(rolleItem);

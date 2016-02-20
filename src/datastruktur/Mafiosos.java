@@ -55,6 +55,7 @@ public class Mafiosos {
         rolleListe.add(new Drommer());
 
         rolleListe.add(new Filosof());
+        rolleListe.add(new Forsvarer());
 
         rolleListe.add(new Berit());
 
@@ -86,8 +87,10 @@ public class Mafiosos {
         rolleListe.add(new Obduksjonist());
 
         rolleListe.add(new Politi());
+        rolleListe.add(new Postmann());
         rolleListe.add(new Princess());
         rolleListe.add(new Psykolog());
+        rolleListe.add(new Pyroman());
 
         rolleListe.add(new Quisling());
 
