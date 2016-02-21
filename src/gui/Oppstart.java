@@ -609,7 +609,7 @@ public class Oppstart implements ActionListener {
             if (!(rolle instanceof FlerSpillerRolle))
                 k.setEnabled(false);
         } else if (rolle instanceof FlerSpillerRolle)
-            ((FlerSpillerRolle) rolle).fler();
+            ((FlerSpillerRolle) roller[rolle.pri()]).fler();
 
         informer(spillere.rolleString(roller, --antallspillere));
         sjekkRolleAntall();
