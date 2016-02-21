@@ -280,6 +280,19 @@ public class Vindu extends JFrame {
         return null;
     }
 
+    public JPanel visAktiveRolleKnapper(List<Rolle> aktiveRoller, ActionListener al) {
+        innhold();
+        for (Rolle r : aktiveRoller) {
+            Knapp k = new Knapp(r.tittel() + (r.flere() ? " x" + r.antall(): ""), r, Knapp.HALV, al);
+            if (r.erLåst())
+                k.setForeground(Color.BLUE);
+            else
+                k.setForeground(Color.BLACK);
+            innhold.add(k);
+        }
+        return innhold;
+    }
+
     public JPanel visAlleKnapper(JPanel panel, ActionListener al) {
         SkjermUtil.oppdaterInnhold(panel);
         panel.removeAll();

@@ -221,7 +221,7 @@ public class Oppstart implements ActionListener {
         fordelKnapper.setPreferredSize(new Dimension(400, 400));
         fordelKnapper.add(new Knapp("Fordel roller med kort", Knapp.HEL, e -> fordelRollerKort()));
         fordelKnapper.add(new Knapp("Fordel roller manuelt", Knapp.HEL, e -> manuellFordelRoller()));
-        fordelKnapper.add(new Knapp("Fordel roller automatisk", Knapp.HEL, e -> autoFordelRoller()));
+        fordelKnapper.add(new Knapp("Fordel roller automatisk", Knapp.HEL, (antallspillere < 0) ? e -> låsInnRoller() :  e -> autoFordelRoller()));
         innhold.add(fordelKnapper);
     }
 
@@ -319,6 +319,7 @@ public class Oppstart implements ActionListener {
     public void fordelRollerKort(){
         fordeling = Fordeling.kort;
         innhold = vindu.innhold();
+        SkjermUtil.tittuler("Hvem er hva?");
 
         tekst = new JLabel();
         tekst.setFont(new Font("Arial", Font.BOLD, Oppstart.TITTEL));
@@ -342,6 +343,7 @@ public class Oppstart implements ActionListener {
     public void manuellFordelRoller(){
         fordeling = Fordeling.manuelt;
         innhold = vindu.innhold();
+        SkjermUtil.tittuler("Hvem er hva?");
 
         tekst = new JLabel();
         tekst.setFont(new Font("Arial", Font.BOLD, Oppstart.TITTEL));
@@ -366,6 +368,26 @@ public class Oppstart implements ActionListener {
         fordeling = Fordeling.auto;
         spillere.fordelRoller(roller);
         visRolleGjennomgang();
+    }
+
+    private void låsInnRoller(){
+        fordeling = Fordeling.auto;
+        List<Rolle> aktiveRoller = spillere.hentAktiveRoller(roller, true);
+        SkjermUtil.tittuler("Lås inn roller");
+        innhold = vindu.visAktiveRolleKnapper(aktiveRoller, this::låsRolle);
+        fortsett.setVisible(true);
+    }
+
+    private void låsRolle(ActionEvent e){
+        Knapp knapp = (Knapp) e.getSource();
+        Rolle rolle = knapp.rolle();
+        if (knapp.getForeground() == Color.BLACK && !spillere.alleErLåst(roller)) {
+            rolle.lås(true);
+            knapp.setForeground(Color.BLUE);
+        } else if (!(rolle instanceof Mafia && ((Mafia) rolle).hentAntallLåste() == 1)) { //Må ha én mafia
+            rolle.lås(false);
+            knapp.setForeground(Color.BLACK);
+        }
     }
 
     public void visRolleGjennomgang() {
@@ -681,7 +703,10 @@ public class Oppstart implements ActionListener {
                     indeks = -1;
                     spill.natt();
                 } else if (fase == HVEMERHVA)
-                    nestePerson();
+                    if (personIndeks == -1)
+                        autoFordelRoller();
+                    else
+                        nestePerson();
                 else if (spillere.length() < 5)
                     informer("Ikke nok spillere!");
                 else

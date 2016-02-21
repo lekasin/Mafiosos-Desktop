@@ -12,6 +12,7 @@ import java.util.List;
 
 public abstract class Rolle {
 
+    private boolean låst = false;
 	protected boolean lever = true, blokkert = false, snill = false, informert = false, aktiv = true, funker = true, fortsett = true, flerTrykk = false, skjerm = false, klonet = false;
 	protected String tittel, bilde, oppgave, tvOppgave, veiledning, guide;
 	protected Spiller offer, spiller, forbud, forbud2;
@@ -433,7 +434,15 @@ public abstract class Rolle {
         vekk();
     }
 
-	//Evner/Arv
+    public void lås(boolean låst){
+        this.låst = låst;
+    }
+
+    public boolean erLåst() {
+        return låst;
+    }
+
+    //Evner/Arv
 	public abstract boolean evne(Spiller spiller);
 
     public void autoEvne(){}

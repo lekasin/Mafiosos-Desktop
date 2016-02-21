@@ -5,7 +5,7 @@ package personer;
  */
 public class FlerSpillerRolle extends Rolle {
 
-    protected int antall = 1, levende = 1, registrert = 0;
+    protected int antall = 1, levende = 1, registrert = 0, låste = 0;
 
     public FlerSpillerRolle(String navn){
         super(navn);
@@ -48,6 +48,19 @@ public class FlerSpillerRolle extends Rolle {
         if(!flere())
             lever = false;
         levende--;
+    }
+
+    @Override
+    public void lås(boolean låst) {
+        if (låst)
+            låste++;
+        else
+            låste--;
+        super.lås(låste > 0);
+    }
+
+    public int hentAntallLåste(){
+        return låste;
     }
 
     @Override

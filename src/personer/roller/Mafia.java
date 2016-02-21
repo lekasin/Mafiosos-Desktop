@@ -35,6 +35,7 @@ public class Mafia extends FlerSpillerRolle {
                 "Om alle mafiaene dør, har landsbyen vunnet.";
         side = MAFIOSO;
         prioritet = MAFIA;
+        lås(true);
     }
 
     public StretchIcon getBilde(String spesialist) {

@@ -39,19 +39,19 @@ public class Spillerliste {
     }
 
     public void fordelRoller(Rolle[] roller) {
-        ArrayList<Rolle> aktiveRoller = new ArrayList();
-        for (Rolle rolle : roller) {
-            if (rolle != null) {
-                if (rolle.flere())
-                    for (int i = 0; i < rolle.antall(); i++)
-                        aktiveRoller.add(rolle);
-                else
-                    aktiveRoller.add(rolle);
+        int låste = 0;
+        List<Rolle> aktiveRoller = new ArrayList<>();
+        for (Rolle rolle : hentAktiveRoller(roller, false)) {
+            if (rolle.erLåst()) {
+                aktiveRoller.add(0, rolle);
+                låste++;
+            } else {
+                aktiveRoller.add(rolle);
             }
         }
-        do {
-            Collections.shuffle(aktiveRoller);
-        } while (mistetMafia(aktiveRoller));
+
+        Collections.shuffle(aktiveRoller.subList(låste, aktiveRoller.size()));
+        Collections.shuffle(aktiveRoller.subList(0, spillere.size()));
 
         for (int i = 0; i < aktiveRoller.size(); i++) {
             Rolle rolle = aktiveRoller.get(i);
@@ -67,22 +67,53 @@ public class Spillerliste {
         }
     }
 
-    public List<Rolle> hentTommeRoller(){
+    //Låse utvalg av flerspillerroller
+//    if (rolle.erLåst() && !aktiveRoller.contains(rolle)) {
+//        if (rolle instanceof FlerSpillerRolle) {
+//            for (int i = 0; i < rolle.antall(); i++) {
+//                if (i < ((FlerSpillerRolle) rolle).hentAntallLåste()) {
+//                    aktiveRoller.add(0, rolle);
+//                    låste++;
+//                } else
+//                    aktiveRoller.add(rolle);
+//            }
+//        } else {
+//            aktiveRoller.add(0, rolle);
+//            låste++;
+//        }
+//    } else {
+//        aktiveRoller.add(rolle);
+//    }
+
+    public List<Rolle> hentAktiveRoller(Rolle[] roller, boolean unik) {
+        List<Rolle> aktiveRoller = new ArrayList();
+        for (Rolle rolle : roller) {
+            if (rolle != null) {
+                if (unik)
+                    aktiveRoller.add(rolle);
+                else
+                    for (int i = 0; i < rolle.antall(); i++)
+                        aktiveRoller.add(rolle);
+            }
+        }
+        return aktiveRoller;
+    }
+
+    public boolean alleErLåst(Rolle[] roller) {
+        int låste = 0;
+        for (Rolle rolle : hentAktiveRoller(roller, false)) {
+            if (rolle.erLåst())
+                låste++;
+        }
+        return låste >= spillere.size();
+    }
+
+    public List<Rolle> hentTommeRoller() {
         return tommeRoller;
     }
 
-    public void tømTommeRoller(){
+    public void tømTommeRoller() {
         tommeRoller.clear();
-    }
-
-    private boolean mistetMafia(ArrayList<Rolle> aktiveRoller){
-        if (aktiveRoller.size() > spillere.size()) {
-            for (int i = spillere.size(); i < aktiveRoller.size(); i++) {
-                if (aktiveRoller.get(i).id(Rolle.MAFIA))
-                    return true;
-            }
-        }
-        return false;
     }
 
     public void våknOpp() {
@@ -96,7 +127,7 @@ public class Spillerliste {
     public void sov() {
         for (Spiller s : spillere) {
             s.setOffer(null);
-                s.sov();
+            s.sov();
         }
     }
 
@@ -301,9 +332,9 @@ public class Spillerliste {
         return levende;
     }
 
-    public ArrayList<Spiller> levendeOgFri(){
+    public ArrayList<Spiller> levendeOgFri() {
         ArrayList<Spiller> levendeOgFri = levende();
-        for (Spiller s: levende())
+        for (Spiller s : levende())
             if (s.fange())
                 levendeOgFri.remove(s);
         return levendeOgFri;
@@ -454,7 +485,7 @@ public class Spillerliste {
             if (s.rolle() instanceof Mafia) {
                 s.snås(s.rolle());
             }
-        ((Mafia)finnRolle(Rolle.MAFIA)).fjernSpesialist(Mafia.SJÅFØR);
+        ((Mafia) finnRolle(Rolle.MAFIA)).fjernSpesialist(Mafia.SJÅFØR);
     }
 
     public void forfalsk() {
@@ -462,11 +493,11 @@ public class Spillerliste {
             if (s.rolle() instanceof Mafia) {
                 s.lyv(s.rolle());
             }
-        ((Mafia)finnRolle(Rolle.MAFIA)).fjernSpesialist(Mafia.FORFALSKER);
+        ((Mafia) finnRolle(Rolle.MAFIA)).fjernSpesialist(Mafia.FORFALSKER);
     }
 
     public boolean spesialistLever(String mafia) {
-        return ((Mafia)finnRolle(Rolle.MAFIA)).spesialistLever(mafia);
+        return ((Mafia) finnRolle(Rolle.MAFIA)).spesialistLever(mafia);
     }
 
     public void fordelGjenstander(ArrayList<String> gjenstander) {
@@ -532,7 +563,7 @@ public class Spillerliste {
         return !fanger.isEmpty();
     }
 
-    public List<Spiller> hentFanger(){
+    public List<Spiller> hentFanger() {
         return fanger;
     }
 
@@ -547,12 +578,12 @@ public class Spillerliste {
         ((BodyGuard) bg.rolle()).setNektet(besøk(bg.offer(), bg));
     }
 
-    public void registrerDilemmaValg(Spiller s){
+    public void registrerDilemmaValg(Spiller s) {
         dilemma.put(s, true);
     }
 
-    public void fyllDilemma(){
-        for (Spiller s: levendeOgFri())
+    public void fyllDilemma() {
+        for (Spiller s : levendeOgFri())
             if (!dilemma.containsKey(s))
                 dilemma.put(s, false);
         dilemma.remove(finnRolle(Rolle.JOKER));
@@ -758,7 +789,7 @@ public class Spillerliste {
         return antall;
     }
 
-    public void utførDelayFunksjoner(){
+    public void utførDelayFunksjoner() {
         for (Spiller offer : delays.keySet()) {
             delays.get(offer).delay(offer);
             System.out.println("Delay: " + delays.get(offer) + " utføres på " + offer);
@@ -766,20 +797,20 @@ public class Spillerliste {
         nullstillDelays();
     }
 
-    public void leggInnDelay(Spiller offer, Rolle rolle){
+    public void leggInnDelay(Spiller offer, Rolle rolle) {
         delays.put(offer, rolle);
     }
 
-    public void fjernDelay(Spiller offer, Rolle rolle){
+    public void fjernDelay(Spiller offer, Rolle rolle) {
         delays.remove(offer, rolle);
     }
 
-    public void nullstillDelays(){
+    public void nullstillDelays() {
         delays.clear();
     }
 
     public String drøm(Spiller drømmer) {
-        String ut = drømmer.forsinket() ?  "Drømmeren ser disse forrige natt:" : "Drømmeren drømte om disse i drømmen sin:";
+        String ut = drømmer.forsinket() ? "Drømmeren ser disse forrige natt:" : "Drømmeren drømte om disse i drømmen sin:";
         Boolean mafia = false;
         int teller = 0;
 
@@ -815,7 +846,7 @@ public class Spillerliste {
 
     public String rolleString(Rolle[] roller, int antall) {
         String rolleString = spillere.size() + " Spillere\n\n" +
-                (antall < 0 ? "Ekstra roller: " + (antall*-1) : "Gjenstående roller: " + antall) +
+                (antall < 0 ? "Ekstra roller: " + (antall * -1) : "Gjenstående roller: " + antall) +
                 "\n----------------\n" +
                 "Mafia x" + roller[Rolle.MAFIA].antall();
 
@@ -853,7 +884,8 @@ public class Spillerliste {
     public String hvemErHva() {
         String ut = "";
         for (Spiller s : spillere)
-            if (s.rolle() != null) ut += s + " er " + s.rolle() + (s.getMafiarolle().isEmpty() ? "\n" : "(" + s.getMafiarolle() + ")\n");
+            if (s.rolle() != null)
+                ut += s + " er " + s.rolle() + (s.getMafiarolle().isEmpty() ? "\n" : "(" + s.getMafiarolle() + ")\n");
         for (Rolle r : tommeRoller)
             ut += "Ingen er " + r + "\n";
         return ut;
