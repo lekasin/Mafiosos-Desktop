@@ -64,7 +64,7 @@ public class TvUtil {
     }
 
     public static void visOrdfører(Spiller ordfører) {
-        if (ordfører.lever()) {
+        if (ordfører != null && ordfører.lever()) {
             TvUtil.ordfører = ordfører;
             oppdaterSideInfo(true);
         } else
