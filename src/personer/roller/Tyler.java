@@ -78,7 +78,7 @@ public class Tyler extends Rolle {
 	@Override
 	public String rapport(){
 		String ut = tittel + "(" + spiller.navn() + ")";
-		if(offer != null) ut += " har valgt " + offer + "(" + offer.rolle() + ")";
+        ut += " har valgt " + (offer != null ? offer + "(" + offer.rolle() + ")" : "ingen");
 		ut += ", og var " + rolle;
 		if(blokkert) ut += ", men ble blokkert av " + blokk + ".";
 
@@ -94,7 +94,6 @@ public class Tyler extends Rolle {
 
     @Override
     public void vekk() {
-        rolle = this;
         super.vekk();
     }
 }
