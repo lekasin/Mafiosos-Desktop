@@ -1160,6 +1160,8 @@ public class Spill implements ActionListener {
             vindu.restart();
             vindu.startopp();
             TvUtil.visOrdfører(null);
+            TvUtil.setRoller(null);
+            TvUtil.visSideInfo("");
         }
     }
 
