@@ -113,6 +113,9 @@ public class Spillerliste {
     }
 
     public void tømTommeRoller() {
+        for (Rolle rolle : tommeRoller) {
+            rolle.reset();
+        }
         tommeRoller.clear();
     }
 
@@ -231,6 +234,7 @@ public class Spillerliste {
         fanger.clear();
         dilemma.clear();
         delays.clear();
+        tommeRoller.clear();
     }
 
     public void slettRoller() {

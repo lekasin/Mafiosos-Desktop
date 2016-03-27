@@ -52,6 +52,7 @@ public class Oppstart implements ActionListener {
         vindu.kontroll(new KontrollLytter(), -1);
 
         indeks = 0;
+        personIndeks = 0;
         roller = null;
         velgSpillere();
         InnstillingsUtil.setOppstart(this);
@@ -232,6 +233,7 @@ public class Oppstart implements ActionListener {
         mafiaer = -1;
         venner = -1;
         mafia.nullstillSpesialister();
+        spillere.tømTommeRoller();
         for (indeks = 0; roller[indeks] == null; indeks++) ;
         fordeling = null;
     }
