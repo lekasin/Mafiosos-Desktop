@@ -96,7 +96,7 @@ public class Spill implements ActionListener {
     }
 
     public void avsluttNatt() {
-        if (sjekkOffer(Rolle.POSTMANN) && !hentetPost){
+        if (sjekkOffer(Rolle.POSTMANN) && finnOffer(Rolle.POSTMANN).harPost() && !hentetPost){
             leverPost();
             return;
         }

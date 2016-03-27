@@ -6,7 +6,6 @@ import personer.Rolle;
 import personer.Spiller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -15,7 +14,6 @@ import java.util.Random;
  */
 public class Postmann extends Rolle {
 
-    Spiller mottaker;
     List<String> pakkeSekken = new ArrayList<>();
     private final String skrin = "Førstehjelpsskrin", nåde = "Benådelse", seddel = "Stemmeseddel", brev = "Tomt brev", invite = "Suppeinvitasjon", trussel = "Trusselbrev", bombe = "Brevbombe";
     private Spiller forrigeOffer;
@@ -85,7 +83,6 @@ public class Postmann extends Rolle {
 
     @Override
     public String oppgave() {
-        mottaker = null;
         tvOppgave = oppgave + hentMottakere() + hentPakkeListe();
         return super.oppgave();
     }
@@ -116,9 +113,6 @@ public class Postmann extends Rolle {
 
     @Override
     public boolean evne(Spiller spiller) {
-        if(spiller != offer)
-            mottaker = spiller;
-
         if(this.spiller.lever() && spiller.lever() && !blokkert) {
             spiller.giPost(this);
         }
