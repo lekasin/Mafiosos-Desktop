@@ -10,6 +10,7 @@ import personer.Rolle;
 import personer.Spiller;
 import personer.roller.Hammer;
 import personer.roller.Joker;
+import personer.roller.Psykolog;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -378,7 +379,7 @@ public class Vindu extends JFrame {
         Component[] knapper = panel.getComponents();
 
         if (r == null || !r.funker() || r.fanget() || !r.aktiv() || (r.id(Rolle.SPECIAL) && r.lever()) ||
-                r.id(Rolle.JØRGEN) || r.id(Rolle.BEDRAGER) || r.id(Rolle.QUISLING) || r.id(Rolle.BESTEMOR) || r.id(Rolle.BESTEVENN) || r.id(Rolle.DRØMMER))
+                r.id(Rolle.JØRGEN) || r.id(Rolle.BEDRAGER) || r.id(Rolle.QUISLING) || r.id(Rolle.BESTEMOR) || r.id(Rolle.BESTEVENN) || r.id(Rolle.DRØMMER) || (r.id(Rolle.PSYKOLOG) && !((Psykolog)r).harPasient()))
             deaktiverPersonKNapper(panel);
         else if (r.id(Rolle.OBDUK)) {
             visDødeKnapper(panel);

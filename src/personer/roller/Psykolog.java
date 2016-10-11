@@ -9,9 +9,10 @@ import java.util.ArrayList;
 
 public class Psykolog extends Rolle {
 
+    ArrayList<Spiller> pasienter = new ArrayList<>();
     Spiller pasient;
     int bonusStemmer = 0;
-    ArrayList<Spiller> pasienter = new ArrayList<>();
+    private boolean selvValg;
 
     public Psykolog() {
         super("Psykolog");
@@ -68,20 +69,26 @@ public class Psykolog extends Rolle {
         TvUtil.toFront();
     }
 
+    public boolean harPasient(){
+        return pasient != null;
+    }
+
     @Override
     public boolean evne(Spiller spiller) {
         if (blokkert())
             return false;
 
-        if (spiller.equals(spiller()))
+        selvValg = spiller.equals(spiller());
+        if (selvValg)
             spiller.setStemmer(spiller.getStemmer() + bonusStemmer);
         return true;
     }
 
     private void nullstill(){
         if (pasient != null) {
+            if (selvValg)
+                spiller().setStemmer(spiller().getStemmer() - bonusStemmer);
             pasient.setStemmer(pasient.getStemmer() + bonusStemmer);
-            spiller().setStemmer(spiller().getStemmer() - bonusStemmer);
             pasient = null;
         }
         tvOppgave = "Psykologen har ingen pasienter i dag.";

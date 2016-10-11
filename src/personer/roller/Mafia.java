@@ -78,6 +78,12 @@ public class Mafia extends FlerSpillerRolle {
                     setSpiller(s);
     }
 
+    @Override
+    public String oppgave() {
+        if (mine) mine();
+        return super.oppgave();
+    }
+
     public void snipe() {
         snipe = true;
     }
@@ -109,7 +115,8 @@ public class Mafia extends FlerSpillerRolle {
 
     @Override
     public void jul() {
-        if (offer != null) offer.snipe(this);
+        if (offer != null && !mine)
+            offer.snipe(this);
         super.jul();
     }
 
@@ -140,10 +147,8 @@ public class Mafia extends FlerSpillerRolle {
     @Override
     public boolean evne(Spiller spiller) {
         fortsett(true);
-        if (mine) {
-            mine();
+        if (mine)
             spiller.minelegg();
-        }
         else if (blokkert && !(blokk.id(POLITI) && offer.id(POLITI)))
             return false;
         else if (snill)
